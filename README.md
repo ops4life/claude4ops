@@ -451,6 +451,34 @@ Commands incorporate Site Reliability Engineering principles:
 - Monitor during and after changes
 - Implement gradual rollouts where possible
 
+## Dotfiles
+
+The `dotfiles/` directory contains user-level Claude Code configuration that installs to `~/.claude/`.
+
+### Files
+
+| File | Purpose |
+|------|---------|
+| `settings.json` | Permissions, enabled plugins, status line command |
+| `statusline-command.sh` | Status line showing model name and rate limit usage |
+| `install.sh` | Copies files to `~/.claude/` |
+
+### Status Line
+
+```
+Claude Sonnet 4.6 | 5h:▓▓▓░░░░░░░ 30% (resets 14:30)  7d:▓░░░░░░░░░ 10%
+```
+
+Shows current model, 5-hour session usage with reset time, and 7-day weekly usage. Both rate segments are hidden before the first API response.
+
+### Install
+
+```bash
+bash dotfiles/install.sh
+```
+
+Requires `jq`. The script installs it automatically via `apt-get` or `brew` if missing.
+
 ## Contributing
 
 Contributions are welcome! To add new commands or improve existing ones:

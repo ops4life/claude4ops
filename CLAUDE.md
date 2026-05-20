@@ -37,6 +37,10 @@ claudekit/
 │   │   └── slo-define.md          # Define SLOs/SLIs & error budgets
 │   └── incident/         # Incident management (1 command)
 │       └── postmortem.md          # Structured postmortem creation
+├── dotfiles/             # User-level Claude Code config (~/.claude/)
+│   ├── settings.json          # Permissions, plugins, status line
+│   ├── statusline-command.sh  # Rate limit + model status bar
+│   └── install.sh             # Copies dotfiles to ~/.claude/
 ├── CLAUDE.md            # This file - plugin architecture guide
 ├── README.md            # User-facing documentation
 └── LICENSE              # MIT License
