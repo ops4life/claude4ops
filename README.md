@@ -1,6 +1,6 @@
-# claudekit — DevOps Superpowers for Everyone
+# claude4ops — DevOps Superpowers for Everyone
 
-![claudekit banner](./assets/banner.svg)
+![claude4ops banner](./assets/banner.svg)
 
 Production-ready DevOps superpowers for everyone. Streamline and automate complex workflows across AWS, GCP, Azure, and Kubernetes.
 
@@ -9,22 +9,22 @@ Production-ready DevOps superpowers for everyone. Streamline and automate comple
 ### Quick Install (Recommended)
 
 ```
-/plugin marketplace add ops4life/claudekit
-/plugin install claudekit
+/plugin marketplace add ops4life/claude4ops
+/plugin install claude4ops
 ```
 
 ### From Local Source
 
 ```bash
-git clone https://github.com/ops4life/claudekit.git
+git clone https://github.com/ops4life/claude4ops.git
 # In Claude Code:
-# /plugin marketplace add /absolute/path/to/claudekit
-# /plugin install claudekit
+# /plugin marketplace add /absolute/path/to/claude4ops
+# /plugin install claude4ops
 ```
 
 ### Setup
 
-After installing the plugin, run `/claudekit:install` to configure Claude Code:
+After installing the plugin, run `/claude4ops:install` to configure Claude Code:
 
 - **Scope**: user (`~/.claude/`) or project (`.claude/`)
 - **Settings**: `settings.json` merge + status line script
@@ -37,73 +37,73 @@ Requires [`jq`](https://jqlang.org).
 
 ## Commands
 
-All commands: `/claudekit:<category>:<command>`
+All commands: `/claude4ops:<category>:<command>`
 
 ### Kubernetes
 
 | Command | Description |
 |---------|-------------|
-| `/claudekit:k8s:deploy` | Guided deployment with pre/post validation and rollback |
-| `/claudekit:k8s:troubleshoot` | Systematic debugging for pods, services, and network issues |
-| `/claudekit:k8s:manifest-validate` | YAML validation for syntax, security, and best practices |
+| `/claude4ops:k8s:deploy` | Guided deployment with pre/post validation and rollback |
+| `/claude4ops:k8s:troubleshoot` | Systematic debugging for pods, services, and network issues |
+| `/claude4ops:k8s:manifest-validate` | YAML validation for syntax, security, and best practices |
 
 ### Terraform
 
 | Command | Description |
 |---------|-------------|
-| `/claudekit:terraform:plan-review` | Risk, security, and cost analysis of a Terraform plan |
-| `/claudekit:terraform:apply` | Safe apply with state backup and rollback procedures |
-| `/claudekit:terraform:cloud-cost` | Multi-cloud cost analysis and right-sizing recommendations |
+| `/claude4ops:terraform:plan-review` | Risk, security, and cost analysis of a Terraform plan |
+| `/claude4ops:terraform:apply` | Safe apply with state backup and rollback procedures |
+| `/claude4ops:terraform:cloud-cost` | Multi-cloud cost analysis and right-sizing recommendations |
 
 ### CI/CD
 
 | Command | Description |
 |---------|-------------|
-| `/claudekit:cicd:pipeline-new` | Generate production CI/CD pipeline (GitHub Actions, GitLab, Jenkins) |
-| `/claudekit:cicd:ship` | Full agentic pipeline: lint → test → confirm → commit → push |
-| `/claudekit:cicd:pr-review` | DevOps-focused review: Terraform, secrets, containers, pipelines |
-| `/claudekit:cicd:deploy-strategy` | Design blue/green, canary, or rolling deployment strategy |
+| `/claude4ops:cicd:pipeline-new` | Generate production CI/CD pipeline (GitHub Actions, GitLab, Jenkins) |
+| `/claude4ops:cicd:ship` | Full agentic pipeline: lint → test → confirm → commit → push |
+| `/claude4ops:cicd:pr-review` | DevOps-focused review: Terraform, secrets, containers, pipelines |
+| `/claude4ops:cicd:deploy-strategy` | Design blue/green, canary, or rolling deployment strategy |
 
 ### Observability
 
 | Command | Description |
 |---------|-------------|
-| `/claudekit:observability:slo-define` | Define SLOs/SLIs with error budgets and burn-rate alerting |
-| `/claudekit:observability:alert-new` | Create SLO-based monitoring alerts with runbook links |
+| `/claude4ops:observability:slo-define` | Define SLOs/SLIs with error budgets and burn-rate alerting |
+| `/claude4ops:observability:alert-new` | Create SLO-based monitoring alerts with runbook links |
 
 ### Install & Automation
 
 | Command | Description |
 |---------|-------------|
-| `/claudekit:install` | Install hooks, skills, rules, and settings — user or project scope |
-| `/claudekit:hooks:mcp-setup` | Configure MCP servers for AWS, Kubernetes, and GitHub |
+| `/claude4ops:install` | Install hooks, skills, rules, and settings — user or project scope |
+| `/claude4ops:hooks:mcp-setup` | Configure MCP servers for AWS, Kubernetes, and GitHub |
 
 ### Incident Management
 
 | Command | Description |
 |---------|-------------|
-| `/claudekit:incident:postmortem` | Blameless postmortem with timeline, RCA, and action items |
+| `/claude4ops:incident:postmortem` | Blameless postmortem with timeline, RCA, and action items |
 
 ## Common Workflows
 
 **Deploy to Kubernetes:**
 ```
-/claudekit:k8s:manifest-validate → /claudekit:k8s:deploy → /claudekit:k8s:troubleshoot
+/claude4ops:k8s:manifest-validate → /claude4ops:k8s:deploy → /claude4ops:k8s:troubleshoot
 ```
 
 **Infrastructure change:**
 ```
-/claudekit:terraform:plan-review → /claudekit:terraform:apply → /claudekit:terraform:cloud-cost
+/claude4ops:terraform:plan-review → /claude4ops:terraform:apply → /claude4ops:terraform:cloud-cost
 ```
 
 **Feature ship:**
 ```
-/claudekit:cicd:pr-review main → work on feature → /claudekit:cicd:ship feat(api): add rate limiting
+/claude4ops:cicd:pr-review main → work on feature → /claude4ops:cicd:ship feat(api): add rate limiting
 ```
 
 **First-time setup (do once):**
 ```
-/claudekit:install → /claudekit:hooks:mcp-setup
+/claude4ops:install → /claude4ops:hooks:mcp-setup
 ```
 
 ## Contributing

@@ -57,18 +57,18 @@ Best practices and operational guidance...
 
 ## Command Usage
 
-Commands are invoked using the pattern: `/claudekit:<category>:<command>`
+Commands are invoked using the pattern: `/claude4ops:<category>:<command>`
 
 **Examples**:
-- `/claudekit:k8s:deploy` - Guided Kubernetes deployment
-- `/claudekit:terraform:plan-review` - Analyze Terraform plan
-- `/claudekit:cicd:pipeline-new` - Create CI/CD pipeline
-- `/claudekit:cicd:ship` - Full agentic ship pipeline (review → test → commit → push)
-- `/claudekit:cicd:pr-review` - DevOps-focused PR review
-- `/claudekit:observability:alert-new` - Create monitoring alert
-- `/claudekit:incident:postmortem` - Generate postmortem document
-- `/claudekit:hooks:setup` - Configure Claude Code lifecycle hooks
-- `/claudekit:hooks:mcp-setup` - Wire MCP servers for AWS, K8s, GitHub
+- `/claude4ops:k8s:deploy` - Guided Kubernetes deployment
+- `/claude4ops:terraform:plan-review` - Analyze Terraform plan
+- `/claude4ops:cicd:pipeline-new` - Create CI/CD pipeline
+- `/claude4ops:cicd:ship` - Full agentic ship pipeline (review → test → commit → push)
+- `/claude4ops:cicd:pr-review` - DevOps-focused PR review
+- `/claude4ops:observability:alert-new` - Create monitoring alert
+- `/claude4ops:incident:postmortem` - Generate postmortem document
+- `/claude4ops:hooks:setup` - Configure Claude Code lifecycle hooks
+- `/claude4ops:hooks:mcp-setup` - Wire MCP servers for AWS, K8s, GitHub
 
 ## Key Features
 
@@ -116,7 +116,7 @@ Commands like `cicd/ship` and `cicd/pr-review` are full agentic workflows — Cl
 The `hooks/` category provides lifecycle automation that runs independently of specific commands:
 - **PreToolUse hooks**: Block dangerous commands before Claude can run them (`exit 2` = hard block with message)
 - **Stop hooks**: Auto-lint and format every file Claude touches after each turn
-- These apply globally across all claudekit commands once configured
+- These apply globally across all claude4ops commands once configured
 
 ### Recursive CLAUDE.md
 

@@ -53,7 +53,7 @@ install_pkg() {
 }
 
 echo ""
-echo "claudekit dev setup"
+echo "claude4ops dev setup"
 echo "==================="
 echo ""
 
@@ -96,7 +96,7 @@ if [[ ! -d "$REPO_ROOT/.git" ]]; then
   warn ".git not found — skipping hook install (not a git repo?)"
 else
   if [[ -f "$HOOK_DST" ]] && ! grep -q "pre-commit.sh" "$HOOK_DST" 2>/dev/null; then
-    warn "pre-commit hook already exists (not from claudekit) — skipping"
+    warn "pre-commit hook already exists (not from claude4ops) — skipping"
   else
     cp "$HOOK_SRC" "$HOOK_DST"
     chmod +x "$HOOK_DST"

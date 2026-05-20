@@ -1,13 +1,13 @@
 # Token Optimization Tools — Install Design
 
 **Date:** 2026-05-20
-**Scope:** Add RTK + Caveman as installable components in `/claudekit:install`
+**Scope:** Add RTK + Caveman as installable components in `/claude4ops:install`
 
 ---
 
 ## Summary
 
-Add a new **Optimization** category (item 6) to the `/claudekit:install` component selection menu. It bundles two token-reduction tools — RTK and Caveman — each selectable independently via sub-selection.
+Add a new **Optimization** category (item 6) to the `/claude4ops:install` component selection menu. It bundles two token-reduction tools — RTK and Caveman — each selectable independently via sub-selection.
 
 ---
 

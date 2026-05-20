@@ -27,18 +27,18 @@
     <!-- Welcome Box -->
     <g transform="translate(40, 50)">
       <rect width="250" height="35" fill="none" stroke="#e28a67" stroke-width="1" />
-      <text x="10" y="24" font-family="monospace" font-size="16" fill="#e28a67">✱ Welcome to claudekit</text>
+      <text x="10" y="24" font-family="monospace" font-size="16" fill="#e28a67">✱ Welcome to claude4ops</text>
     </g>
 
-    <!-- CLAUDEKIT Text (Blocky Style) -->
+    <!-- CLAUDE4OPS Text (Blocky Style) -->
     <!-- We'll simulate the blocky look with multiple text elements or paths.
          Using a bold sans font and layering it for the shadow effect. -->
     <g transform="translate(40, 160)">
       <!-- Background/Shadow Layers -->
-      <text x="4" y="4" font-family="Arial Black, sans-serif" font-size="70" fill="none" stroke="#e28a67" stroke-width="2" opacity="0.5">CLAUDEKIT</text>
-      <text x="2" y="2" font-family="Arial Black, sans-serif" font-size="70" fill="none" stroke="#e28a67" stroke-width="2" opacity="0.7">CLAUDEKIT</text>
+      <text x="4" y="4" font-family="Arial Black, sans-serif" font-size="70" fill="none" stroke="#e28a67" stroke-width="2" opacity="0.5">CLAUDE4OPS</text>
+      <text x="2" y="2" font-family="Arial Black, sans-serif" font-size="70" fill="none" stroke="#e28a67" stroke-width="2" opacity="0.7">CLAUDE4OPS</text>
       <!-- Main Text -->
-      <text x="0" y="0" font-family="Arial Black, sans-serif" font-size="70" fill="#e28a67">CLAUDEKIT</text>
+      <text x="0" y="0" font-family="Arial Black, sans-serif" font-size="70" fill="#e28a67">CLAUDE4OPS</text>
       
       <!-- Horizontal lines to give it that 'segmented' look from the image -->
       <line x1="0" y1="-50" x2="450" y2="-50" stroke="#1a1a1a" stroke-width="2" opacity="0.3" />
@@ -51,6 +51,6 @@
     <text x="40" y="250" font-family="monospace" font-size="20" fill="#ffffff" opacity="0.9">DevOps Superpowers for Everyone</text>
     
     <!-- Footer -->
-    <text x="40" y="280" font-family="monospace" font-size="14" fill="#666">Press /claudekit:install to continue</text>
+    <text x="40" y="280" font-family="monospace" font-size="14" fill="#666">Press /claude4ops:install to continue</text>
   </g>
 </svg>

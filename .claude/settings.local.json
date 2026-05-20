@@ -1,0 +1,18 @@
+{
+  "permissions": {
+    "allow": [
+      "Skill(superpowers:brainstorming)",
+      "Bash(rtk ls *)",
+      "Bash(rtk curl *)",
+      "Bash(command -v pre-commit)",
+      "Bash(rtk pre-commit *)",
+      "Skill(superpowers:writing-plans)",
+      "Skill(superpowers:subagent-driven-development)",
+      "Bash(bash scripts/test/validate-commands.sh)",
+      "Bash(rtk git *)",
+      "Bash(bash /opt/claudekit/scripts/test/validate-commands.sh)",
+      "Bash(rtk grep *)",
+      "Skill(superpowers:finishing-a-development-branch)"
+    ]
+  }
+}

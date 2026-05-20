@@ -8,7 +8,7 @@ Run a structured PR review covering infrastructure, security, and pipeline conce
 
 ## Usage
 
-`/claudekit:cicd:pr-review` with optional base branch argument (e.g. `main`, `develop`)
+`/claude4ops:cicd:pr-review` with optional base branch argument (e.g. `main`, `develop`)
 
 ## Requirements
 

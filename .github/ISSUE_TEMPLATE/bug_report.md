@@ -6,7 +6,7 @@ labels: bug
 
 ## Command
 
-<!-- Which command? e.g. /claudekit:k8s:deploy -->
+<!-- Which command? e.g. /claude4ops:k8s:deploy -->
 
 ## What happened
 

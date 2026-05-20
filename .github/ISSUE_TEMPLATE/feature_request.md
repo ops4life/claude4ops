@@ -10,7 +10,7 @@ labels: enhancement
 
 ## Proposed command or change
 
-<!-- Command name suggestion (e.g. /claudekit:cicd:rollback), or which existing command to improve -->
+<!-- Command name suggestion (e.g. /claude4ops:cicd:rollback), or which existing command to improve -->
 
 ## Category
 

@@ -1,6 +1,6 @@
 # Release Process
 
-This document describes the automated release process for claudekit.
+This document describes the automated release process for claude4ops.
 
 ## Overview
 
@@ -95,8 +95,8 @@ git commit -m "chore: update GitHub Actions workflow"
      - Creates release
 
 4. **Monitor release:**
-   - Check [GitHub Actions](https://github.com/ops4life/claudekit/actions) for workflow status
-   - New release appears in [Releases](https://github.com/ops4life/claudekit/releases)
+   - Check [GitHub Actions](https://github.com/ops4life/claude4ops/actions) for workflow status
+   - New release appears in [Releases](https://github.com/ops4life/claude4ops/releases)
 
 ### Release Workflow Behavior
 
@@ -148,7 +148,7 @@ The automated changelog follows [Keep a Changelog](https://keepachangelog.com/) 
 
 ## Version Strategy
 
-claudekit follows [Semantic Versioning](https://semver.org/) (SemVer):
+claude4ops follows [Semantic Versioning](https://semver.org/) (SemVer):
 
 **Format:** `MAJOR.MINOR.PATCH`
 
@@ -169,7 +169,7 @@ claudekit follows [Semantic Versioning](https://semver.org/) (SemVer):
    - ✅ `feat:`, `fix:`, `perf:`, `BREAKING CHANGE:`
    - ❌ `docs:`, `chore:`, `refactor:`
 
-3. Check [GitHub Actions](https://github.com/ops4life/claudekit/actions) logs
+3. Check [GitHub Actions](https://github.com/ops4life/claude4ops/actions) logs
 
 ### Release workflow failed
 

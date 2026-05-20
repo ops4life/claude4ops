@@ -1,8 +1,8 @@
 ---
-description: Install claudekit hooks, skills, rules, and settings — user or project scope
+description: Install claude4ops hooks, skills, rules, and settings — user or project scope
 ---
 
-# claudekit Install
+# claude4ops Install
 
 Interactive agentic install. Follow each step in order. Run bash commands exactly as shown.
 
@@ -15,7 +15,7 @@ command -v jq >/dev/null 2>&1 || echo "MISSING_JQ"
 ```
 
 If output is `MISSING_JQ`, stop and tell the user:
-> `jq` is required. Install it with `apt-get install jq` or `brew install jq`, then re-run `/claudekit:install`.
+> `jq` is required. Install it with `apt-get install jq` or `brew install jq`, then re-run `/claude4ops:install`.
 
 ---
 
@@ -23,7 +23,7 @@ If output is `MISSING_JQ`, stop and tell the user:
 
 Ask the user:
 
-> **Where should claudekit be installed?**
+> **Where should claude4ops be installed?**
 > - `u` — **User** → `~/.claude/` (applies to all projects on this machine)
 > - `p` — **Project** → `.claude/` in the current directory (repo-local, committable to git)
 
@@ -398,12 +398,12 @@ mkdir -p "$BASE/skills/docling"
 Write the docling skill. Read the content from the installed plugin's `skills/docling/SKILL.md` if accessible, otherwise write the standard content:
 
 ```bash
-PLUGIN_SKILL=$(find "$HOME/.claude" -path "*/claudekit*/skills/docling/SKILL.md" 2>/dev/null | head -1)
+PLUGIN_SKILL=$(find "$HOME/.claude" -path "*/claude4ops*/skills/docling/SKILL.md" 2>/dev/null | head -1)
 if [ -n "$PLUGIN_SKILL" ]; then
   cp "$PLUGIN_SKILL" "$BASE/skills/docling/SKILL.md"
 else
   # Fallback: write minimal skill stub — reinstall plugin first for full content
-  echo "Skill source not found. Ensure the claudekit plugin is installed before running /claudekit:install."
+  echo "Skill source not found. Ensure the claude4ops plugin is installed before running /claude4ops:install."
 fi
 ```
 
@@ -524,7 +524,7 @@ Then continue.
 After all components are installed, print a summary:
 
 ```
-claudekit install complete.
+claude4ops install complete.
 
 Scope: [user|project] → [path]
 

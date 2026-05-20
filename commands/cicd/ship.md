@@ -8,7 +8,7 @@ Run the entire ship workflow autonomously: safety checks → static analysis →
 
 ## Usage
 
-`/claudekit:cicd:ship` with commit message as argument (e.g. `feat(payments): add redis cache layer`)
+`/claude4ops:cicd:ship` with commit message as argument (e.g. `feat(payments): add redis cache layer`)
 
 ## Requirements
 
@@ -86,12 +86,12 @@ Run non-interactively from a shell script or git alias:
 ```bash
 # Git alias in ~/.gitconfig
 [alias]
-  ship = !claude --print "/claudekit:cicd:ship $1"
+  ship = !claude --print "/claude4ops:cicd:ship $1"
 ```
 
 ```bash
 # CI usage
-RESULT=$(claude --print "/claudekit:cicd:ship feat(api): add rate limiting" 2>&1)
+RESULT=$(claude --print "/claude4ops:cicd:ship feat(api): add rate limiting" 2>&1)
 EXIT=$?
 ```
 

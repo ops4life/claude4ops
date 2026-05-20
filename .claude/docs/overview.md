@@ -1,6 +1,6 @@
 # Project Overview
 
-**claudekit** is a comprehensive Claude Code plugin that brings DevOps superpowers to everyone. It provides production-ready slash commands to streamline and automate complex workflows across infrastructure management, deployment, observability, and incident response.
+**claude4ops** is a comprehensive Claude Code plugin that brings DevOps superpowers to everyone. It provides production-ready slash commands to streamline and automate complex workflows across infrastructure management, deployment, observability, and incident response.
 
 **Purpose**: Enhance DevOps productivity with guided workflows, best practices, and automated procedures for:
 - Kubernetes operations and troubleshooting
@@ -12,7 +12,7 @@
 ## Repository Structure
 
 ```
-claudekit/
+claude4ops/
 ├── .claude-plugin/
 │   ├── plugin.json        # Plugin metadata and configuration
 │   └── marketplace.json   # Marketplace listing configuration
@@ -65,7 +65,7 @@ claudekit/
 
 ## Plugin Metadata
 
-- **Name**: claudekit
+- **Name**: claude4ops
 - **Version**: 1.2.0
 - **Author**: ops4life
 - **License**: MIT
@@ -73,7 +73,7 @@ claudekit/
 
 ## Resources
 
-- **Repository**: https://github.com/ops4life/claudekit
+- **Repository**: https://github.com/ops4life/claude4ops
 - **License**: MIT License (see LICENSE file)
 - **Documentation**: README.md for user-facing guide
 - **Reference Implementation**: https://github.com/edmund-io/edmunds-claude-code

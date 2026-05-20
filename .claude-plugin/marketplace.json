@@ -8,7 +8,7 @@
   },
   "plugins": [
     {
-      "name": "claudekit",
+      "name": "claude4ops",
       "source": "./",
       "description": "DevOps superpowers for everyone. Streamline and automate complex cloud and Kubernetes workflows."
     }

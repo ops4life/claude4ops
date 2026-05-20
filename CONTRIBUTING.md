@@ -1,13 +1,13 @@
-# Contributing to claudekit
+# Contributing to claude4ops
 
-claudekit is a community-driven toolkit. Contributions are welcome from everyone—developers, operators, and anyone passionate about automating and improving software delivery through DevOps principles.
+claude4ops is a community-driven toolkit. Contributions are welcome from everyone—developers, operators, and anyone passionate about automating and improving software delivery through DevOps principles.
 
 ## Quick Start
 
 ```bash
 # 1. Fork the repo on GitHub, then clone your fork
-git clone https://github.com/<your-username>/claudekit.git
-cd claudekit
+git clone https://github.com/<your-username>/claude4ops.git
+cd claude4ops
 
 # 2. Create a feature branch
 git checkout -b feat/my-new-command
@@ -28,7 +28,7 @@ git push origin feat/my-new-command
 - **Bug fixes** — incorrect guidance, broken examples, typos
 - **Documentation** — clearer explanations, additional context
 
-Check [open issues](https://github.com/ops4life/claudekit/issues) for ideas.
+Check [open issues](https://github.com/ops4life/claude4ops/issues) for ideas.
 
 ## Command Structure
 
@@ -139,15 +139,15 @@ terraform apply
 
 - Always verify target version before executing — a rollback to the wrong version makes things worse.
 - Keep rollback confirmation as a human gate for production environments.
-- After rollback stabilizes, open a postmortem with `/claudekit:incident:postmortem`.
+- After rollback stabilizes, open a postmortem with `/claude4ops:incident:postmortem`.
 ```
 
 **4. Test it.** Install the plugin from local source and run the command:
 
 ```
-/plugin marketplace add /absolute/path/to/claudekit
-/plugin install claudekit
-/claudekit:cicd:rollback
+/plugin marketplace add /absolute/path/to/claude4ops
+/plugin install claude4ops
+/claude4ops:cicd:rollback
 ```
 
 Verify the workflow is coherent and the command exits cleanly.
@@ -164,7 +164,7 @@ and post-rollback verification."
 
 ## Commit Format
 
-claudekit uses [Conventional Commits](https://www.conventionalcommits.org/) for automated releases:
+claude4ops uses [Conventional Commits](https://www.conventionalcommits.org/) for automated releases:
 
 | Prefix | Effect | Example |
 |--------|--------|---------|

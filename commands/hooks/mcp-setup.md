@@ -99,7 +99,7 @@ MCP_DANGER_PATTERNS=(
 )
 ```
 
-See `/claudekit:hooks:setup` for full hook configuration.
+See `/claude4ops:hooks:setup` for full hook configuration.
 
 ## AWS MCP: Common Use Cases
 
@@ -151,4 +151,4 @@ See `/claudekit:hooks:setup` for full hook configuration.
 - Set `KUBECONFIG` to a dev/staging cluster only — never prod kubeconfig in MCP config
 - Rotate `GITHUB_TOKEN` regularly; use a machine account token, not personal
 - Commit `.claude/settings.json` to share MCP config with the team (tokens come from env vars, not the file)
-- Combine MCP access with `/claudekit:cicd:pr-review` for live state validation during reviews
+- Combine MCP access with `/claude4ops:cicd:pr-review` for live state validation during reviews

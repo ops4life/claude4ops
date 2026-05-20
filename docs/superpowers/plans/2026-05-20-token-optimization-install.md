@@ -2,7 +2,7 @@
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
-**Goal:** Add RTK and Caveman as an "Optimization" component (item 6) in `/claudekit:install`, with sub-selection between the two tools.
+**Goal:** Add RTK and Caveman as an "Optimization" component (item 6) in `/claude4ops:install`, with sub-selection between the two tools.
 
 **Architecture:** All changes are confined to `commands/install.md` — the agentic install prompt. Three sections change: Step 3 menu gains item 6, Step 4 gains an Optimization install block with sub-selection and warn-and-continue error handling, Step 5 summary gains an Optimization line.
 
