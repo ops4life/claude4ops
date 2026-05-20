@@ -1,6 +1,6 @@
 # Contributing to claudekit
 
-claudekit is a community-driven toolkit. Contributions welcome from DevOps practitioners, SREs, platform engineers, and Claude Code plugin developers.
+claudekit is a community-driven toolkit. Contributions are welcome from everyone—developers, operators, and anyone passionate about automating and improving software delivery through DevOps principles.
 
 ## Quick Start
 

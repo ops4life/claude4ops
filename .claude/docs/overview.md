@@ -1,6 +1,6 @@
 # Project Overview
 
-**claudekit** is a comprehensive Claude Code plugin for DevOps, SRE, and Platform Engineering workflows. It provides production-ready slash commands for infrastructure management, deployment automation, observability, and incident response across multi-cloud environments (AWS, GCP, Azure).
+**claudekit** is a comprehensive Claude Code plugin that brings DevOps superpowers to everyone. It provides production-ready slash commands to streamline and automate complex workflows across infrastructure management, deployment, observability, and incident response.
 
 **Purpose**: Enhance DevOps productivity with guided workflows, best practices, and automated procedures for:
 - Kubernetes operations and troubleshooting

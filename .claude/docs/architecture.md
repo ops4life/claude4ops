@@ -89,9 +89,9 @@ Every command emphasizes:
 - Error handling and troubleshooting guidance
 - Monitoring and observability integration
 
-### SRE Best Practices
+### Reliability & Operations Best Practices
 
-Commands incorporate Site Reliability Engineering principles:
+Commands incorporate DevOps and Reliability Engineering principles:
 - SLO-based alerting and monitoring
 - Error budget management
 - Blameless postmortem templates

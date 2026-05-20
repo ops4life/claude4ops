@@ -6,7 +6,7 @@ labels: enhancement
 
 ## What workflow are you trying to automate?
 
-<!-- Describe the DevOps/SRE task. What do you do manually today? -->
+<!-- Describe the DevOps/Automation task. What do you do manually today? -->
 
 ## Proposed command or change
 
