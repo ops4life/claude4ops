@@ -9,6 +9,7 @@ REPO_DIR="$(cd "$(dirname "$0")" && pwd)"
 CLAUDE_DIR="${HOME}/.claude"
 HOOKS_DIR="${CLAUDE_DIR}/hooks"
 SKILLS_DIR="${CLAUDE_DIR}/skills"
+RULES_DIR="${CLAUDE_DIR}/rules"
 SETTINGS_FILE="${CLAUDE_DIR}/settings.json"
 
 # ── colours ──────────────────────────────────────────────────────────────────
@@ -244,6 +245,29 @@ install_skills() {
   done
 }
 
+# ── component: rules ──────────────────────────────────────────────────────────
+install_rules() {
+  header "Claude Code Rules"
+
+  local rules=()
+  while IFS= read -r -d '' rule_file; do
+    rules+=("$rule_file")
+  done < <(find "$REPO_DIR/rules" -maxdepth 1 -name "*.md" -print0 2>/dev/null)
+
+  if [[ ${#rules[@]} -eq 0 ]]; then
+    warn "No rules found in rules/"
+    return
+  fi
+
+  mkdir -p "$RULES_DIR"
+  for rule_file in "${rules[@]}"; do
+    local name
+    name="$(basename "$rule_file")"
+    cp "$rule_file" "$RULES_DIR/$name"
+    ok "rule '$name' → ${RULES_DIR}/"
+  done
+}
+
 # ── component: plugin ─────────────────────────────────────────────────────────
 install_plugin() {
   header "claudekit Plugin"
@@ -258,6 +282,7 @@ install_plugin() {
   }'
   merge_settings "$SETTINGS_FILE" "$plugin_config"
   ok "claudekit plugin registered in ${SETTINGS_FILE}"
+  install_rules
   info "Restart Claude Code then run: /plugin install claudekit"
 }
 
@@ -281,19 +306,21 @@ interactive_menu() {
   printf "\n${BOLD}claudekit setup${RESET}\n"
   printf "Installs Claude Code config into %s\n\n" "$CLAUDE_DIR"
 
-  local do_settings=0 do_hooks=0 do_mcp=0 do_skills=0 do_plugin=0
+  local do_settings=0 do_hooks=0 do_mcp=0 do_skills=0 do_rules=0 do_plugin=0
 
   printf "Select components to install:\n\n"
   ask "1. Base settings + status line (settings.json, statusline-command.sh)" && do_settings=1
   ask "2. Claude Code hooks (block-prod, auto-lint, audit, Slack)"            && do_hooks=1
   ask "3. MCP servers (AWS, Kubernetes, GitHub)"                               && do_mcp=1
   ask "4. Skills (docling: convert PDF/DOCX/images to Markdown)"              && do_skills=1
-  ask "5. claudekit plugin registration"                                        && do_plugin=1
+  ask "5. Rules (git workflow, commit standards)"                              && do_rules=1
+  ask "6. claudekit plugin registration"                                        && do_plugin=1
 
   [[ $do_settings -eq 1 ]] && install_settings
   [[ $do_hooks    -eq 1 ]] && install_hooks
   [[ $do_mcp      -eq 1 ]] && install_mcp
   [[ $do_skills   -eq 1 ]] && install_skills
+  [[ $do_rules    -eq 1 ]] && install_rules
   [[ $do_plugin   -eq 1 ]] && install_plugin
 }
 
@@ -304,18 +331,19 @@ main() {
   if [[ $# -eq 0 ]]; then
     interactive_menu
   else
-    local do_settings=0 do_hooks=0 do_mcp=0 do_skills=0 do_plugin=0
+    local do_settings=0 do_hooks=0 do_mcp=0 do_skills=0 do_rules=0 do_plugin=0
 
     for arg in "$@"; do
       case "$arg" in
-        --all)      AUTO_YES=1; do_settings=1; do_hooks=1; do_mcp=1; do_skills=1; do_plugin=1 ;;
+        --all)      AUTO_YES=1; do_settings=1; do_hooks=1; do_mcp=1; do_skills=1; do_rules=1; do_plugin=1 ;;
         --settings) do_settings=1 ;;
         --hooks)    do_hooks=1 ;;
         --mcp)      do_mcp=1 ;;
         --skills)   do_skills=1 ;;
+        --rules)    do_rules=1 ;;
         --plugin)   do_plugin=1 ;;
         --help|-h)
-          printf "Usage: %s [--all] [--settings] [--hooks] [--mcp] [--skills] [--plugin]\n" "$0"
+          printf "Usage: %s [--all] [--settings] [--hooks] [--mcp] [--skills] [--rules] [--plugin]\n" "$0"
           printf "       %s          (interactive menu)\n" "$0"
           exit 0
           ;;
@@ -330,6 +358,7 @@ main() {
     [[ $do_hooks    -eq 1 ]] && install_hooks
     [[ $do_mcp      -eq 1 ]] && install_mcp
     [[ $do_skills   -eq 1 ]] && install_skills
+    [[ $do_rules    -eq 1 ]] && install_rules
     [[ $do_plugin   -eq 1 ]] && install_plugin
   fi
 
