@@ -2,6 +2,22 @@
 
 All notable changes to this project will be documented in this file.
 
+# [1.9.0](https://github.com/ops4life/claudekit/compare/v1.8.0...v1.9.0) (2026-05-20)
+
+
+### Bug Fixes
+
+* add shell reload note to summary for RTK PATH changes ([7759476](https://github.com/ops4life/claudekit/commit/7759476eeccd536db41885d0280b6b33d87d101a))
+* clarify Optimization conditional selection and tighten PATH grep ([1148b1d](https://github.com/ops4life/claudekit/commit/1148b1de73fc68df04cd8b1a880352823d65e2b8))
+* explicit Optimization section guard and sub-selection input handling ([dd8d903](https://github.com/ops4life/claudekit/commit/dd8d9034e680a064177655ba1e8a15788d78504b))
+
+
+### Features
+
+* add Optimization install block (RTK + Caveman) to install wizard ([2f92a62](https://github.com/ops4life/claudekit/commit/2f92a627c7666cd9dab4be978e4471275fafdf4f))
+* add Optimization to install component menu ([cec5765](https://github.com/ops4life/claudekit/commit/cec5765fa3d490793e549a602eec0bba8ac1666f))
+* add Optimization to install summary output ([fc98b20](https://github.com/ops4life/claudekit/commit/fc98b20ce26d0e3ace263deea2d4e22ce80f7e90))
+
 # [1.8.0](https://github.com/ops4life/claudekit/compare/v1.7.1...v1.8.0) (2026-05-20)
 
 
