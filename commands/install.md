@@ -457,6 +457,62 @@ RULE
 
 ---
 
+### Optimization
+
+Present sub-selection:
+
+```
+Which optimization tools? (select all that apply)
+  1. RTK     — token-efficient shell command proxy (60-90% token savings)
+  2. Caveman — ultra-compressed communication mode (~75% token savings)
+  a. All
+
+Enter numbers and/or 'a':
+```
+
+#### RTK
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/rtk-ai/rtk/refs/heads/master/install.sh | sh
+```
+
+If curl or install script fails, print:
+> `RTK install failed — skipping. Install manually: https://github.com/rtk-ai/rtk`
+Then continue.
+
+On success, patch PATH for bash and zsh:
+
+```bash
+for rc in ~/.bashrc ~/.zshrc; do
+  [ -f "$rc" ] || continue
+  grep -q 'HOME/.local/bin' "$rc" 2>/dev/null || \
+    echo 'export PATH="$HOME/.local/bin:$PATH"' >> "$rc"
+done
+```
+
+Wire Claude Code hook (use full path — shell not yet reloaded):
+
+```bash
+~/.local/bin/rtk init -g --auto-patch
+```
+
+If `rtk init` fails, print:
+> `RTK hook setup failed — run ~/.local/bin/rtk init -g --auto-patch manually after reloading your shell`
+Then continue.
+
+#### Caveman
+
+```bash
+claude plugin marketplace add JuliusBrussee/caveman
+claude plugin install caveman@caveman
+```
+
+If either command fails, print:
+> `Caveman install failed — skipping. Install manually: claude plugin marketplace add JuliusBrussee/caveman && claude plugin install caveman@caveman`
+Then continue.
+
+---
+
 ## Step 5 — Summary
 
 After all components are installed, print a summary:
