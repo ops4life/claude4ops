@@ -1,0 +1,13 @@
+{
+  "recommendations": [
+    "editorconfig.editorconfig",
+    "esbenp.prettier-vscode",
+    "eamodio.gitlens",
+    "streetsidesoftware.code-spell-checker",
+    "shardulm94.trailing-spaces",
+    "raunofreiberg.vesper",
+    "miguelsolorio.symbols",
+    "iotacb.vesper-vibrant",
+    "teabyii.ayu"
+  ]
+}
