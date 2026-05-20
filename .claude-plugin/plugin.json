@@ -1,7 +1,7 @@
 {
   "name": "claudekit",
   "description": "DevOps superpowers for everyone. Streamline and automate complex cloud and Kubernetes workflows.",
-  "version": "1.7.0",
+  "version": "1.7.1",
   "author": {
     "name": "ops4life"
   },

@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.7.1](https://github.com/ops4life/claudekit/compare/v1.7.0...v1.7.1) (2026-05-20)
+
+
+### Bug Fixes
+
+* SC2015 shellcheck warning in auto-lint.sh ([d8dc993](https://github.com/ops4life/claudekit/commit/d8dc99361e9bc9bb2a2e70999341de94c8312ef6))
+
 # [1.7.0](https://github.com/ops4life/claudekit/compare/v1.6.0...v1.7.0) (2026-05-20)
 
 
