@@ -37,10 +37,15 @@ claudekit/
 │   │   └── slo-define.md          # Define SLOs/SLIs & error budgets
 │   └── incident/         # Incident management (1 command)
 │       └── postmortem.md          # Structured postmortem creation
-├── dotfiles/             # User-level Claude Code config (~/.claude/)
-│   ├── settings.json          # Permissions, plugins, status line
+├── setup.sh             # Interactive setup script (settings, hooks, MCP, plugin)
+├── settings.json        # Base Claude Code settings template
+├── scripts/             # Scripts installed to ~/.claude/ by setup.sh
 │   ├── statusline-command.sh  # Rate limit + model status bar
-│   └── install.sh             # Copies dotfiles to ~/.claude/
+│   └── hooks/
+│       ├── block-prod.sh      # PreToolUse: block prod commands
+│       ├── auto-lint.sh       # Stop: lint/format on every turn
+│       ├── audit-bash.sh      # PostToolUse: audit log
+│       └── slack-notify.sh    # Notification: Slack alerts
 ├── CLAUDE.md            # This file - plugin architecture guide
 ├── README.md            # User-facing documentation
 └── LICENSE              # MIT License

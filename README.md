@@ -451,31 +451,46 @@ Commands incorporate Site Reliability Engineering principles:
 - Monitor during and after changes
 - Implement gradual rollouts where possible
 
-## Dotfiles
+## Setup
 
-The `dotfiles/` directory contains user-level Claude Code configuration that installs to `~/.claude/`.
+Run `setup.sh` to install Claude Code configuration into `~/.claude/`.
 
-### Files
+```bash
+./setup.sh           # interactive menu — pick what to install
+./setup.sh --all     # install everything with defaults
+./setup.sh --help    # show all flags
+```
 
-| File | Purpose |
+### Flags
+
+| Flag | Installs |
 |------|---------|
-| `settings.json` | Permissions, enabled plugins, status line command |
-| `statusline-command.sh` | Status line showing model name and rate limit usage |
-| `install.sh` | Copies files to `~/.claude/` |
+| `--settings` | `settings.json` (permissions, status line) + `statusline-command.sh` |
+| `--hooks` | Hook scripts into `~/.claude/hooks/` + wires them in `settings.json` |
+| `--mcp` | MCP server config for AWS, Kubernetes, GitHub into `settings.json` |
+| `--plugin` | Registers claudekit plugin in `settings.json` |
+| `--all` | All of the above with defaults (no prompts) |
 
-### Status Line
+### What Gets Installed
+
+**Base settings** (`--settings`):
+- `~/.claude/settings.json` — permissions, status line config
+- `~/.claude/statusline-command.sh` — model name + rate limit progress bar
 
 ```
 Claude Sonnet 4.6 | 5h:▓▓▓░░░░░░░ 30% (resets 14:30)  7d:▓░░░░░░░░░ 10%
 ```
 
-Shows current model, 5-hour session usage with reset time, and 7-day weekly usage. Both rate segments are hidden before the first API response.
+**Hooks** (`--hooks`, choose any combination):
+- `block-prod.sh` — PreToolUse: blocks kubectl/terraform/aws commands targeting prod
+- `auto-lint.sh` — Stop: lints and formats every file Claude touches after each turn
+- `audit-bash.sh` — PostToolUse: appends all Bash commands to `~/.claude/audit.log`
+- `slack-notify.sh` — Notification: posts Claude alerts to Slack (requires `SLACK_WEBHOOK`)
 
-### Install
-
-```bash
-bash dotfiles/install.sh
-```
+**MCP servers** (`--mcp`, choose any combination):
+- AWS — direct S3, EC2, IAM, RDS API access (uses your dev profile)
+- Kubernetes — live pod/deployment/log inspection
+- GitHub — PR, issue, and repo management
 
 Requires `jq`. The script installs it automatically via `apt-get` or `brew` if missing.
 
