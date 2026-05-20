@@ -468,6 +468,7 @@ Run `setup.sh` to install Claude Code configuration into `~/.claude/`.
 | `--settings` | `settings.json` (permissions, status line) + `statusline-command.sh` |
 | `--hooks` | Hook scripts into `~/.claude/hooks/` + wires them in `settings.json` |
 | `--mcp` | MCP server config for AWS, Kubernetes, GitHub into `settings.json` |
+| `--skills` | Skills into `~/.claude/skills/` (docling: PDF/DOCX/image → Markdown) |
 | `--plugin` | Registers claudekit plugin in `settings.json` |
 | `--all` | All of the above with defaults (no prompts) |
 
