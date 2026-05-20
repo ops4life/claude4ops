@@ -537,6 +537,7 @@ Installed:
   ✓ Optimization → RTK (~/.local/bin/rtk), Caveman plugin
 
 Restart Claude Code to apply changes.
+If RTK was installed, also reload your shell: source ~/.bashrc (or ~/.zshrc)
 ```
 
 Only list components that were actually installed. For Optimization, only list tools that succeeded.
