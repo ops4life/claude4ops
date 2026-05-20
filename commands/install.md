@@ -459,6 +459,8 @@ RULE
 
 ### Optimization
 
+If RTK was selected (1 or a), install RTK. If Caveman was selected (2 or a), install Caveman. Install only the selected tools.
+
 Present sub-selection:
 
 ```
@@ -485,7 +487,7 @@ On success, patch PATH for bash and zsh:
 ```bash
 for rc in ~/.bashrc ~/.zshrc; do
   [ -f "$rc" ] || continue
-  grep -q 'HOME/.local/bin' "$rc" 2>/dev/null || \
+  grep -q '\.local/bin' "$rc" 2>/dev/null || \
     echo 'export PATH="$HOME/.local/bin:$PATH"' >> "$rc"
 done
 ```
