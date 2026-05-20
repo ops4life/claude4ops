@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file.
 
+# [1.1.0](https://github.com/ops4life/claudekit/compare/v1.0.0...v1.1.0) (2026-05-20)
+
+
+### Features
+
+* add setup.sh and reorganize dotfiles into scripts/ ([3ce5110](https://github.com/ops4life/claudekit/commit/3ce51104ac5d2ddd61930fed7d388aede84681da))
+* **cicd:** add ship pipeline, pr-review, hooks, and mcp-setup commands ([b3808a1](https://github.com/ops4life/claudekit/commit/b3808a11a8eb5c3326062e26932e5937b7bb82ed))
+* merge claude-dotfiles into project as dotfiles/ ([8faf129](https://github.com/ops4life/claudekit/commit/8faf129fcf35cac15fc7bad15cce206d5ae4aaba))
+
 # 1.0.0 (2025-11-09)
 
 
