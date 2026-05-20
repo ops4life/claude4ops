@@ -106,13 +106,11 @@ All commands: `/claudekit:<category>:<command>`
 
 ## Contributing
 
-1. Fork → feature branch → changes in `commands/<category>/`
-2. Follow command structure in [CLAUDE.md](./CLAUDE.md)
-3. Conventional commit format (`feat:`, `fix:`, `docs:`)
-4. PR to `main` — releases are automated via semantic-release
+See [CONTRIBUTING.md](./CONTRIBUTING.md) for the full guide: setup, command structure, worked example, commit format, and PR process.
 
 ## Resources
 
+- [CONTRIBUTING.md](./CONTRIBUTING.md) — contributor guide
 - [CLAUDE.md](./CLAUDE.md) — plugin architecture
 - [.github/RELEASING.md](./.github/RELEASING.md) — release process
 - [Edmund's Claude Code](https://github.com/edmund-io/edmunds-claude-code) — reference implementation
