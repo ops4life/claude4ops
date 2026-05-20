@@ -2,4 +2,4 @@
 
 ## Brainstorming
 
-write spec → wait for approval → implement directly. Skip plan mode entirely.         
+Brainstorming skill: write spec → wait for approval → implement directly. Skip plan mode entirely.
