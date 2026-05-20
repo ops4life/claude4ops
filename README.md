@@ -107,7 +107,8 @@ Run `setup.sh` to install Claude Code configuration into `~/.claude/`:
 | `--hooks` | Hook scripts + wires them in `settings.json` |
 | `--mcp` | MCP server config for AWS, Kubernetes, GitHub |
 | `--skills` | Skills (docling: PDF/DOCX/image → Markdown) |
-| `--plugin` | Registers claudekit plugin in `settings.json` |
+| `--rules` | Global rules into `~/.claude/rules/` (git workflow, commit standards) |
+| `--plugin` | Registers claudekit plugin in `settings.json` + installs rules |
 | `--all` | All of the above |
 
 **Hooks installed:**
