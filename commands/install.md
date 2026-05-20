@@ -39,13 +39,26 @@ mkdir -p "$BASE"
 
 ## Step 3 — Component Selection
 
-Ask yes/no for each component. Record selections, then install all at once in Step 4.
+Present the following checklist and ask the user to enter numbers and/or `a`:
 
-1. **Settings** — `settings.json` merge + status line script
-2. **Hooks** — lifecycle hooks (block-prod, auto-lint, audit, Slack)
-3. **MCP servers** — AWS, Kubernetes, GitHub real API access
-4. **Skills** — docling (PDF/DOCX/image → Markdown)
-5. **Rules** — git workflow rules
+```
+Which components do you want to install? (select all that apply)
+
+  1. Settings  — settings.json merge + status line script
+  2. Hooks     — lifecycle hooks (block-prod, auto-lint, audit, Slack)
+  3. MCP       — AWS, Kubernetes, GitHub real API access
+  4. Skills    — docling (PDF/DOCX/image → Markdown)
+  5. Rules     — git workflow rules
+  a. All
+
+Enter numbers and/or 'a', separated by spaces (e.g. 1 3 5 or a):
+```
+
+- Input includes `a` → select all 5 components; skip all sub-selection prompts in Step 4 and use defaults for any required values
+- Input is numbers → select only those components
+- Invalid input → re-prompt
+
+Record selections, then install all at once in Step 4.
 
 ---
 
@@ -145,7 +158,20 @@ For project scope, omit `statusLine` from the patch (it references `~/.claude/` 
 mkdir -p "$BASE/hooks"
 ```
 
-Ask which hooks to enable. For each selected hook, write the script and append to a hooks config.
+If Hooks was selected via `a` at Step 3, skip this sub-selection and install all 4 hooks. Otherwise present:
+
+```
+Which hooks? (select all that apply)
+  1. block-prod   — PreToolUse: blocks prod-targeting commands
+  2. auto-lint    — Stop: formats files Claude touched after each turn
+  3. audit-bash   — PostToolUse: logs all Bash commands
+  4. slack-notify — Notification: posts Claude alerts to Slack
+  a. All
+
+Enter numbers and/or 'a':
+```
+
+For each selected hook, write the script and append to a hooks config.
 
 #### block-prod (PreToolUse — blocks prod-targeting commands)
 
@@ -252,7 +278,7 @@ Settings entry for audit-bash:
 
 #### slack-notify (Notification — posts Claude alerts to Slack)
 
-Ask the user for their `SLACK_WEBHOOK` URL (or env var name). Warn if not set.
+Ask the user for their `SLACK_WEBHOOK` URL (or env var name). Warn if not set — this applies even when all components were selected via `a`.
 
 ```bash
 cat > "$BASE/hooks/slack-notify.sh" << 'HOOK'
@@ -289,7 +315,26 @@ Replace `$BASE/hooks/` paths in the JSON with the actual resolved path (e.g. `~/
 
 ### MCP Servers
 
-Ask which to add: AWS, Kubernetes, GitHub.
+If MCP was selected via `a` at Step 3, skip this sub-selection and install all 3 servers using defaults:
+
+| Parameter        | Default            |
+|------------------|--------------------|
+| AWS profile      | `dev`              |
+| AWS region       | `us-east-1`        |
+| Kubeconfig path  | `~/.kube/config`   |
+| GitHub token var | `GITHUB_TOKEN`     |
+
+Otherwise present:
+
+```
+Which MCP servers? (select all that apply)
+  1. AWS
+  2. Kubernetes
+  3. GitHub
+  a. All
+
+Enter numbers and/or 'a':
+```
 
 #### AWS
 
