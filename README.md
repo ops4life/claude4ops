@@ -2,7 +2,21 @@
 
 ![claude4ops banner](./assets/banner.svg)
 
-Production-ready DevOps superpowers for everyone. Streamline and automate complex workflows across AWS, GCP, Azure, and Kubernetes.
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](./LICENSE)
+[![Claude Code Plugin](https://img.shields.io/badge/Claude%20Code-Plugin-blue)](https://github.com/ops4life/claude4ops)
+
+Production-ready DevOps superpowers for Claude Code. Guided, agentic workflows for Kubernetes, Terraform, CI/CD, SLO monitoring, and incident management — across AWS, GCP, and Azure.
+
+## Why claude4ops?
+
+DevOps workflows are repetitive, error-prone, and hard to get right. claude4ops brings structured, production-tested procedures directly into Claude Code so you skip the RTFM loop and ship safely:
+
+- **Kubernetes** — deploy, validate manifests, and debug pods without memorizing kubectl flags
+- **Terraform** — review plans for risk and cost impact before `apply`, with state backup and rollback
+- **CI/CD** — generate GitHub Actions / GitLab pipelines, design blue/green or canary strategies, ship features end-to-end
+- **Observability** — define SLOs with error budgets, create SLO-based alerts with burn-rate thresholds and runbook links
+- **Incident response** — run blameless postmortems with structured timelines, RCA, and action items
+- **Multi-cloud** — all commands cover AWS, GCP, and Azure with provider-specific examples
 
 ## Installation
 

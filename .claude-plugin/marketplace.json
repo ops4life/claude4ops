@@ -1,7 +1,7 @@
 {
   "name": "ops4life",
   "metadata": {
-    "description": "DevOps superpowers for everyone. Automate production infrastructure and workflows with ease."
+    "description": "Production-ready DevOps superpowers for Claude Code. Kubernetes deployment and troubleshooting, Terraform plan review and safe apply, CI/CD pipeline generation, SLO/SLI definition, monitoring alerts, incident postmortems, and multi-cloud cost analysis — AWS, GCP, and Azure."
   },
   "owner": {
     "name": "ops4life"
@@ -10,7 +10,7 @@
     {
       "name": "claude4ops",
       "source": "./",
-      "description": "DevOps superpowers for everyone. Streamline and automate complex cloud and Kubernetes workflows."
+      "description": "DevOps superpowers for Claude Code. Automate Kubernetes, Terraform, CI/CD pipelines, SLO alerting, incident postmortems, and multi-cloud cost optimization — with production-ready guided workflows for AWS, GCP, and Azure."
     }
   ]
 }

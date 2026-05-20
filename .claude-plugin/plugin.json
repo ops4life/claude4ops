@@ -1,6 +1,6 @@
 {
   "name": "claude4ops",
-  "description": "DevOps superpowers for everyone. Streamline and automate complex cloud and Kubernetes workflows.",
+  "description": "DevOps superpowers for Claude Code. Automate Kubernetes, Terraform, CI/CD pipelines, SLO alerting, incident postmortems, and multi-cloud cost optimization — with production-ready guided workflows for AWS, GCP, and Azure.",
   "version": "1.9.0",
   "author": {
     "name": "ops4life"
