@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+# [1.2.0](https://github.com/ops4life/claudekit/compare/v1.1.0...v1.2.0) (2026-05-20)
+
+
+### Features
+
+* add docling skill and --skills flag to setup.sh ([e3429bc](https://github.com/ops4life/claudekit/commit/e3429bcc839e9f97cbcb3df61159b75302269399))
+
 # [1.1.0](https://github.com/ops4life/claudekit/compare/v1.0.0...v1.1.0) (2026-05-20)
 
 
