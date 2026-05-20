@@ -26,7 +26,7 @@ for f in $CHANGED; do
       FORMATTED=$((FORMATTED + 1))
       ;;
     *.yaml|*.yml)
-      command -v yamllint >/dev/null && yamllint -d relaxed "$f" 2>/dev/null || true
+      if command -v yamllint >/dev/null; then yamllint -d relaxed "$f" 2>/dev/null; fi
       ;;
   esac
 done
