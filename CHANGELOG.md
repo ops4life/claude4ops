@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file.
 
+# [1.8.0](https://github.com/ops4life/claudekit/compare/v1.7.1...v1.8.0) (2026-05-20)
+
+
+### Features
+
+* add pre-commit config with gitleaks, shellcheck, yamllint, and local hooks ([d29da1b](https://github.com/ops4life/claudekit/commit/d29da1b40279ceba389fd1822bf22f655954240c))
+* add VSCode configuration files for extensions and settings ([fb37db9](https://github.com/ops4life/claudekit/commit/fb37db9900a2fe8b04dc11cfd43b3a4b91b64481))
+
 ## [1.7.1](https://github.com/ops4life/claudekit/compare/v1.7.0...v1.7.1) (2026-05-20)
 
 
