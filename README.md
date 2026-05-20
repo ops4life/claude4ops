@@ -1,535 +1,136 @@
 # claudekit - DevOps/SRE/Platform Engineering Toolkit for Claude Code
 
-A comprehensive Claude Code plugin providing production-ready slash commands for DevOps, SRE, and Platform Engineering workflows across multi-cloud environments (AWS, GCP, Azure).
-
-## Overview
-
-**claudekit** enhances DevOps productivity by providing guided, interactive workflows for:
-
-- **Kubernetes Operations** - Deploy, troubleshoot, and validate K8s resources
-- **Infrastructure as Code** - Terraform plan analysis, safe apply workflows, and cost optimization
-- **CI/CD Automation** - Create production pipelines, design deployment strategies, run full ship pipelines, and review PRs
-- **Observability** - Define SLOs, create monitoring alerts, and manage error budgets
-- **Incident Response** - Structured postmortem creation with blameless culture
-- **Hooks & Automation** - Configure Claude Code lifecycle hooks and MCP server access to AWS, Kubernetes, and GitHub
+Production-ready slash commands for DevOps, SRE, and Platform Engineering workflows across AWS, GCP, and Azure.
 
 ## Installation
 
-### Prerequisites
-
-- Claude Code 2.0.13 or higher
-- Git (for local installation method)
-
 ### Quick Install (Recommended)
 
-Install directly from GitHub in two commands:
+```
+/plugin marketplace add ops4life/claudekit
+/plugin install claudekit
+```
 
-1. **Add the marketplace:** `/plugin marketplace add ops4life/claudekit`
-2. **Install the plugin:** `/plugin install claudekit`
-
-### Install from Local Source
-
-For development or customization purposes:
+### From Local Source
 
 ```bash
-# Clone the repository
 git clone https://github.com/ops4life/claudekit.git
-
-# Navigate to the cloned directory
-cd claudekit
-
-# Add as local marketplace source
-# Run this command in Claude Code:
+# In Claude Code:
 # /plugin marketplace add /absolute/path/to/claudekit
-
-# Install the plugin
 # /plugin install claudekit
 ```
 
-### Post-Installation
-
-Once installed, all commands are immediately available. You can customize any command by editing files in:
-- `.claude/commands/` - Modify command workflows and templates
-- Restart Claude Code after making changes to command files
-
 ## Commands
 
-All commands are invoked using the pattern: `/claudekit:<category>:<command>`
+All commands: `/claudekit:<category>:<command>`
 
-### Kubernetes Operations
+### Kubernetes
 
-#### `/claudekit:k8s:deploy`
-**Guided Kubernetes deployment workflow with validation and safety checks**
+| Command | Description |
+|---------|-------------|
+| `/claudekit:k8s:deploy` | Guided deployment with pre/post validation and rollback |
+| `/claudekit:k8s:troubleshoot` | Systematic debugging for pods, services, and network issues |
+| `/claudekit:k8s:manifest-validate` | YAML validation for syntax, security, and best practices |
 
-Provides comprehensive deployment guidance including:
-- Pre-deployment validation (context, image, resources)
-- Security checks (pod security, secrets, network policies)
-- Deployment execution with monitoring
-- Post-deployment validation
-- Rollback plan preparation
-- Multi-cloud support (EKS, GKE, AKS)
+### Terraform
 
-**Example Usage:**
-```
-/claudekit:k8s:deploy
+| Command | Description |
+|---------|-------------|
+| `/claudekit:terraform:plan-review` | Risk, security, and cost analysis of a Terraform plan |
+| `/claudekit:terraform:apply` | Safe apply with state backup and rollback procedures |
+| `/claudekit:terraform:cloud-cost` | Multi-cloud cost analysis and right-sizing recommendations |
 
-Application: my-web-app
-Namespace: production
-Image: myregistry.io/webapp:v2.1.0
-Environment: production
-```
+### CI/CD
 
-#### `/claudekit:k8s:troubleshoot`
-**Systematic Kubernetes pod and service debugging workflow**
+| Command | Description |
+|---------|-------------|
+| `/claudekit:cicd:pipeline-new` | Generate production CI/CD pipeline (GitHub Actions, GitLab, Jenkins) |
+| `/claudekit:cicd:ship` | Full agentic pipeline: lint → test → confirm → commit → push |
+| `/claudekit:cicd:pr-review` | DevOps-focused review: Terraform, secrets, containers, pipelines |
+| `/claudekit:cicd:deploy-strategy` | Design blue/green, canary, or rolling deployment strategy |
 
-Comprehensive troubleshooting for:
-- Pod issues (CrashLoopBackOff, ImagePullBackOff, Pending, OOMKilled)
-- Service connectivity and DNS resolution
-- Network debugging and policy validation
-- Resource saturation analysis
-- Multi-cloud specific issues
+### Observability
 
-**Example Usage:**
-```
-/claudekit:k8s:troubleshoot
-
-Resource: Pod/my-app-5d7c8f9-abcd
-Namespace: production
-Symptom: CrashLoopBackOff
-```
-
-#### `/claudekit:k8s:manifest-validate`
-**Validate Kubernetes YAML manifests for syntax, security, and best practices**
-
-Validates:
-- YAML syntax and Kubernetes API compatibility
-- Security contexts and pod security standards
-- Resource requests/limits configuration
-- High availability settings (replicas, PDBs)
-- Health check configuration
-- Label and annotation standards
-
-**Example Usage:**
-```
-/claudekit:k8s:manifest-validate
-
-Manifest file: deployment.yaml
-Environment: production
-Compliance: PCI-DSS
-```
-
-### Infrastructure as Code (Terraform)
-
-#### `/claudekit:terraform:plan-review`
-**Analyze Terraform plan output for risks, security issues, and cost impact**
-
-Comprehensive plan analysis:
-- Risk assessment (replacements, deletions, high-risk changes)
-- Security analysis (public exposure, encryption, IAM)
-- Cost impact estimation
-- Resource change categorization
-- Dependency mapping
-- Pre-apply checklist
-
-**Example Usage:**
-```
-/claudekit:terraform:plan-review
-
-Plan file: tfplan
-Environment: production
-Cloud: AWS
-```
-
-#### `/claudekit:terraform:apply`
-**Guided Terraform apply workflow with safety checks and rollback procedures**
-
-Safe apply execution:
-- Pre-apply validation and backups
-- State backup procedures
-- Database snapshot creation
-- Controlled apply with monitoring
-- Post-apply verification
-- Rollback procedures
-
-**Example Usage:**
-```
-/claudekit:terraform:apply
-
-Plan file: tfplan
-Environment: production
-Approval: Confirmed
-```
-
-#### `/claudekit:terraform:cloud-cost`
-**Multi-cloud cost analysis and optimization recommendations**
-
-Cost optimization across:
-- Compute (EC2, GCE, VMs)
-- Database (RDS, Cloud SQL, Azure SQL)
-- Storage (S3, GCS, Blob Storage)
-- Networking (Load Balancers, NAT Gateways)
-- Right-sizing and reserved instances
-- Multi-cloud cost comparison
-
-**Example Usage:**
-```
-/claudekit:terraform:cloud-cost
-
-Cloud providers: AWS, GCP
-Target reduction: 20%
-Budget: $10,000/month
-```
-
-### CI/CD Automation
-
-#### `/claudekit:cicd:pipeline-new`
-**Create production-ready CI/CD pipeline with best practices**
-
-Pipeline creation for:
-- GitHub Actions, GitLab CI, Jenkins, CircleCI
-- Multi-stage pipelines (build, test, security, deploy)
-- Security scanning integration
-- Container image building
-- Multi-environment deployment
-- Notification and monitoring
-
-**Example Usage:**
-```
-/claudekit:cicd:pipeline-new
-
-Platform: GitHub Actions
-Application: Node.js web app
-Deployment: Kubernetes (EKS)
-Environments: staging, production
-```
-
-#### `/claudekit:cicd:ship`
-**Full agentic ship pipeline - review, test, commit, push with safety gates**
-
-One command owns the entire workflow:
-- Safety checks (branch guard, untracked files)
-- Static analysis (secrets scan, per-filetype linting, Terraform validate)
-- Test suite detection and execution
-- Human confirmation gate before commit
-- Push and PR link output
-
-Supports headless/CI mode via `claude --print` and git alias integration.
-
-**Example Usage:**
-```
-/claudekit:cicd:ship feat(payments): add redis cache layer
-```
-
-#### `/claudekit:cicd:pr-review`
-**DevOps-focused PR review - Terraform, secrets, containers, pipeline security**
-
-Structured review covering:
-- Terraform changes (validation, missing tags, encryption, IAM)
-- Dockerfile changes (image pinning, secrets in ENV, root user)
-- CI/CD pipeline changes (permissions blocks, OIDC vs stored secrets, action pinning)
-- Secrets scan across the entire diff
-- Kubernetes manifest security
-
-**Example Usage:**
-```
-/claudekit:cicd:pr-review main
-```
-
-#### `/claudekit:cicd:deploy-strategy`
-**Design deployment strategies (blue/green, canary, rolling) with implementation**
-
-Deployment strategy design:
-- Rolling deployments
-- Blue/Green deployments
-- Canary deployments
-- Recreate strategy
-- Feature flags / Dark launches
-- Platform-specific implementations
-
-**Example Usage:**
-```
-/claudekit:cicd:deploy-strategy
-
-Application: E-commerce checkout
-Traffic: 10,000 req/min
-Downtime tolerance: Zero
-Platform: Kubernetes with Istio
-```
-
-### Observability & Monitoring
-
-#### `/claudekit:observability:alert-new`
-**Create monitoring alerts with SLO-based thresholds and best practices**
-
-Alert creation for:
-- Availability alerts (success rate)
-- Latency alerts (P95, P99)
-- Error rate alerts
-- Resource saturation (CPU, memory, disk)
-- Database alerts
-- Application-specific alerts
-
-**Example Usage:**
-```
-/claudekit:observability:alert-new
-
-Service: checkout-api
-Platform: Prometheus
-Alert type: Availability
-SLO: 99.9%
-Notification: PagerDuty, Slack
-```
-
-#### `/claudekit:observability:slo-define`
-**Calculate and define SLOs/SLIs with error budgets and monitoring**
-
-SLO management:
-- SLI selection (availability, latency, quality)
-- SLO target setting
-- Error budget calculation
-- Multi-window burn-rate alerting
-- SLO dashboarding
-- Error budget policy
-
-**Example Usage:**
-```
-/claudekit:observability:slo-define
-
-Service: payment-processor
-Type: User-facing API
-Criticality: Critical
-Target: 99.95% availability
-```
+| Command | Description |
+|---------|-------------|
+| `/claudekit:observability:slo-define` | Define SLOs/SLIs with error budgets and burn-rate alerting |
+| `/claudekit:observability:alert-new` | Create SLO-based monitoring alerts with runbook links |
 
 ### Hooks & Automation
 
-#### `/claudekit:hooks:setup`
-**Configure Claude Code lifecycle hooks - auto-lint, prod guards, audit logging, Slack alerts**
-
-Provides ready-to-use hook scripts and `settings.json` wiring for:
-- **PreToolUse**: Block any Bash command targeting prod resources (`exit 2` = hard block)
-- **Stop**: Auto-lint and format every file Claude touches after each turn
-- **PostToolUse**: Append all Bash commands to an audit log for compliance
-- **Notification**: Route Claude alerts to Slack or PagerDuty
-
-**Example Usage:**
-```
-/claudekit:hooks:setup
-```
-
-#### `/claudekit:hooks:mcp-setup`
-**Configure MCP servers for AWS, Kubernetes, and GitHub direct API access**
-
-Wire Claude to real infrastructure APIs so it calls them natively instead of writing scripts:
-- **AWS MCP**: Query and remediate S3, EC2, IAM, RDS resources directly
-- **Kubernetes MCP**: Inspect pods, deployments, logs, and resource usage live
-- **GitHub MCP**: Manage PRs, issues, comments, and workflow files
-
-**Example Usage:**
-```
-/claudekit:hooks:mcp-setup
-
-Platforms: AWS, Kubernetes, GitHub
-AWS profile: dev
-Kubeconfig: ~/.kube/dev-config
-```
+| Command | Description |
+|---------|-------------|
+| `/claudekit:hooks:setup` | Wire auto-lint, prod guard, audit log, and Slack alert hooks |
+| `/claudekit:hooks:mcp-setup` | Configure MCP servers for AWS, Kubernetes, and GitHub |
 
 ### Incident Management
 
-#### `/claudekit:incident:postmortem`
-**Structured postmortem template with timeline, RCA, and action items**
+| Command | Description |
+|---------|-------------|
+| `/claudekit:incident:postmortem` | Blameless postmortem with timeline, RCA, and action items |
 
-Blameless postmortem creation:
-- Incident summary and impact
-- Detailed timeline
-- Root cause analysis
-- What went well / What went wrong
-- Lessons learned
-- Actionable follow-up items
+## Common Workflows
 
-**Example Usage:**
+**Deploy to Kubernetes:**
 ```
-/claudekit:incident:postmortem
-
-Incident: Checkout service outage
-Date: 2025-01-15
-Duration: 2 hours 34 minutes
-Root cause: Database connection pool exhaustion
+/claudekit:k8s:manifest-validate → /claudekit:k8s:deploy → /claudekit:k8s:troubleshoot
 ```
 
-## Features
-
-### Multi-Cloud Support
-
-All infrastructure commands support AWS, GCP, and Azure with:
-- Cloud-specific CLI commands and examples
-- Provider-agnostic patterns where possible
-- Platform-specific best practices
-- Cost optimization per cloud provider
-
-### Production-Ready Focus
-
-Every command emphasizes:
-- **Security-first**: RBAC, secrets management, least privilege
-- **Comprehensive validation**: Pre-checks and post-checks
-- **Rollback procedures**: Detailed recovery steps
-- **Error handling**: Troubleshooting guidance
-- **Monitoring integration**: Observability built-in
-
-### SRE Best Practices
-
-Commands incorporate Site Reliability Engineering principles:
-- SLO-based alerting and error budget management
-- Blameless postmortem templates
-- Chaos engineering considerations
-- Incident response frameworks
-- Service reliability patterns
-
-## Use Cases
-
-### Deploying to Kubernetes
+**Infrastructure change:**
 ```
-1. Validate manifests: /claudekit:k8s:manifest-validate
-2. Deploy application: /claudekit:k8s:deploy
-3. Troubleshoot if needed: /claudekit:k8s:troubleshoot
+/claudekit:terraform:plan-review → /claudekit:terraform:apply → /claudekit:terraform:cloud-cost
 ```
 
-### Infrastructure Changes
+**Feature ship:**
 ```
-1. Review plan: /claudekit:terraform:plan-review
-2. Apply changes: /claudekit:terraform:apply
-3. Optimize costs: /claudekit:terraform:cloud-cost
+/claudekit:cicd:pr-review main → work on feature → /claudekit:cicd:ship feat(api): add rate limiting
 ```
 
-### Setting Up Monitoring
+**First-time hooks setup (do once per project):**
 ```
-1. Define SLOs: /claudekit:observability:slo-define
-2. Create alerts: /claudekit:observability:alert-new
+/claudekit:hooks:setup → /claudekit:hooks:mcp-setup
 ```
-
-### Incident Response
-```
-1. Respond to incident
-2. Resolve and stabilize
-3. Create postmortem: /claudekit:incident:postmortem
-```
-
-### Agentic Ship Workflow
-```
-1. Review incoming PR: /claudekit:cicd:pr-review main
-2. Work on feature
-3. Ship with full pipeline: /claudekit:cicd:ship feat(api): add rate limiting
-```
-
-### One-Time Hooks Setup (do once per project)
-```
-1. Configure hooks: /claudekit:hooks:setup
-2. Wire MCP servers: /claudekit:hooks:mcp-setup
-3. All subsequent commands benefit from auto-lint + prod guard automatically
-```
-
-## Best Practices
-
-### Before Using Commands
-
-- Ensure you have appropriate cloud provider credentials configured
-- Have kubectl/terraform/cloud CLIs installed and accessible
-- Review command requirements section for prerequisites
-- Test in non-production environments first
-
-### Security Considerations
-
-- Never hardcode secrets in configurations
-- Use cloud provider secret management services
-- Follow least privilege principles for IAM/RBAC
-- Enable audit logging for all infrastructure changes
-
-### Reliability Patterns
-
-- Always have rollback procedures ready
-- Test in staging before production
-- Monitor during and after changes
-- Implement gradual rollouts where possible
 
 ## Setup
 
-Run `setup.sh` to install Claude Code configuration into `~/.claude/`.
+Run `setup.sh` to install Claude Code configuration into `~/.claude/`:
 
 ```bash
-./setup.sh           # interactive menu — pick what to install
+./setup.sh           # interactive menu
 ./setup.sh --all     # install everything with defaults
 ./setup.sh --help    # show all flags
 ```
 
-### Flags
-
 | Flag | Installs |
 |------|---------|
-| `--settings` | `settings.json` (permissions, status line) + `statusline-command.sh` |
-| `--hooks` | Hook scripts into `~/.claude/hooks/` + wires them in `settings.json` |
-| `--mcp` | MCP server config for AWS, Kubernetes, GitHub into `settings.json` |
-| `--skills` | Skills into `~/.claude/skills/` (docling: PDF/DOCX/image → Markdown) |
+| `--settings` | `settings.json` + `statusline-command.sh` (rate limit status bar) |
+| `--hooks` | Hook scripts + wires them in `settings.json` |
+| `--mcp` | MCP server config for AWS, Kubernetes, GitHub |
+| `--skills` | Skills (docling: PDF/DOCX/image → Markdown) |
 | `--plugin` | Registers claudekit plugin in `settings.json` |
-| `--all` | All of the above with defaults (no prompts) |
+| `--all` | All of the above |
 
-### What Gets Installed
+**Hooks installed:**
+- `block-prod.sh` — blocks kubectl/terraform/aws commands targeting prod
+- `auto-lint.sh` — lints every file Claude touches after each turn
+- `audit-bash.sh` — appends all Bash commands to `~/.claude/audit.log`
+- `slack-notify.sh` — posts Claude alerts to Slack (requires `SLACK_WEBHOOK`)
 
-**Base settings** (`--settings`):
-- `~/.claude/settings.json` — permissions, status line config
-- `~/.claude/statusline-command.sh` — model name + rate limit progress bar
-
-```
-Claude Sonnet 4.6 | 5h:▓▓▓░░░░░░░ 30% (resets 14:30)  7d:▓░░░░░░░░░ 10%
-```
-
-**Hooks** (`--hooks`, choose any combination):
-- `block-prod.sh` — PreToolUse: blocks kubectl/terraform/aws commands targeting prod
-- `auto-lint.sh` — Stop: lints and formats every file Claude touches after each turn
-- `audit-bash.sh` — PostToolUse: appends all Bash commands to `~/.claude/audit.log`
-- `slack-notify.sh` — Notification: posts Claude alerts to Slack (requires `SLACK_WEBHOOK`)
-
-**MCP servers** (`--mcp`, choose any combination):
-- AWS — direct S3, EC2, IAM, RDS API access (uses your dev profile)
-- Kubernetes — live pod/deployment/log inspection
-- GitHub — PR, issue, and repo management
-
-Requires `jq`. The script installs it automatically via `apt-get` or `brew` if missing.
+Requires `jq` (auto-installed via `apt-get` or `brew` if missing).
 
 ## Contributing
 
-Contributions are welcome! To add new commands or improve existing ones:
-
-1. Fork the repository
-2. Create a feature branch with conventional commit format
-3. Make your changes:
-   - Add new commands in `commands/<category>/` directory
-   - Follow the command structure pattern (see CLAUDE.md)
-   - Test the command in Claude Code
-4. Commit using conventional commit format (e.g., `feat: add new command`)
-5. Submit a pull request to `main` branch
-
-**Releases are automated!** When your PR is merged, if it contains `feat:`, `fix:`, or `perf:` commits, a new release will be automatically created with updated version and changelog.
-
-See [CLAUDE.md](./CLAUDE.md) for detailed plugin architecture and [.github/RELEASING.md](./.github/RELEASING.md) for release process guidelines.
-
-## License
-
-MIT License - See [LICENSE](./LICENSE) file for details.
+1. Fork → feature branch → changes in `commands/<category>/`
+2. Follow command structure in [CLAUDE.md](./CLAUDE.md)
+3. Conventional commit format (`feat:`, `fix:`, `docs:`)
+4. PR to `main` — releases are automated via semantic-release
 
 ## Resources
 
-- **Documentation**: [CLAUDE.md](./CLAUDE.md) - Plugin architecture guide
-- **Release Process**: [.github/RELEASING.md](./.github/RELEASING.md) - Automated release workflow
-- **Reference**: [Edmund's Claude Code](https://github.com/edmund-io/edmunds-claude-code) - Inspiration and patterns
-- **Claude Code Docs**: [https://code.claude.com/docs](https://code.claude.com/docs)
+- [CLAUDE.md](./CLAUDE.md) — plugin architecture
+- [.github/RELEASING.md](./.github/RELEASING.md) — release process
+- [Edmund's Claude Code](https://github.com/edmund-io/edmunds-claude-code) — reference implementation
 
-## Support
+## License
 
-For issues, questions, or feature requests:
-- Open an issue on GitHub
-- Review existing commands for patterns and examples
-- Consult CLAUDE.md for architecture details
-
----
-
-**Built by ops4life for the DevOps/SRE/Platform Engineering community**
+MIT — see [LICENSE](./LICENSE)
