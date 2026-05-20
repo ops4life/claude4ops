@@ -533,9 +533,10 @@ Installed:
   ✓ Hooks     → block-prod, auto-lint, audit, slack  ($BASE/hooks/)
   ✓ MCP       → aws, kubernetes, github
   ✓ Skills    → docling  ($BASE/skills/docling/)
-  ✓ Rules     → git.md   ($BASE/rules/)
+  ✓ Rules        → git.md   ($BASE/rules/)
+  ✓ Optimization → RTK (~/.local/bin/rtk), Caveman plugin
 
 Restart Claude Code to apply changes.
 ```
 
-Only list components that were actually installed.
+Only list components that were actually installed. For Optimization, only list tools that succeeded.
