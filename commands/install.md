@@ -48,13 +48,14 @@ Which components do you want to install? (select all that apply)
   2. Hooks     — lifecycle hooks (block-prod, auto-lint, audit, Slack)
   3. MCP       — AWS, Kubernetes, GitHub real API access
   4. Skills    — docling (PDF/DOCX/image → Markdown)
-  5. Rules     — git workflow rules
+  5. Rules        — git workflow rules
+  6. Optimization — RTK (token-efficient shell proxy) + Caveman mode plugin
   a. All
 
 Enter numbers and/or 'a', separated by spaces (e.g. 1 3 5 or a):
 ```
 
-- Input includes `a` → select all 5 components; skip all sub-selection prompts in Step 4 and use defaults for any required values
+- Input includes `a` → select all 6 components; Optimization sub-selection still shown (only 2 tools, quick)
 - Input is numbers → select only those components
 - Invalid input → re-prompt
 
