@@ -1,0 +1,51 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+jobs:
+  shellcheck:
+    name: Shellcheck
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v5
+      - name: Run shellcheck
+        run: shellcheck scripts/hooks/*.sh scripts/test/validate-commands.sh
+
+  test-js:
+    name: JS Tests
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v5
+      - name: Run unit tests
+        run: node scripts/test/test-update-plugin-version.js
+
+  validate-commands:
+    name: Validate Commands
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v5
+      - name: Validate command frontmatter
+        run: bash scripts/test/validate-commands.sh
+
+  release-dry-run:
+    name: Release Dry Run
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+      - name: Semantic Release dry run
+        uses: cycjimmy/semantic-release-action@v5
+        with:
+          dry_run: true
+          semantic_version: 18.0.0
+          extra_plugins: |
+            @semantic-release/changelog@6.0.0
+            @semantic-release/git@10.0.0
+            @semantic-release/exec@6.0.3
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
