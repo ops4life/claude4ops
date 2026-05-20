@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+# [1.4.0](https://github.com/ops4life/claudekit/compare/v1.3.0...v1.4.0) (2026-05-20)
+
+
+### Features
+
+* add rules install to setup.sh and plugin install ([b5e6654](https://github.com/ops4life/claudekit/commit/b5e66543c4b419f01996c807c5e191ff9150f1a8))
+
 # [1.3.0](https://github.com/ops4life/claudekit/compare/v1.2.0...v1.3.0) (2026-05-20)
 
 
