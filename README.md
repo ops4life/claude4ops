@@ -1,6 +1,8 @@
-# claudekit - DevOps/SRE/Platform Engineering Toolkit for Claude Code
+# claudekit — DevOps Superpowers for Everyone
 
-Production-ready slash commands for DevOps, SRE, and Platform Engineering workflows across AWS, GCP, and Azure.
+![claudekit banner](./assets/banner.svg)
+
+Production-ready DevOps superpowers for everyone. Streamline and automate complex workflows across AWS, GCP, Azure, and Kubernetes.
 
 ## Installation
 

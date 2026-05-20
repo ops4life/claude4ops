@@ -1,0 +1,56 @@
+<svg width="1200" height="400" viewBox="0 0 1200 400" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="1200" height="400" fill="#e28a67" />
+
+  <!-- Background Decorative Shapes (Starbursts) -->
+  <g fill="black">
+    <!-- Left Starburst -->
+    <path d="M-50,200 L50,0 L70,20 L0,100 L120,50 L140,80 L20,150 L180,180 L180,220 L20,250 L140,320 L120,350 L0,300 L70,380 L50,400 Z" transform="translate(0, 50) rotate(-10)" opacity="0.8" />
+    <!-- Right Starburst -->
+    <path d="M1250,200 L1150,0 L1130,20 L1200,100 L1080,50 L1060,80 L1180,150 L1020,180 L1020,220 L1180,250 L1060,320 L1080,350 L1200,300 L1130,380 L1150,400 Z" transform="translate(0, -50) rotate(5)" opacity="0.8" />
+  </g>
+
+  <!-- Terminal Window (Tilted) -->
+  <g transform="translate(300, 50) rotate(-2)">
+    <!-- Shadow -->
+    <rect x="5" y="5" width="600" height="300" rx="10" fill="black" opacity="0.2" />
+    <!-- Window Body -->
+    <rect width="600" height="300" rx="10" fill="#1a1a1a" stroke="#444" stroke-width="1" />
+    
+    <!-- Title Bar -->
+    <g transform="translate(15, 15)">
+      <circle cx="0" cy="0" r="5" fill="#ff5f56" />
+      <circle cx="15" cy="0" r="5" fill="#ffbd2e" />
+      <circle cx="30" cy="0" r="5" fill="#27c93f" />
+    </g>
+
+    <!-- Welcome Box -->
+    <g transform="translate(40, 50)">
+      <rect width="250" height="35" fill="none" stroke="#e28a67" stroke-width="1" />
+      <text x="10" y="24" font-family="monospace" font-size="16" fill="#e28a67">✱ Welcome to claudekit</text>
+    </g>
+
+    <!-- CLAUDEKIT Text (Blocky Style) -->
+    <!-- We'll simulate the blocky look with multiple text elements or paths.
+         Using a bold sans font and layering it for the shadow effect. -->
+    <g transform="translate(40, 160)">
+      <!-- Background/Shadow Layers -->
+      <text x="4" y="4" font-family="Arial Black, sans-serif" font-size="70" fill="none" stroke="#e28a67" stroke-width="2" opacity="0.5">CLAUDEKIT</text>
+      <text x="2" y="2" font-family="Arial Black, sans-serif" font-size="70" fill="none" stroke="#e28a67" stroke-width="2" opacity="0.7">CLAUDEKIT</text>
+      <!-- Main Text -->
+      <text x="0" y="0" font-family="Arial Black, sans-serif" font-size="70" fill="#e28a67">CLAUDEKIT</text>
+      
+      <!-- Horizontal lines to give it that 'segmented' look from the image -->
+      <line x1="0" y1="-50" x2="450" y2="-50" stroke="#1a1a1a" stroke-width="2" opacity="0.3" />
+      <line x1="0" y1="-35" x2="450" y2="-35" stroke="#1a1a1a" stroke-width="2" opacity="0.3" />
+      <line x1="0" y1="-20" x2="450" y2="-20" stroke="#1a1a1a" stroke-width="2" opacity="0.3" />
+      <line x1="0" y1="-5" x2="450" y2="-5" stroke="#1a1a1a" stroke-width="2" opacity="0.3" />
+    </g>
+
+    <!-- Tagline -->
+    <text x="40" y="250" font-family="monospace" font-size="20" fill="#ffffff" opacity="0.9">DevOps Superpowers for Everyone</text>
+    
+    <!-- Footer -->
+    <text x="40" y="280" font-family="monospace" font-size="14" fill="#666">Press /claudekit:install to continue</text>
+  </g>
+</svg>
