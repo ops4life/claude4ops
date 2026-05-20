@@ -37,6 +37,15 @@ claudekit/
 │   │   └── slo-define.md          # Define SLOs/SLIs & error budgets
 │   └── incident/         # Incident management (1 command)
 │       └── postmortem.md          # Structured postmortem creation
+├── setup.sh             # Interactive setup script (settings, hooks, MCP, plugin)
+├── settings.json        # Base Claude Code settings template
+├── scripts/             # Scripts installed to ~/.claude/ by setup.sh
+│   ├── statusline-command.sh  # Rate limit + model status bar
+│   └── hooks/
+│       ├── block-prod.sh      # PreToolUse: block prod commands
+│       ├── auto-lint.sh       # Stop: lint/format on every turn
+│       ├── audit-bash.sh      # PostToolUse: audit log
+│       └── slack-notify.sh    # Notification: Slack alerts
 ├── CLAUDE.md            # This file - plugin architecture guide
 ├── README.md            # User-facing documentation
 └── LICENSE              # MIT License
@@ -61,9 +70,10 @@ Commands are organized by DevOps workflow domain for intuitive discovery:
 |----------|-----------|---------------|
 | `k8s/` | Kubernetes operations & troubleshooting | 3 |
 | `terraform/` | Infrastructure as Code management | 3 |
-| `cicd/` | Pipeline creation & deployment automation | 2 |
+| `cicd/` | Pipeline creation, deployment automation, ship pipeline, PR review | 4 |
 | `observability/` | Monitoring, alerting, SLOs | 2 |
 | `incident/` | Incident response & postmortems | 1 |
+| `hooks/` | Claude Code lifecycle hooks and MCP server configuration | 2 |
 
 ### Command Structure
 
@@ -106,8 +116,12 @@ Commands are invoked using the pattern: `/claudekit:<category>:<command>`
 - `/claudekit:k8s:deploy` - Guided Kubernetes deployment
 - `/claudekit:terraform:plan-review` - Analyze Terraform plan
 - `/claudekit:cicd:pipeline-new` - Create CI/CD pipeline
+- `/claudekit:cicd:ship` - Full agentic ship pipeline (review → test → commit → push)
+- `/claudekit:cicd:pr-review` - DevOps-focused PR review
 - `/claudekit:observability:alert-new` - Create monitoring alert
 - `/claudekit:incident:postmortem` - Generate postmortem document
+- `/claudekit:hooks:setup` - Configure Claude Code lifecycle hooks
+- `/claudekit:hooks:mcp-setup` - Wire MCP servers for AWS, K8s, GitHub
 
 ## Key Features
 
@@ -145,6 +159,21 @@ Each command provides:
 - Checklists for validation
 - Reference commands and scripts
 - Links to runbooks and documentation
+
+### 5. Agentic Pipelines
+
+Commands like `cicd/ship` and `cicd/pr-review` are full agentic workflows — Claude executes real commands, checks output at each step, aborts on failure, and waits for human confirmation before irreversible actions. This is different from Claude writing scripts for you to run manually.
+
+### 6. Hooks & Guardrails
+
+The `hooks/` category provides lifecycle automation that runs independently of specific commands:
+- **PreToolUse hooks**: Block dangerous commands before Claude can run them (`exit 2` = hard block with message)
+- **Stop hooks**: Auto-lint and format every file Claude touches after each turn
+- These apply globally across all claudekit commands once configured
+
+### 7. Recursive CLAUDE.md
+
+Claude Code reads `CLAUDE.md` recursively. You can place a `CLAUDE.md` inside any subdirectory (e.g. `terraform/modules/vpc/CLAUDE.md`) with directory-specific rules, and Claude will read it automatically when working in that scope. This enables layered context without polluting the root file.
 
 ## Development Workflow
 

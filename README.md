@@ -8,9 +8,10 @@ A comprehensive Claude Code plugin providing production-ready slash commands for
 
 - **Kubernetes Operations** - Deploy, troubleshoot, and validate K8s resources
 - **Infrastructure as Code** - Terraform plan analysis, safe apply workflows, and cost optimization
-- **CI/CD Automation** - Create production pipelines and design deployment strategies
+- **CI/CD Automation** - Create production pipelines, design deployment strategies, run full ship pipelines, and review PRs
 - **Observability** - Define SLOs, create monitoring alerts, and manage error budgets
 - **Incident Response** - Structured postmortem creation with blameless culture
+- **Hooks & Automation** - Configure Claude Code lifecycle hooks and MCP server access to AWS, Kubernetes, and GitHub
 
 ## Installation
 
@@ -202,6 +203,38 @@ Deployment: Kubernetes (EKS)
 Environments: staging, production
 ```
 
+#### `/claudekit:cicd:ship`
+**Full agentic ship pipeline - review, test, commit, push with safety gates**
+
+One command owns the entire workflow:
+- Safety checks (branch guard, untracked files)
+- Static analysis (secrets scan, per-filetype linting, Terraform validate)
+- Test suite detection and execution
+- Human confirmation gate before commit
+- Push and PR link output
+
+Supports headless/CI mode via `claude --print` and git alias integration.
+
+**Example Usage:**
+```
+/claudekit:cicd:ship feat(payments): add redis cache layer
+```
+
+#### `/claudekit:cicd:pr-review`
+**DevOps-focused PR review - Terraform, secrets, containers, pipeline security**
+
+Structured review covering:
+- Terraform changes (validation, missing tags, encryption, IAM)
+- Dockerfile changes (image pinning, secrets in ENV, root user)
+- CI/CD pipeline changes (permissions blocks, OIDC vs stored secrets, action pinning)
+- Secrets scan across the entire diff
+- Kubernetes manifest security
+
+**Example Usage:**
+```
+/claudekit:cicd:pr-review main
+```
+
 #### `/claudekit:cicd:deploy-strategy`
 **Design deployment strategies (blue/green, canary, rolling) with implementation**
 
@@ -266,6 +299,39 @@ Service: payment-processor
 Type: User-facing API
 Criticality: Critical
 Target: 99.95% availability
+```
+
+### Hooks & Automation
+
+#### `/claudekit:hooks:setup`
+**Configure Claude Code lifecycle hooks - auto-lint, prod guards, audit logging, Slack alerts**
+
+Provides ready-to-use hook scripts and `settings.json` wiring for:
+- **PreToolUse**: Block any Bash command targeting prod resources (`exit 2` = hard block)
+- **Stop**: Auto-lint and format every file Claude touches after each turn
+- **PostToolUse**: Append all Bash commands to an audit log for compliance
+- **Notification**: Route Claude alerts to Slack or PagerDuty
+
+**Example Usage:**
+```
+/claudekit:hooks:setup
+```
+
+#### `/claudekit:hooks:mcp-setup`
+**Configure MCP servers for AWS, Kubernetes, and GitHub direct API access**
+
+Wire Claude to real infrastructure APIs so it calls them natively instead of writing scripts:
+- **AWS MCP**: Query and remediate S3, EC2, IAM, RDS resources directly
+- **Kubernetes MCP**: Inspect pods, deployments, logs, and resource usage live
+- **GitHub MCP**: Manage PRs, issues, comments, and workflow files
+
+**Example Usage:**
+```
+/claudekit:hooks:mcp-setup
+
+Platforms: AWS, Kubernetes, GitHub
+AWS profile: dev
+Kubeconfig: ~/.kube/dev-config
 ```
 
 ### Incident Management
@@ -348,6 +414,20 @@ Commands incorporate Site Reliability Engineering principles:
 3. Create postmortem: /claudekit:incident:postmortem
 ```
 
+### Agentic Ship Workflow
+```
+1. Review incoming PR: /claudekit:cicd:pr-review main
+2. Work on feature
+3. Ship with full pipeline: /claudekit:cicd:ship feat(api): add rate limiting
+```
+
+### One-Time Hooks Setup (do once per project)
+```
+1. Configure hooks: /claudekit:hooks:setup
+2. Wire MCP servers: /claudekit:hooks:mcp-setup
+3. All subsequent commands benefit from auto-lint + prod guard automatically
+```
+
 ## Best Practices
 
 ### Before Using Commands
@@ -370,6 +450,49 @@ Commands incorporate Site Reliability Engineering principles:
 - Test in staging before production
 - Monitor during and after changes
 - Implement gradual rollouts where possible
+
+## Setup
+
+Run `setup.sh` to install Claude Code configuration into `~/.claude/`.
+
+```bash
+./setup.sh           # interactive menu — pick what to install
+./setup.sh --all     # install everything with defaults
+./setup.sh --help    # show all flags
+```
+
+### Flags
+
+| Flag | Installs |
+|------|---------|
+| `--settings` | `settings.json` (permissions, status line) + `statusline-command.sh` |
+| `--hooks` | Hook scripts into `~/.claude/hooks/` + wires them in `settings.json` |
+| `--mcp` | MCP server config for AWS, Kubernetes, GitHub into `settings.json` |
+| `--plugin` | Registers claudekit plugin in `settings.json` |
+| `--all` | All of the above with defaults (no prompts) |
+
+### What Gets Installed
+
+**Base settings** (`--settings`):
+- `~/.claude/settings.json` — permissions, status line config
+- `~/.claude/statusline-command.sh` — model name + rate limit progress bar
+
+```
+Claude Sonnet 4.6 | 5h:▓▓▓░░░░░░░ 30% (resets 14:30)  7d:▓░░░░░░░░░ 10%
+```
+
+**Hooks** (`--hooks`, choose any combination):
+- `block-prod.sh` — PreToolUse: blocks kubectl/terraform/aws commands targeting prod
+- `auto-lint.sh` — Stop: lints and formats every file Claude touches after each turn
+- `audit-bash.sh` — PostToolUse: appends all Bash commands to `~/.claude/audit.log`
+- `slack-notify.sh` — Notification: posts Claude alerts to Slack (requires `SLACK_WEBHOOK`)
+
+**MCP servers** (`--mcp`, choose any combination):
+- AWS — direct S3, EC2, IAM, RDS API access (uses your dev profile)
+- Kubernetes — live pod/deployment/log inspection
+- GitHub — PR, issue, and repo management
+
+Requires `jq`. The script installs it automatically via `apt-get` or `brew` if missing.
 
 ## Contributing
 
