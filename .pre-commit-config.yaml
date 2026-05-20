@@ -1,0 +1,32 @@
+repos:
+  - repo: https://github.com/gitleaks/gitleaks
+    rev: v8.30.1
+    hooks:
+      - id: gitleaks
+
+  - repo: https://github.com/shellcheck-py/shellcheck-py
+    rev: v0.11.0.1
+    hooks:
+      - id: shellcheck
+
+  - repo: https://github.com/adrienverge/yamllint
+    rev: v1.38.0
+    hooks:
+      - id: yamllint
+        args: ["-d", "relaxed"]
+
+  - repo: local
+    hooks:
+      - id: validate-commands
+        name: Validate command frontmatter
+        entry: scripts/test/validate-commands.sh
+        language: script
+        files: ^commands/.*\.md$
+        pass_filenames: false
+
+      - id: test-update-plugin-version
+        name: JS unit tests
+        entry: node scripts/test/test-update-plugin-version.js
+        language: system
+        files: update-plugin-version\.js$
+        pass_filenames: false
