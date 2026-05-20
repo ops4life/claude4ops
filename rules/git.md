@@ -20,6 +20,14 @@ git rebase origin/main
 git push origin main
 ```
 
+## After merging a PR
+
+Always return to main and pull latest:
+
+```bash
+git checkout main && git pull origin main
+```
+
 ## Commit messages
 
 No `Co-Authored-By` or any AI attribution lines in commit messages.
