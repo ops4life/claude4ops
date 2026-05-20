@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+# [1.6.0](https://github.com/ops4life/claudekit/compare/v1.5.0...v1.6.0) (2026-05-20)
+
+
+### Features
+
+* add select-all option to install component selection ([5e46ee8](https://github.com/ops4life/claudekit/commit/5e46ee8bf5fabd32cd787cd84b03976e54e77040))
+
 # [1.5.0](https://github.com/ops4life/claudekit/compare/v1.4.0...v1.5.0) (2026-05-20)
 
 
