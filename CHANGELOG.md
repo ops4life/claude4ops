@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+# [1.7.0](https://github.com/ops4life/claudekit/compare/v1.6.0...v1.7.0) (2026-05-20)
+
+
+### Features
+
+* add CI workflow, pre-commit hook, and dev setup script ([8bbf503](https://github.com/ops4life/claudekit/commit/8bbf5038ff647c6c055601f5e2faaa9a9b169f73))
+
 # [1.6.0](https://github.com/ops4life/claudekit/compare/v1.5.0...v1.6.0) (2026-05-20)
 
 
