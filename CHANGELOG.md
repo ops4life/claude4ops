@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+# [1.3.0](https://github.com/ops4life/claudekit/compare/v1.2.0...v1.3.0) (2026-05-20)
+
+
+### Features
+
+* add git workflow rule for commit and push order ([0b2198e](https://github.com/ops4life/claudekit/commit/0b2198e9595650c77ae0cabe4ce76eb373ad137d))
+
 # [1.2.0](https://github.com/ops4life/claudekit/compare/v1.1.0...v1.2.0) (2026-05-20)
 
 
