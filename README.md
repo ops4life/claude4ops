@@ -20,6 +20,19 @@ git clone https://github.com/ops4life/claudekit.git
 # /plugin install claudekit
 ```
 
+### Setup
+
+After installing the plugin, run `/claudekit:install` to configure Claude Code:
+
+- **Scope**: user (`~/.claude/`) or project (`.claude/`)
+- **Settings**: `settings.json` merge + status line script
+- **Hooks**: block-prod, auto-lint, audit, Slack notifications
+- **MCP servers**: AWS, Kubernetes, GitHub
+- **Skills**: docling (PDF/DOCX/image → Markdown)
+- **Rules**: git workflow standards
+
+Requires [`jq`](https://jqlang.org).
+
 ## Commands
 
 All commands: `/claudekit:<category>:<command>`
@@ -90,19 +103,6 @@ All commands: `/claudekit:<category>:<command>`
 ```
 /claudekit:install → /claudekit:hooks:mcp-setup
 ```
-
-## Setup
-
-After installing the plugin, run `/claudekit:install` to configure Claude Code:
-
-- **Scope**: user (`~/.claude/`) or project (`.claude/`)
-- **Settings**: `settings.json` merge + status line script
-- **Hooks**: block-prod, auto-lint, audit, Slack notifications
-- **MCP servers**: AWS, Kubernetes, GitHub
-- **Skills**: docling (PDF/DOCX/image → Markdown)
-- **Rules**: git workflow standards
-
-Requires `jq`.
 
 ## Contributing
 
