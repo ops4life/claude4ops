@@ -56,11 +56,11 @@ All commands: `/claudekit:<category>:<command>`
 | `/claudekit:observability:slo-define` | Define SLOs/SLIs with error budgets and burn-rate alerting |
 | `/claudekit:observability:alert-new` | Create SLO-based monitoring alerts with runbook links |
 
-### Hooks & Automation
+### Install & Automation
 
 | Command | Description |
 |---------|-------------|
-| `/claudekit:hooks:setup` | Wire auto-lint, prod guard, audit log, and Slack alert hooks |
+| `/claudekit:install` | Install hooks, skills, rules, and settings — user or project scope |
 | `/claudekit:hooks:mcp-setup` | Configure MCP servers for AWS, Kubernetes, and GitHub |
 
 ### Incident Management
@@ -86,38 +86,23 @@ All commands: `/claudekit:<category>:<command>`
 /claudekit:cicd:pr-review main → work on feature → /claudekit:cicd:ship feat(api): add rate limiting
 ```
 
-**First-time hooks setup (do once per project):**
+**First-time setup (do once):**
 ```
-/claudekit:hooks:setup → /claudekit:hooks:mcp-setup
+/claudekit:install → /claudekit:hooks:mcp-setup
 ```
 
 ## Setup
 
-Run `setup.sh` to install Claude Code configuration into `~/.claude/`:
+After installing the plugin, run `/claudekit:install` to configure Claude Code:
 
-```bash
-./setup.sh           # interactive menu
-./setup.sh --all     # install everything with defaults
-./setup.sh --help    # show all flags
-```
+- **Scope**: user (`~/.claude/`) or project (`.claude/`)
+- **Settings**: `settings.json` merge + status line script
+- **Hooks**: block-prod, auto-lint, audit, Slack notifications
+- **MCP servers**: AWS, Kubernetes, GitHub
+- **Skills**: docling (PDF/DOCX/image → Markdown)
+- **Rules**: git workflow standards
 
-| Flag | Installs |
-|------|---------|
-| `--settings` | `settings.json` + `statusline-command.sh` (rate limit status bar) |
-| `--hooks` | Hook scripts + wires them in `settings.json` |
-| `--mcp` | MCP server config for AWS, Kubernetes, GitHub |
-| `--skills` | Skills (docling: PDF/DOCX/image → Markdown) |
-| `--rules` | Global rules into `~/.claude/rules/` (git workflow, commit standards) |
-| `--plugin` | Registers claudekit plugin in `settings.json` + installs rules |
-| `--all` | All of the above |
-
-**Hooks installed:**
-- `block-prod.sh` — blocks kubectl/terraform/aws commands targeting prod
-- `auto-lint.sh` — lints every file Claude touches after each turn
-- `audit-bash.sh` — appends all Bash commands to `~/.claude/audit.log`
-- `slack-notify.sh` — posts Claude alerts to Slack (requires `SLACK_WEBHOOK`)
-
-Requires `jq` (auto-installed via `apt-get` or `brew` if missing).
+Requires `jq`.
 
 ## Contributing
 
