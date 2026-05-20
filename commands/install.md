@@ -459,7 +459,7 @@ RULE
 
 ### Optimization
 
-If RTK was selected (1 or a), install RTK. If Caveman was selected (2 or a), install Caveman. Install only the selected tools.
+This section runs only if the user selected component 6 (Optimization) in Step 3.
 
 Present sub-selection:
 
@@ -471,6 +471,10 @@ Which optimization tools? (select all that apply)
 
 Enter numbers and/or 'a':
 ```
+
+- Input includes `a` → install both tools
+- Input is numbers → install only those tools
+- Invalid input → re-prompt
 
 #### RTK
 
