@@ -37,8 +37,11 @@ claudekit/
 │   │   └── slo-define.md          # Define SLOs/SLIs & error budgets
 │   └── incident/         # Incident management (1 command)
 │       └── postmortem.md          # Structured postmortem creation
-├── setup.sh             # Interactive setup script (settings, hooks, MCP, plugin)
+├── setup.sh             # Interactive setup script (settings, hooks, MCP, skills, plugin)
 ├── settings.json        # Base Claude Code settings template
+├── skills/              # Claude Code skills installed to ~/.claude/skills/ by setup.sh
+│   └── docling/
+│       └── SKILL.md         # Convert PDF/DOCX/images to Markdown before implementation
 ├── scripts/             # Scripts installed to ~/.claude/ by setup.sh
 │   ├── statusline-command.sh  # Rate limit + model status bar
 │   └── hooks/

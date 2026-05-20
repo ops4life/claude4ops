@@ -1,6 +1,6 @@
 #!/bin/bash
-# claudekit setup — installs Claude Code config, hooks, and MCP servers
-# Usage: ./setup.sh [--all] [--settings] [--hooks] [--mcp] [--plugin]
+# claudekit setup — installs Claude Code config, hooks, MCP servers, and skills
+# Usage: ./setup.sh [--all] [--settings] [--hooks] [--mcp] [--plugin] [--skills]
 #        ./setup.sh           (interactive menu)
 
 set -euo pipefail
@@ -8,6 +8,7 @@ set -euo pipefail
 REPO_DIR="$(cd "$(dirname "$0")" && pwd)"
 CLAUDE_DIR="${HOME}/.claude"
 HOOKS_DIR="${CLAUDE_DIR}/hooks"
+SKILLS_DIR="${CLAUDE_DIR}/skills"
 SETTINGS_FILE="${CLAUDE_DIR}/settings.json"
 
 # ── colours ──────────────────────────────────────────────────────────────────
@@ -218,6 +219,31 @@ install_mcp() {
   fi
 }
 
+# ── component: skills ─────────────────────────────────────────────────────────
+install_skills() {
+  header "Skills"
+
+  local skills=()
+  while IFS= read -r -d '' skill_dir; do
+    skills+=("$(basename "$skill_dir")")
+  done < <(find "$REPO_DIR/skills" -mindepth 1 -maxdepth 1 -type d -print0 2>/dev/null)
+
+  if [[ ${#skills[@]} -eq 0 ]]; then
+    warn "No skills found in skills/"
+    return
+  fi
+
+  for skill in "${skills[@]}"; do
+    local src="$REPO_DIR/skills/$skill/SKILL.md"
+    local dest="$SKILLS_DIR/$skill"
+    [[ -f "$src" ]] || continue
+
+    mkdir -p "$dest"
+    cp "$src" "$dest/SKILL.md"
+    ok "skill '$skill' → ${dest}/"
+  done
+}
+
 # ── component: plugin ─────────────────────────────────────────────────────────
 install_plugin() {
   header "claudekit Plugin"
@@ -255,17 +281,19 @@ interactive_menu() {
   printf "\n${BOLD}claudekit setup${RESET}\n"
   printf "Installs Claude Code config into %s\n\n" "$CLAUDE_DIR"
 
-  local do_settings=0 do_hooks=0 do_mcp=0 do_plugin=0
+  local do_settings=0 do_hooks=0 do_mcp=0 do_skills=0 do_plugin=0
 
   printf "Select components to install:\n\n"
   ask "1. Base settings + status line (settings.json, statusline-command.sh)" && do_settings=1
   ask "2. Claude Code hooks (block-prod, auto-lint, audit, Slack)"            && do_hooks=1
   ask "3. MCP servers (AWS, Kubernetes, GitHub)"                               && do_mcp=1
-  ask "4. claudekit plugin registration"                                        && do_plugin=1
+  ask "4. Skills (docling: convert PDF/DOCX/images to Markdown)"              && do_skills=1
+  ask "5. claudekit plugin registration"                                        && do_plugin=1
 
   [[ $do_settings -eq 1 ]] && install_settings
   [[ $do_hooks    -eq 1 ]] && install_hooks
   [[ $do_mcp      -eq 1 ]] && install_mcp
+  [[ $do_skills   -eq 1 ]] && install_skills
   [[ $do_plugin   -eq 1 ]] && install_plugin
 }
 
@@ -276,17 +304,18 @@ main() {
   if [[ $# -eq 0 ]]; then
     interactive_menu
   else
-    local do_settings=0 do_hooks=0 do_mcp=0 do_plugin=0
+    local do_settings=0 do_hooks=0 do_mcp=0 do_skills=0 do_plugin=0
 
     for arg in "$@"; do
       case "$arg" in
-        --all)      AUTO_YES=1; do_settings=1; do_hooks=1; do_mcp=1; do_plugin=1 ;;
+        --all)      AUTO_YES=1; do_settings=1; do_hooks=1; do_mcp=1; do_skills=1; do_plugin=1 ;;
         --settings) do_settings=1 ;;
         --hooks)    do_hooks=1 ;;
         --mcp)      do_mcp=1 ;;
+        --skills)   do_skills=1 ;;
         --plugin)   do_plugin=1 ;;
         --help|-h)
-          printf "Usage: %s [--all] [--settings] [--hooks] [--mcp] [--plugin]\n" "$0"
+          printf "Usage: %s [--all] [--settings] [--hooks] [--mcp] [--skills] [--plugin]\n" "$0"
           printf "       %s          (interactive menu)\n" "$0"
           exit 0
           ;;
@@ -300,6 +329,7 @@ main() {
     [[ $do_settings -eq 1 ]] && install_settings
     [[ $do_hooks    -eq 1 ]] && install_hooks
     [[ $do_mcp      -eq 1 ]] && install_mcp
+    [[ $do_skills   -eq 1 ]] && install_skills
     [[ $do_plugin   -eq 1 ]] && install_plugin
   fi
 
