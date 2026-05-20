@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+# [1.5.0](https://github.com/ops4life/claudekit/compare/v1.4.0...v1.5.0) (2026-05-20)
+
+
+### Features
+
+* replace setup.sh with /claudekit:install plugin command ([abc417a](https://github.com/ops4life/claudekit/commit/abc417afa5b2840e76e466449fa153d50011ac66))
+
 # [1.4.0](https://github.com/ops4life/claudekit/compare/v1.3.0...v1.4.0) (2026-05-20)
 
 
