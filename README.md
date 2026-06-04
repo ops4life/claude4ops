@@ -5,7 +5,7 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](./LICENSE)
 [![Claude Code Plugin](https://img.shields.io/badge/Claude%20Code-Plugin-blue)](https://github.com/ops4life/claude4ops)
 
-Production-ready DevOps superpowers for Claude Code. Guided, agentic workflows for Kubernetes, Terraform, CI/CD, SLO monitoring, and incident management — across AWS, GCP, and Azure.
+Production-ready DevOps superpowers for everyone. Guided workflows for Kubernetes, Terraform, CI/CD, SLOs, and incident response — with token optimization built in.
 
 ## Why claude4ops?
 
