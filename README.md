@@ -46,6 +46,7 @@ After installing the plugin, run `/claude4ops:install` to configure Claude Code:
 - **MCP servers**: AWS, Kubernetes, GitHub
 - **Skills**: docling (PDF/DOCX/image → Markdown)
 - **Rules**: git workflow standards
+- **Optimization**: token-efficient tools — RTK shell proxy (60-90% savings) + Caveman compressed mode (~75% savings)
 
 Requires [`jq`](https://jqlang.org).
 
@@ -89,7 +90,7 @@ All commands: `/claude4ops:<category>:<command>`
 
 | Command | Description |
 |---------|-------------|
-| `/claude4ops:install` | Install hooks, skills, rules, and settings — user or project scope |
+| `/claude4ops:install` | Install hooks, skills, rules, settings, and token optimization tools — user or project scope |
 | `/claude4ops:hooks:mcp-setup` | Configure MCP servers for AWS, Kubernetes, and GitHub |
 
 ### Incident Management
@@ -115,9 +116,10 @@ All commands: `/claude4ops:<category>:<command>`
 /claude4ops:cicd:pr-review main → work on feature → /claude4ops:cicd:ship feat(api): add rate limiting
 ```
 
-**First-time setup (do once):**
+**First-time setup with token optimization (do once):**
 ```
-/claude4ops:install → /claude4ops:hooks:mcp-setup
+/claude4ops:install  # select Optimization to add RTK + Caveman
+/claude4ops:hooks:mcp-setup
 ```
 
 ## Contributing
