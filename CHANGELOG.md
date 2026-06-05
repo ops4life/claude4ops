@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+# [1.14.0](https://github.com/ops4life/claude4ops/compare/v1.13.2...v1.14.0) (2026-06-05)
+
+
+### Features
+
+* add update command and remove stale heredocs from install ([5c776d5](https://github.com/ops4life/claude4ops/commit/5c776d5a4c3a6dacfb8a9a560ba9a53fa1e5d4b2))
+
 ## [1.13.2](https://github.com/ops4life/claude4ops/compare/v1.13.1...v1.13.2) (2026-06-05)
 
 
