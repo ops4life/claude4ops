@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.11.3](https://github.com/ops4life/claude4ops/compare/v1.11.2...v1.11.3) (2026-06-05)
+
+
+### Bug Fixes
+
+* install RTK on Windows using native binary with CLAUDE.md injection mode ([4717f83](https://github.com/ops4life/claude4ops/commit/4717f83e713ca5ee4d97c97e6346364b8a257b1a))
+
 ## [1.11.2](https://github.com/ops4life/claude4ops/compare/v1.11.1...v1.11.2) (2026-06-05)
 
 
