@@ -49,7 +49,11 @@ After installing the plugin, run `/claude4ops:install` to configure Claude Code:
 - **Optimization**: token-efficient tools — RTK shell proxy (60-90% savings) + Caveman compressed mode (~75% savings)
 - **Plugins**: context7, playwright, superpowers, frontend-design
 
-Requires [`jq`](https://jqlang.org).
+**Platform support**: Linux, macOS, Windows (PowerShell/pwsh, WSL2, or Git Bash).
+
+**Prerequisites**: [`jq`](https://jqlang.org) — install with `apt-get install jq`, `brew install jq`, or `winget install stedolan.jq`. On Windows with PowerShell, jq is optional (install uses built-in JSON support as fallback).
+
+**Windows note**: Hook scripts install as `.ps1` files invoked via `pwsh`. Ensure execution policy permits scripts: `Set-ExecutionPolicy -Scope CurrentUser RemoteSigned`.
 
 ## Commands
 

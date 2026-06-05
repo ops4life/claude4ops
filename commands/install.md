@@ -10,12 +10,55 @@ Interactive agentic install. Follow each step in order. Run bash commands exactl
 
 ## Step 1 — Prerequisites
 
+**Detect platform:**
+
+Try the bash detection first. If the Bash tool is unavailable or `uname` returns nothing, fall back to PowerShell detection.
+
+Bash:
+```bash
+_detect_platform() {
+  case "$(uname -s 2>/dev/null)" in
+    Linux*)
+      if grep -qi microsoft /proc/version 2>/dev/null; then echo "wsl"
+      else echo "linux"; fi ;;
+    Darwin*) echo "macos" ;;
+    MINGW*|MSYS*|CYGWIN*) echo "gitbash" ;;
+    *) echo "unknown" ;;
+  esac
+}
+PLATFORM=$(_detect_platform)
+echo "Platform: $PLATFORM"
+```
+
+PowerShell (use if bash is unavailable):
+```powershell
+$PLATFORM = if ($IsWindows -or $env:OS -eq "Windows_NT") { "windows" }
+            elseif ($IsMacOS) { "macos" }
+            else { "linux" }
+Write-Host "Platform: $PLATFORM"
+```
+
+Store `$PLATFORM` for use in later steps. Valid values: `linux`, `macos`, `wsl`, `gitbash`, `windows`.
+
+**Check jq:**
+
+Bash:
 ```bash
 command -v jq >/dev/null 2>&1 || echo "MISSING_JQ"
 ```
 
-If output is `MISSING_JQ`, stop and tell the user:
-> `jq` is required. Install it with `apt-get install jq` or `brew install jq`, then re-run `/claude4ops:install`.
+PowerShell (Windows):
+```powershell
+if (-not (Get-Command jq -ErrorAction SilentlyContinue)) { Write-Host "MISSING_JQ" }
+```
+
+If `MISSING_JQ`, stop and tell the user:
+> `jq` is required. Install it, then re-run `/claude4ops:install`.
+> - **Linux/WSL**: `apt-get install jq` or `yum install jq`
+> - **macOS**: `brew install jq`
+> - **Windows**: `winget install stedolan.jq` or `choco install jq`
+>
+> On Windows, jq is only required for the hooks config merge. If unavailable, the install will use PowerShell's built-in JSON support instead.
 
 ---
 
@@ -30,11 +73,17 @@ Use `AskUserQuestion` with **exactly** these parameters (header must be ≤12 ch
   - label: `"Project"`, description: `".claude/ in current directory — repo-local, committable to git"`
 
 Store the answer. All paths below use `$BASE`:
-- User → `BASE="$HOME/.claude"`
-- Project → `BASE=".claude"`
+- User → `BASE="$HOME/.claude"` (bash) / `$BASE = "$HOME\.claude"` (PowerShell)
+- Project → `BASE=".claude"` (bash) / `$BASE = ".claude"` (PowerShell)
 
+Bash:
 ```bash
 mkdir -p "$BASE"
+```
+
+PowerShell (Windows):
+```powershell
+New-Item -ItemType Directory -Force -Path $BASE | Out-Null
 ```
 
 ---
@@ -79,7 +128,11 @@ Merge both answers. Record final selections, then install all at once in Step 4.
 mkdir -p "$BASE"
 ```
 
-**User scope only** — write the statusline script:
+**User scope only** — write the statusline script.
+
+On **Windows (PowerShell)**, write `statusline-command.ps1` instead and set the command to `pwsh -NoProfile -File "$HOME\.claude\statusline-command.ps1"`. Copy the script content from `scripts/statusline-command.ps1` in the plugin source. Then skip to the settings merge step below.
+
+On **Linux/macOS/WSL/Git Bash**, write the sh version:
 
 ```bash
 cat > "$HOME/.claude/statusline-command.sh" << 'STATUSLINE'
@@ -134,6 +187,8 @@ Skip the statusline block for project scope.
 
 **Merge base settings** into `$BASE/settings.json`:
 
+On Windows, use `"pwsh -NoProfile -File $HOME\\.claude\\statusline-command.ps1"` as the statusLine command instead.
+
 ```bash
 PATCH=$(cat << 'JSON'
 {
@@ -149,12 +204,42 @@ PATCH=$(cat << 'JSON'
 }
 JSON
 )
+Bash:
+```bash
 if [ -f "$BASE/settings.json" ]; then
-  jq -s '.[0] * .[1]' "$BASE/settings.json" <(echo "$PATCH") > /tmp/ck_settings.json \
-    && mv /tmp/ck_settings.json "$BASE/settings.json"
+  TMP=$(mktemp)
+  jq -s '.[0] * .[1]' "$BASE/settings.json" <(echo "$PATCH") > "$TMP" \
+    && mv "$TMP" "$BASE/settings.json"
 else
   echo "$PATCH" | jq '.' > "$BASE/settings.json"
 fi
+```
+
+PowerShell (Windows):
+```powershell
+function Merge-Json {
+    param($Base, $Patch)
+    foreach ($key in $Patch.PSObject.Properties.Name) {
+        $bv = $Base.$key; $pv = $Patch.$key
+        if ($bv -and $bv.GetType().Name -eq 'PSCustomObject' -and $pv.GetType().Name -eq 'PSCustomObject') {
+            $Base.$key = Merge-Json $bv $pv
+        } else {
+            $Base | Add-Member -Force -NotePropertyName $key -NotePropertyValue $pv
+        }
+    }
+    return $Base
+}
+
+$settingsFile = "$BASE\settings.json"
+$patchObj = $PATCH | ConvertFrom-Json
+if (Test-Path $settingsFile) {
+    $existing = Get-Content $settingsFile -Raw | ConvertFrom-Json
+    $merged = Merge-Json $existing $patchObj
+    $merged | ConvertTo-Json -Depth 10 | Set-Content $settingsFile
+} else {
+    $patchObj | ConvertTo-Json -Depth 10 | Set-Content $settingsFile
+}
+```
 ```
 
 For project scope, omit `statusLine` from the patch (it references `~/.claude/` which is user-specific).
@@ -186,29 +271,30 @@ For each selected hook, write the script and append to a hooks config.
 
 ```bash
 cat > "$BASE/hooks/block-prod.sh" << 'HOOK'
-#!/bin/bash
+#!/bin/sh
 INPUT=$(cat)
 CMD=$(echo "$INPUT" | jq -r '.tool_input.command // empty')
-[[ -z "$CMD" ]] && exit 0
+[ -z "$CMD" ] && exit 0
 
-DANGER_PATTERNS=(
-  "kubectl.*--context=prod"
-  "kubectl.*-n production"
-  "kubectl.*--namespace=production"
-  "terraform.*-var-file=prod"
-  "terraform.*workspace.*prod"
-  "aws.*--profile=production"
-  "aws.*--profile=prod"
-  "helm.*prod"
-  "gcloud.*--project=.*-prod"
-)
+DANGER_PATTERNS="kubectl.*--context=prod
+kubectl.*-n production
+kubectl.*--namespace=production
+terraform.*-var-file=prod
+terraform.*workspace.*prod
+aws.*--profile=production
+aws.*--profile=prod
+helm.*prod
+gcloud.*--project=.*-prod"
 
-for pattern in "${DANGER_PATTERNS[@]}"; do
+while IFS= read -r pattern; do
+  [ -z "$pattern" ] && continue
   if echo "$CMD" | grep -qE "$pattern"; then
     echo "BLOCKED: production target detected. Run this manually with explicit approval." >&2
     exit 2
   fi
-done
+done <<PATTERNS
+$DANGER_PATTERNS
+PATTERNS
 exit 0
 HOOK
 chmod +x "$BASE/hooks/block-prod.sh"
@@ -223,13 +309,13 @@ Settings entry for block-prod:
 
 ```bash
 cat > "$BASE/hooks/auto-lint.sh" << 'HOOK'
-#!/bin/bash
+#!/bin/sh
 CHANGED=$(git diff --name-only HEAD 2>/dev/null)
-[[ -z "$CHANGED" ]] && exit 0
+[ -z "$CHANGED" ] && exit 0
 
 FORMATTED=0
 for f in $CHANGED; do
-  [[ -f "$f" ]] || continue
+  [ -f "$f" ] || continue
   case "$f" in
     *.py)
       command -v ruff >/dev/null && ruff check --fix "$f" 2>/dev/null
@@ -249,7 +335,7 @@ for f in $CHANGED; do
   esac
 done
 
-if ! git diff --quiet 2>/dev/null && [[ $FORMATTED -gt 0 ]]; then
+if ! git diff --quiet 2>/dev/null && [ "$FORMATTED" -gt 0 ]; then
   COUNT=$(git diff --name-only | wc -l | tr -d ' ')
   echo "auto-lint: formatted ${COUNT} file(s)"
 fi
@@ -267,11 +353,11 @@ Settings entry for auto-lint:
 
 ```bash
 cat > "$BASE/hooks/audit-bash.sh" << 'HOOK'
-#!/bin/bash
+#!/bin/sh
 AUDIT_LOG="${CLAUDE_AUDIT_LOG:-${HOME}/.claude/audit.log}"
 INPUT=$(cat)
 CMD=$(echo "$INPUT" | jq -r '.tool_input.command // empty')
-[[ -z "$CMD" ]] && exit 0
+[ -z "$CMD" ] && exit 0
 
 mkdir -p "$(dirname "$AUDIT_LOG")"
 printf '%s [bash] %s\n' "$(date -u +%Y-%m-%dT%H:%M:%SZ)" "$(echo "$CMD" | head -c 300)" >> "$AUDIT_LOG"
@@ -291,8 +377,8 @@ Ask the user for their `SLACK_WEBHOOK` URL (or env var name). Warn if not set �
 
 ```bash
 cat > "$BASE/hooks/slack-notify.sh" << 'HOOK'
-#!/bin/bash
-[[ -z "${SLACK_WEBHOOK:-}" ]] && exit 0
+#!/bin/sh
+[ -z "${SLACK_WEBHOOK:-}" ] && exit 0
 
 INPUT=$(cat)
 MSG=$(echo "$INPUT" | jq -r '.message // "Claude Code needs attention"')
@@ -311,14 +397,33 @@ Settings entry for slack-notify:
 "Notification": [{"hooks": [{"type": "command", "command": "$BASE/hooks/slack-notify.sh"}]}]
 ```
 
-**After writing all selected hook scripts**, merge hooks config into `$BASE/settings.json`. Build the `hooks` JSON object from selected hooks, then:
+**Windows (PowerShell)**: Instead of writing `.sh` hook scripts, copy the `.ps1` equivalents from the plugin's `scripts/hooks/` directory (e.g. `block-prod.ps1`, `auto-lint.ps1`, `audit-bash.ps1`, `slack-notify.ps1`) to `$BASE\hooks\`. Use these settings entries instead:
 
-```bash
-jq -s '.[0] * .[1]' "$BASE/settings.json" <(echo "$HOOKS_PATCH") > /tmp/ck_settings.json \
-  && mv /tmp/ck_settings.json "$BASE/settings.json"
+```json
+"PreToolUse": [{"matcher": "Bash", "hooks": [{"type": "command", "command": "pwsh -NoProfile -File \"$BASE\\hooks\\block-prod.ps1\""}]}]
+"Stop":       [{"hooks": [{"type": "command", "command": "pwsh -NoProfile -File \"$BASE\\hooks\\auto-lint.ps1\""}]}]
+"PostToolUse":[{"matcher": "Bash", "hooks": [{"type": "command", "command": "pwsh -NoProfile -File \"$BASE\\hooks\\audit-bash.ps1\""}]}]
+"Notification":[{"hooks": [{"type": "command", "command": "pwsh -NoProfile -File \"$BASE\\hooks\\slack-notify.ps1\""}]}]
 ```
 
-Replace `$BASE/hooks/` paths in the JSON with the actual resolved path (e.g. `~/.claude/hooks/` for user scope).
+**After writing all selected hook scripts**, merge hooks config into `$BASE/settings.json`. Build the `hooks` JSON object from selected hooks, then:
+
+Bash:
+```bash
+TMP=$(mktemp)
+jq -s '.[0] * .[1]' "$BASE/settings.json" <(echo "$HOOKS_PATCH") > "$TMP" \
+  && mv "$TMP" "$BASE/settings.json"
+```
+
+PowerShell (Windows):
+```powershell
+$hooksObj = $HOOKS_PATCH | ConvertFrom-Json
+$existing = Get-Content "$BASE\settings.json" -Raw | ConvertFrom-Json
+$existing | Add-Member -Force -NotePropertyName 'hooks' -NotePropertyValue $hooksObj.hooks
+$existing | ConvertTo-Json -Depth 10 | Set-Content "$BASE\settings.json"
+```
+
+Replace `$BASE/hooks/` (bash) or `$BASE\hooks\` (PowerShell) paths with the actual resolved path.
 
 ---
 
@@ -486,6 +591,12 @@ Enter numbers and/or 'a':
 
 #### RTK
 
+**Windows (PowerShell)**: RTK's install script requires a POSIX shell. Skip RTK on native Windows or use WSL2 to install it separately. Print:
+> `RTK requires bash — skipping on Windows. Install via WSL2 or manually: https://github.com/rtk-ai/rtk`
+Then continue to Caveman.
+
+**Linux/macOS/WSL/Git Bash**:
+
 ```bash
 curl -fsSL https://raw.githubusercontent.com/rtk-ai/rtk/refs/heads/master/install.sh | sh
 ```
@@ -497,7 +608,7 @@ Then continue.
 On success, patch PATH for bash and zsh:
 
 ```bash
-for rc in ~/.bashrc ~/.zshrc; do
+for rc in ~/.bashrc ~/.zshrc ~/.bash_profile; do
   [ -f "$rc" ] || continue
   grep -q '\.local/bin' "$rc" 2>/dev/null || \
     echo 'export PATH="$HOME/.local/bin:$PATH"' >> "$rc"
@@ -587,6 +698,7 @@ Installed:
 
 Restart Claude Code to apply changes.
 If RTK was installed, also reload your shell: source ~/.bashrc (or ~/.zshrc)
+On Windows: hooks use .ps1 scripts invoked via pwsh. Ensure PowerShell execution policy allows scripts: Set-ExecutionPolicy -Scope CurrentUser RemoteSigned
 ```
 
 Only list components that were actually installed. For Optimization, only list tools that succeeded. For Plugins, only list plugins that succeeded; if partial, append `(<failed> failed — install manually: claude plugin install <name>@claude-plugins-official)`.

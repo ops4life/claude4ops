@@ -1,12 +1,12 @@
-#!/bin/bash
+#!/bin/sh
 # Stop hook: lint and format every file Claude touched after each turn.
 
 CHANGED=$(git diff --name-only HEAD 2>/dev/null)
-[[ -z "$CHANGED" ]] && exit 0
+[ -z "$CHANGED" ] && exit 0
 
 FORMATTED=0
 for f in $CHANGED; do
-  [[ -f "$f" ]] || continue
+  [ -f "$f" ] || continue
   case "$f" in
     *.py)
       command -v ruff >/dev/null && ruff check --fix "$f" 2>/dev/null
@@ -31,7 +31,7 @@ for f in $CHANGED; do
   esac
 done
 
-if ! git diff --quiet 2>/dev/null && [[ $FORMATTED -gt 0 ]]; then
+if ! git diff --quiet 2>/dev/null && [ "$FORMATTED" -gt 0 ]; then
   COUNT=$(git diff --name-only | wc -l | tr -d ' ')
   echo "auto-lint: formatted ${COUNT} file(s)"
 fi

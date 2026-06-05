@@ -15,15 +15,21 @@ warn() { echo -e "${YELLOW}  --${NC}  $*"; }
 fail() { echo -e "${RED}  !!${NC}  $*"; }
 
 detect_os() {
-  if [[ "$OSTYPE" == darwin* ]]; then
-    echo "macos"
-  elif [[ -f /etc/debian_version ]]; then
-    echo "debian"
-  elif [[ -f /etc/redhat-release ]]; then
-    echo "redhat"
-  else
-    echo "unknown"
-  fi
+  case "$(uname -s 2>/dev/null)" in
+    Darwin*) echo "macos" ;;
+    Linux*)
+      if grep -qi microsoft /proc/version 2>/dev/null; then
+        echo "wsl"
+      elif [[ -f /etc/debian_version ]]; then
+        echo "debian"
+      elif [[ -f /etc/redhat-release ]]; then
+        echo "redhat"
+      else
+        echo "linux"
+      fi ;;
+    MINGW*|MSYS*|CYGWIN*) echo "gitbash" ;;
+    *) echo "unknown" ;;
+  esac
 }
 
 install_pkg() {

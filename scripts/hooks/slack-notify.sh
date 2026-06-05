@@ -1,8 +1,8 @@
-#!/bin/bash
+#!/bin/sh
 # Notification hook: post Claude alerts to Slack.
 # Requires SLACK_WEBHOOK env var.
 
-[[ -z "${SLACK_WEBHOOK:-}" ]] && exit 0
+[ -z "${SLACK_WEBHOOK:-}" ] && exit 0
 
 INPUT=$(cat)
 MSG=$(echo "$INPUT" | jq -r '.message // "Claude Code needs attention"')
