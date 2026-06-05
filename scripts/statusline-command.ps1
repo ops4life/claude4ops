@@ -16,7 +16,9 @@ function New-Bar($pct) {
     return "${color}$('▓' * $filled)${esc}[0m$('░' * (10 - $filled))"
 }
 
-$cwd = (Get-Location).Path -replace [regex]::Escape($HOME), '~'
+$rawCwd = (Get-Location).Path -replace [regex]::Escape($HOME), '~'
+$segments = $rawCwd -split '[/\\]'
+$cwd = if ($segments.Count -le 2) { $rawCwd } else { $segments[-2..-1] -join '/' }
 $branch = git rev-parse --abbrev-ref HEAD 2>$null
 $context = if ($branch) { "$cwd ($branch)" } else { $cwd }
 $parts = "$context | $model"

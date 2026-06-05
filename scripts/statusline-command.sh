@@ -56,7 +56,7 @@ else
 fi
 
 # Working directory (shorten $HOME to ~)
-cwd=$(pwd | sed "s|^$HOME|~|")
+cwd=$(pwd | sed "s|^$HOME|~|" | awk -F/ '{n=NF; if(n<=2) print $0; else print $(n-1)"/"$n}')
 branch=$(git rev-parse --abbrev-ref HEAD 2>/dev/null)
 
 # Combine parts
