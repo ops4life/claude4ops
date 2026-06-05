@@ -430,6 +430,7 @@ Merge each selected MCP config into `$BASE/settings.json` using `jq -s '.[0] * .
 
 ```bash
 mkdir -p "$BASE/skills/docling"
+mkdir -p "$BASE/skills/convert"
 ```
 
 Write the docling skill. Copy from plugin source — fail clearly if not found:
@@ -441,6 +442,17 @@ if [ -z "$PLUGIN_SKILL" ]; then
   exit 1
 fi
 cp "$PLUGIN_SKILL" "$BASE/skills/docling/SKILL.md"
+```
+
+Write the convert skill. Copy from plugin source — fail clearly if not found:
+
+```bash
+PLUGIN_CONVERT=$(find "$HOME/.claude" -path "*/claude4ops*/skills/convert/SKILL.md" 2>/dev/null | head -1)
+if [ -z "$PLUGIN_CONVERT" ]; then
+  echo "ERROR: claude4ops plugin source not found. Reinstall: claude plugin install claude4ops"
+  exit 1
+fi
+cp "$PLUGIN_CONVERT" "$BASE/skills/convert/SKILL.md"
 ```
 
 ---
@@ -614,6 +626,7 @@ Installed:
   ✓ Hooks     → block-prod, auto-lint, audit, slack  ($BASE/hooks/)
   ✓ MCP       → aws, kubernetes, github
   ✓ Skills    → docling  ($BASE/skills/docling/)
+  ✓ Skills    → convert  ($BASE/skills/convert/)
   ✓ Rules        → git.md   ($BASE/rules/)
   ✓ Optimization → RTK (~/.local/bin/rtk), Caveman plugin
   ✓ Plugins      → context7, playwright, superpowers, frontend-design

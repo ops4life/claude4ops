@@ -48,7 +48,7 @@ After installing the plugin, run `/claude4ops:install` to configure Claude Code:
 - **Settings**: `settings.json` merge + status line script
 - **Hooks**: block-prod, auto-lint, audit, Slack notifications
 - **MCP servers**: AWS, Kubernetes, GitHub
-- **Skills**: docling (PDF/DOCX/image → Markdown)
+- **Skills**: docling (PDF/DOCX/image → Markdown), convert (Claude Code → Gemini/Copilot/Cursor/Codex)
 - **Rules**: git workflow standards
 - **Optimization**: token-efficient tools — RTK shell proxy (60-90% savings) + Caveman compressed mode (~75% savings)
 - **Plugins**: context7, playwright, superpowers, frontend-design
