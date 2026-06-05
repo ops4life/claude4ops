@@ -53,6 +53,10 @@ After installing the plugin, run `/claude4ops:install` to configure Claude Code:
 - **Optimization**: token-efficient tools — RTK shell proxy (60-90% savings) + Caveman compressed mode (~75% savings)
 - **Plugins**: context7, playwright, superpowers, frontend-design
 
+### Architecture & Components
+
+![claude4ops components](./assets/components.svg)
+
 ### Platform Support
 
 | Platform | Shell | Hook scripts |

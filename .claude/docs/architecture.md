@@ -1,5 +1,7 @@
 # Plugin Architecture
 
+![Plugin Architecture](../../assets/components.svg)
+
 ## Plugin Configuration
 
 **`.claude-plugin/plugin.json`**: Core plugin metadata including:

@@ -1,0 +1,566 @@
+<svg width="1200" height="900" viewBox="0 0 1200 900" xmlns="http://www.w3.org/2000/svg" style="background-color: #030712; font-family: 'Outfit', 'Inter', -apple-system, sans-serif;">
+  <defs>
+    <style>
+      <![CDATA[
+      @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Fira+Code:wght@400;500&display=swap');
+      
+      .title { font-weight: 700; fill: #ffffff; }
+      .subtitle { font-weight: 400; fill: #94a3b8; font-size: 14px; }
+      .heading { font-weight: 600; fill: #ffffff; }
+      .code-text { font-family: 'Fira Code', monospace; font-size: 12px; }
+      
+      /* Hover & Animation Effects */
+      .interactive-card {
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        cursor: pointer;
+      }
+      .interactive-card:hover {
+        transform: translateY(-5px);
+        filter: url(#card-glow);
+      }
+      .interactive-card:hover .card-bg {
+        fill: #1e293b;
+        stroke-width: 2px;
+      }
+      .interactive-card:hover .card-border-glow {
+        opacity: 0.8;
+      }
+      
+      /* Flow lines */
+      .flow-line {
+        stroke-dasharray: 8, 8;
+        animation: flow 3s linear infinite;
+      }
+      .flow-line-reverse {
+        stroke-dasharray: 8, 8;
+        animation: flow-rev 3s linear infinite;
+      }
+      
+      @keyframes flow {
+        to {
+          stroke-dashoffset: -40;
+        }
+      }
+      @keyframes flow-rev {
+        to {
+          stroke-dashoffset: 40;
+        }
+      }
+      
+      .pulse-glow {
+        animation: pulse 3s ease-in-out infinite;
+      }
+      @keyframes pulse {
+        0%, 100% { opacity: 0.3; }
+        50% { opacity: 0.7; }
+      }
+      ]]>
+    </style>
+
+    <!-- Filters for Glow and Shadow -->
+    <filter id="card-glow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="8" result="blur" />
+      <feComposite in="SourceGraphic" in2="blur" operator="over" />
+    </filter>
+    <filter id="hub-glow" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="15" result="blur" />
+      <feComposite in="SourceGraphic" in2="blur" operator="over" />
+    </filter>
+    <filter id="shadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="8" stdDeviation="6" flood-color="#000000" flood-opacity="0.5" />
+    </filter>
+
+    <!-- Gradients -->
+    <!-- Background Gradient -->
+    <radialGradient id="bg-grad" cx="50%" cy="50%" r="80%">
+      <stop offset="0%" stop-color="#0f172a" />
+      <stop offset="50%" stop-color="#070a13" />
+      <stop offset="100%" stop-color="#020408" />
+    </radialGradient>
+
+    <!-- Modern Dot Grid Pattern -->
+    <pattern id="dot-grid" width="30" height="30" patternUnits="userSpaceOnUse">
+      <circle cx="2" cy="2" r="1.2" fill="#475569" opacity="0.3" />
+    </pattern>
+
+    <!-- Hub Accent Gradient -->
+    <linearGradient id="hub-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#f43f5e" />
+      <stop offset="50%" stop-color="#e28a67" />
+      <stop offset="100%" stop-color="#f59e0b" />
+    </linearGradient>
+
+    <!-- Category Gradients -->
+    <linearGradient id="grad-k8s" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#38bdf8" />
+      <stop offset="100%" stop-color="#0284c7" />
+    </linearGradient>
+    <linearGradient id="grad-tf" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#c084fc" />
+      <stop offset="100%" stop-color="#7c3aed" />
+    </linearGradient>
+    <linearGradient id="grad-cicd" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#34d399" />
+      <stop offset="100%" stop-color="#059669" />
+    </linearGradient>
+    <linearGradient id="grad-obs" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#fb923c" />
+      <stop offset="100%" stop-color="#ea580c" />
+    </linearGradient>
+    <linearGradient id="grad-inc" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#f43f5e" />
+      <stop offset="100%" stop-color="#be123c" />
+    </linearGradient>
+
+    <!-- Wing Gradients -->
+    <linearGradient id="grad-opt" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#2dd4bf" />
+      <stop offset="100%" stop-color="#0f766e" />
+    </linearGradient>
+    <linearGradient id="grad-int" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#fb7185" />
+      <stop offset="100%" stop-color="#be123c" />
+    </linearGradient>
+
+    <!-- Line Gradients -->
+    <linearGradient id="line-top" x1="0%" y1="100%" x2="0%" y2="0%">
+      <stop offset="0%" stop-color="#e28a67" stop-opacity="0.8" />
+      <stop offset="100%" stop-color="#38bdf8" stop-opacity="0.8" />
+    </linearGradient>
+    <linearGradient id="line-bottom" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#e28a67" stop-opacity="0.8" />
+      <stop offset="100%" stop-color="#fb7185" stop-opacity="0.8" />
+    </linearGradient>
+    <linearGradient id="line-left" x1="100%" y1="0%" x2="0%" y2="0%">
+      <stop offset="0%" stop-color="#e28a67" stop-opacity="0.8" />
+      <stop offset="100%" stop-color="#2dd4bf" stop-opacity="0.8" />
+    </linearGradient>
+    <linearGradient id="line-right" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#e28a67" stop-opacity="0.8" />
+      <stop offset="100%" stop-color="#fb7185" stop-opacity="0.8" />
+    </linearGradient>
+  </defs>
+
+  <!-- Deep Background -->
+  <rect width="1200" height="900" fill="url(#bg-grad)" />
+
+  <!-- Dotted Grid Overlay -->
+  <rect width="1200" height="900" fill="url(#dot-grid)" />
+
+  <!-- ==================== CONNECTING PATHS ==================== -->
+  <g fill="none" stroke-width="2" opacity="0.6">
+    <!-- Hub to Top Command categories -->
+    <path d="M 600,370 L 600,295" stroke="url(#line-top)" />
+    <!-- Top Bus Line -->
+    <path d="M 170,295 L 1030,295" stroke="#475569" stroke-width="2" />
+    <!-- T-junction drops to categories -->
+    <path d="M 170,295 L 170,260 M 385,295 L 385,260 M 600,295 L 600,260 M 815,295 L 815,260 M 1030,295 L 1030,260" stroke="#475569" />
+
+    <!-- Animated Flows to Top -->
+    <path class="flow-line-reverse" d="M 600,370 L 600,295" stroke="#38bdf8" stroke-width="1.5" />
+    <path class="flow-line-reverse" d="M 600,295 L 170,295 L 170,260" stroke="#38bdf8" stroke-width="1.5" />
+    <path class="flow-line-reverse" d="M 600,295 L 385,295 L 385,260" stroke="#c084fc" stroke-width="1.5" />
+    <path class="flow-line-reverse" d="M 600,295 L 600,260" stroke="#34d399" stroke-width="1.5" />
+    <path class="flow-line-reverse" d="M 600,295 L 815,295 L 815,260" stroke="#fb923c" stroke-width="1.5" />
+    <path class="flow-line-reverse" d="M 600,295 L 1030,295 L 1030,260" stroke="#f43f5e" stroke-width="1.5" />
+
+    <!-- Hub to Bottom Hooks -->
+    <path d="M 600,530 L 600,605" stroke="url(#line-bottom)" />
+    <!-- Bottom Bus Line -->
+    <path d="M 190,605 L 1010,605" stroke="#475569" stroke-width="2" />
+    <!-- T-junction drops to hooks -->
+    <path d="M 190,605 L 190,660 M 460,605 L 460,660 M 740,605 L 740,660 M 1010,605 L 1010,660" stroke="#475569" />
+
+    <!-- Animated Flows to Bottom -->
+    <path class="flow-line" d="M 600,530 L 600,605" stroke="#fb7185" stroke-width="1.5" />
+    <path class="flow-line" d="M 600,605 L 190,605 L 190,660" stroke="#fb7185" stroke-width="1.5" />
+    <path class="flow-line" d="M 600,605 L 460,605 L 460,660" stroke="#fb7185" stroke-width="1.5" />
+    <path class="flow-line" d="M 600,605 L 740,605 L 740,660" stroke="#fb7185" stroke-width="1.5" />
+    <path class="flow-line" d="M 600,605 L 1010,605 L 1010,660" stroke="#fb7185" stroke-width="1.5" />
+
+    <!-- Hub to Left Wing (Optimization) -->
+    <path d="M 475,450 L 380,450" stroke="url(#line-left)" />
+    <path d="M 380,367 L 380,557" stroke="#475569" stroke-width="2" />
+    <path d="M 380,367 L 350,367 M 380,462 L 350,462 M 380,557 L 350,557" stroke="#475569" />
+
+    <!-- Animated Flows to Left Wing -->
+    <path class="flow-line-reverse" d="M 475,450 L 380,450" stroke="#2dd4bf" stroke-width="1.5" />
+    <path class="flow-line-reverse" d="M 380,450 L 380,367 L 350,367" stroke="#2dd4bf" stroke-width="1.5" />
+    <path class="flow-line-reverse" d="M 380,450 L 350,462" stroke="#2dd4bf" stroke-width="1.5" />
+    <path class="flow-line-reverse" d="M 380,450 L 380,557 L 350,557" stroke="#2dd4bf" stroke-width="1.5" />
+
+    <!-- Hub to Right Wing (Integrations) -->
+    <path d="M 725,450 L 820,450" stroke="url(#line-right)" />
+    <path d="M 820,367 L 820,557" stroke="#475569" stroke-width="2" />
+    <path d="M 820,367 L 850,367 M 820,462 L 850,462 M 820,557 L 850,557" stroke="#475569" />
+
+    <!-- Animated Flows to Right Wing -->
+    <path class="flow-line" d="M 725,450 L 820,450" stroke="#fb7185" stroke-width="1.5" />
+    <path class="flow-line" d="M 820,450 L 820,367 L 850,367" stroke="#fb7185" stroke-width="1.5" />
+    <path class="flow-line" d="M 820,450 L 850,462" stroke="#fb7185" stroke-width="1.5" />
+    <path class="flow-line" d="M 820,450 L 820,557 L 850,557" stroke="#fb7185" stroke-width="1.5" />
+  </g>
+
+  <!-- ==================== CENTRAL HUB ==================== -->
+  <!-- Outer glowing rings -->
+  <g opacity="0.3" class="pulse-glow">
+    <rect x="455" y="340" width="290" height="220" rx="20" fill="none" stroke="url(#hub-grad)" stroke-width="3" filter="url(#hub-glow)" />
+  </g>
+  
+  <!-- Central Hub Card -->
+  <g transform="translate(475, 360)" filter="url(#shadow)">
+    <!-- Base Card -->
+    <rect width="250" height="180" rx="16" fill="#0f172a" stroke="url(#hub-grad)" stroke-width="2" />
+    <!-- Glass reflection -->
+    <path d="M 2,16 A 14,14 0 0,1 16,2 L 234,2 A 14,14 0 0,1 248,16 L 248,60 L 2,110 Z" fill="#ffffff" opacity="0.03" />
+    
+    <!-- Title Bar -->
+    <rect x="0" y="0" width="250" height="35" rx="16" fill="#1e293b" opacity="0.8" clip-path="inset(0 0 145 0)" />
+    <circle cx="20" cy="18" r="5" fill="#f43f5e" />
+    <circle cx="35" cy="18" r="5" fill="#fb923c" />
+    <circle cx="50" cy="18" r="5" fill="#34d399" />
+    <text x="235" y="23" text-anchor="end" font-size="11" fill="#64748b" font-family="monospace">v1.2.0</text>
+    
+    <!-- Terminal Shell Icon -->
+    <g transform="translate(25, 65)">
+      <rect width="36" height="36" rx="8" fill="#e28a67" fill-opacity="0.15" stroke="#e28a67" stroke-width="1.5" />
+      <path d="M 12,14 L 18,18 L 12,22 M 20,22 L 26,22" stroke="#e28a67" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none" />
+    </g>
+    
+    <text class="title" x="75" y="80" font-size="18">claude4ops</text>
+    <text class="subtitle" x="75" y="98" font-size="12" fill="#e28a67" font-weight="600">DevOps Control Hub</text>
+    
+    <line x1="20" y1="115" x2="230" y2="115" stroke="#1e293b" stroke-width="1.5" />
+    
+    <!-- Shell/Config details -->
+    <text class="code-text" x="25" y="138" font-size="11" fill="#94a3b8">> settings.json merge</text>
+    <text class="code-text" x="25" y="155" font-size="11" fill="#94a3b8">> statusline-command.sh</text>
+    <text class="code-text" x="25" y="172" font-size="11" fill="#94a3b8">> native Linux, macOS &amp; Win</text>
+  </g>
+
+  <!-- ==================== TOP SECTION: SLASH COMMANDS ==================== -->
+  
+  <!-- 1. KUBERNETES -->
+  <g class="interactive-card" transform="translate(70, 50)" filter="url(#shadow)">
+    <rect class="card-bg" width="200" height="210" rx="14" fill="#0f172a" fill-opacity="0.85" stroke="#1e293b" stroke-width="1.5" />
+    <rect class="card-border-glow" width="200" height="210" rx="14" fill="none" stroke="url(#grad-k8s)" stroke-width="1.5" opacity="0.3" />
+    
+    <!-- Icon Container -->
+    <g transform="translate(20, 20)">
+      <rect width="36" height="36" rx="8" fill="#38bdf8" fill-opacity="0.15" stroke="#38bdf8" stroke-width="1.5" />
+      <!-- Helm wheel icon -->
+      <circle cx="18" cy="18" r="10" stroke="#38bdf8" stroke-width="1.5" fill="none" />
+      <circle cx="18" cy="18" r="4" fill="#38bdf8" />
+      <path d="M 18,4 L 18,28 M 4,18 L 28,18 M 8,8 L 28,28 M 8,28 L 28,8" stroke="#38bdf8" stroke-width="1.5" />
+    </g>
+    <text class="heading" x="66" y="42" font-size="15">Kubernetes</text>
+    <line x1="20" y1="70" x2="180" y2="70" stroke="#1e293b" stroke-width="1.5" />
+    
+    <text class="subtitle" x="20" y="88">Workflows &amp; Manifests</text>
+    
+    <!-- Command list -->
+    <g transform="translate(20, 110)" fill="#cbd5e1">
+      <!-- Command 1 -->
+      <rect width="160" height="24" rx="4" fill="#1e293b" fill-opacity="0.5" />
+      <text class="code-text" x="8" y="16">/k8s:deploy</text>
+      
+      <!-- Command 2 -->
+      <rect y="32" width="160" height="24" rx="4" fill="#1e293b" fill-opacity="0.5" />
+      <text class="code-text" x="8" y="48">/k8s:troubleshoot</text>
+      
+      <!-- Command 3 -->
+      <rect y="64" width="160" height="24" rx="4" fill="#1e293b" fill-opacity="0.5" />
+      <text class="code-text" x="8" y="80">/k8s:manifest-validate</text>
+    </g>
+  </g>
+
+  <!-- 2. TERRAFORM -->
+  <g class="interactive-card" transform="translate(285, 50)" filter="url(#shadow)">
+    <rect class="card-bg" width="200" height="210" rx="14" fill="#0f172a" fill-opacity="0.85" stroke="#1e293b" stroke-width="1.5" />
+    <rect class="card-border-glow" width="200" height="210" rx="14" fill="none" stroke="url(#grad-tf)" stroke-width="1.5" opacity="0.3" />
+    
+    <!-- Icon Container -->
+    <g transform="translate(20, 20)">
+      <rect width="36" height="36" rx="8" fill="#c084fc" fill-opacity="0.15" stroke="#c084fc" stroke-width="1.5" />
+      <!-- Hexagon/IaC icon -->
+      <path d="M 18,6 L 28,12 L 28,24 L 18,30 L 8,24 L 8,12 Z" stroke="#c084fc" stroke-width="1.5" fill="none" />
+      <path d="M 18,6 L 18,18 M 18,18 L 8,12 M 18,18 L 28,12 M 18,18 L 18,30" stroke="#c084fc" stroke-width="1" />
+    </g>
+    <text class="heading" x="66" y="42" font-size="15">Terraform</text>
+    <line x1="20" y1="70" x2="180" y2="70" stroke="#1e293b" stroke-width="1.5" />
+    
+    <text class="subtitle" x="20" y="88">Infrastructure as Code</text>
+    
+    <!-- Command list -->
+    <g transform="translate(20, 110)" fill="#cbd5e1">
+      <rect width="160" height="24" rx="4" fill="#1e293b" fill-opacity="0.5" />
+      <text class="code-text" x="8" y="16">/terraform:plan-review</text>
+      
+      <rect y="32" width="160" height="24" rx="4" fill="#1e293b" fill-opacity="0.5" />
+      <text class="code-text" x="8" y="48">/terraform:apply</text>
+      
+      <rect y="64" width="160" height="24" rx="4" fill="#1e293b" fill-opacity="0.5" />
+      <text class="code-text" x="8" y="80">/terraform:cloud-cost</text>
+    </g>
+  </g>
+
+  <!-- 3. CI/CD -->
+  <g class="interactive-card" transform="translate(500, 50)" filter="url(#shadow)">
+    <rect class="card-bg" width="200" height="210" rx="14" fill="#0f172a" fill-opacity="0.85" stroke="#1e293b" stroke-width="1.5" />
+    <rect class="card-border-glow" width="200" height="210" rx="14" fill="none" stroke="url(#grad-cicd)" stroke-width="1.5" opacity="0.3" />
+    
+    <!-- Icon Container -->
+    <g transform="translate(20, 20)">
+      <rect width="36" height="36" rx="8" fill="#34d399" fill-opacity="0.15" stroke="#34d399" stroke-width="1.5" />
+      <!-- Pipeline/Node icon -->
+      <circle cx="12" cy="18" r="3" fill="#34d399" />
+      <circle cx="24" cy="11" r="3" fill="#34d399" />
+      <circle cx="24" cy="25" r="3" fill="#34d399" />
+      <path d="M 15,18 L 21,11 M 15,18 L 21,25" stroke="#34d399" stroke-width="1.5" />
+    </g>
+    <text class="heading" x="66" y="42" font-size="15">CI/CD Ship</text>
+    <line x1="20" y1="70" x2="180" y2="70" stroke="#1e293b" stroke-width="1.5" />
+    
+    <text class="subtitle" x="20" y="88">Pipelines &amp; Delivery</text>
+    
+    <!-- Command list -->
+    <g transform="translate(20, 110)" fill="#cbd5e1">
+      <rect width="160" height="20" rx="4" fill="#1e293b" fill-opacity="0.5" />
+      <text class="code-text" x="8" y="14">/cicd:pipeline-new</text>
+      
+      <rect y="24" width="160" height="20" rx="4" fill="#1e293b" fill-opacity="0.5" />
+      <text class="code-text" x="8" y="38">/cicd:deploy-strategy</text>
+      
+      <rect y="48" width="160" height="20" rx="4" fill="#1e293b" fill-opacity="0.5" />
+      <text class="code-text" x="8" y="62">/cicd:ship</text>
+
+      <rect y="72" width="160" height="20" rx="4" fill="#1e293b" fill-opacity="0.5" />
+      <text class="code-text" x="8" y="86">/cicd:pr-review</text>
+    </g>
+  </g>
+
+  <!-- 4. OBSERVABILITY -->
+  <g class="interactive-card" transform="translate(715, 50)" filter="url(#shadow)">
+    <rect class="card-bg" width="200" height="210" rx="14" fill="#0f172a" fill-opacity="0.85" stroke="#1e293b" stroke-width="1.5" />
+    <rect class="card-border-glow" width="200" height="210" rx="14" fill="none" stroke="url(#grad-obs)" stroke-width="1.5" opacity="0.3" />
+    
+    <!-- Icon Container -->
+    <g transform="translate(20, 20)">
+      <rect width="36" height="36" rx="8" fill="#fb923c" fill-opacity="0.15" stroke="#fb923c" stroke-width="1.5" />
+      <!-- Line chart icon -->
+      <path d="M 8,26 L 14,18 L 20,22 L 28,10" stroke="#fb923c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none" />
+      <path d="M 6,6 L 6,28 L 28,28" stroke="#fb923c" stroke-width="1.5" stroke-linecap="round" />
+    </g>
+    <text class="heading" x="66" y="42" font-size="15">Observability</text>
+    <line x1="20" y1="70" x2="180" y2="70" stroke="#1e293b" stroke-width="1.5" />
+    
+    <text class="subtitle" x="20" y="88">SLOs &amp; Alert Rules</text>
+    
+    <!-- Command list -->
+    <g transform="translate(20, 110)" fill="#cbd5e1">
+      <rect width="160" height="24" rx="4" fill="#1e293b" fill-opacity="0.5" />
+      <text class="code-text" x="8" y="16">/observability:slo-define</text>
+      
+      <rect y="32" width="160" height="24" rx="4" fill="#1e293b" fill-opacity="0.5" />
+      <text class="code-text" x="8" y="48">/observability:alert-new</text>
+    </g>
+  </g>
+
+  <!-- 5. INCIDENT -->
+  <g class="interactive-card" transform="translate(930, 50)" filter="url(#shadow)">
+    <rect class="card-bg" width="200" height="210" rx="14" fill="#0f172a" fill-opacity="0.85" stroke="#1e293b" stroke-width="1.5" />
+    <rect class="card-border-glow" width="200" height="210" rx="14" fill="none" stroke="url(#grad-inc)" stroke-width="1.5" opacity="0.3" />
+    
+    <!-- Icon Container -->
+    <g transform="translate(20, 20)">
+      <rect width="36" height="36" rx="8" fill="#f43f5e" fill-opacity="0.15" stroke="#f43f5e" stroke-width="1.5" />
+      <!-- Warning shield icon -->
+      <path d="M 18,6 L 28,10 L 28,20 C 28,26 24,30 18,32 C 12,30 8,26 8,20 L 8,10 Z" stroke="#f43f5e" stroke-width="1.5" fill="none" />
+      <path d="M 18,12 L 18,18 M 18,22 L 18,22" stroke="#f43f5e" stroke-width="2" stroke-linecap="round" />
+    </g>
+    <text class="heading" x="66" y="42" font-size="15">Incident Mgmt</text>
+    <line x1="20" y1="70" x2="180" y2="70" stroke="#1e293b" stroke-width="1.5" />
+    
+    <text class="subtitle" x="20" y="88">Postmortem &amp; RCA</text>
+    
+    <!-- Command list -->
+    <g transform="translate(20, 110)" fill="#cbd5e1">
+      <rect width="160" height="24" rx="4" fill="#1e293b" fill-opacity="0.5" />
+      <text class="code-text" x="8" y="16">/incident:postmortem</text>
+    </g>
+  </g>
+
+  <!-- ==================== LEFT WING: OPTIMIZATION (TOKEN SAVERS) ==================== -->
+  
+  <text class="title" x="70" y="315" font-size="14" fill="#2dd4bf" letter-spacing="1">CONTEXT &amp; TOKEN OPTIMIZATION</text>
+
+  <!-- 1. RTK PROXY -->
+  <g class="interactive-card" transform="translate(70, 330)" filter="url(#shadow)">
+    <rect class="card-bg" width="280" height="75" rx="10" fill="#0f172a" fill-opacity="0.85" stroke="#1e293b" stroke-width="1.5" />
+    <rect class="card-border-glow" width="280" height="75" rx="10" fill="none" stroke="url(#grad-opt)" stroke-width="1.5" opacity="0.3" />
+    <g transform="translate(15, 20)">
+      <rect width="36" height="36" rx="6" fill="#2dd4bf" fill-opacity="0.15" stroke="#2dd4bf" stroke-width="1.5" />
+      <path d="M 12,14 L 24,22 M 24,14 L 12,22 M 18,10 L 18,26" stroke="#2dd4bf" stroke-width="1.5" opacity="0.5" />
+      <path d="M 14,18 L 22,18 M 18,14 L 18,22" stroke="#2dd4bf" stroke-width="2" stroke-linecap="round" />
+    </g>
+    <text class="heading" x="65" y="32" font-size="14">RTK Shell Proxy <tspan class="code-text" fill="#2dd4bf" font-size="10" dx="8" dy="-1">rtk gain</tspan></text>
+    <text class="subtitle" x="65" y="50" font-size="11">CLI Shell proxy. Saves</text>
+    <text class="subtitle" x="65" y="64" font-size="11">60-90% dev tokens</text>
+  </g>
+
+  <!-- 2. CAVEMAN MODE -->
+  <g class="interactive-card" transform="translate(70, 425)" filter="url(#shadow)">
+    <rect class="card-bg" width="280" height="75" rx="10" fill="#0f172a" fill-opacity="0.85" stroke="#1e293b" stroke-width="1.5" />
+    <rect class="card-border-glow" width="280" height="75" rx="10" fill="none" stroke="url(#grad-opt)" stroke-width="1.5" opacity="0.3" />
+    <g transform="translate(15, 20)">
+      <rect width="36" height="36" rx="6" fill="#2dd4bf" fill-opacity="0.15" stroke="#2dd4bf" stroke-width="1.5" />
+      <path d="M 10,24 Q 18,10 26,24" stroke="#2dd4bf" stroke-width="1.5" fill="none" />
+      <circle cx="18" cy="18" r="2" fill="#2dd4bf" />
+    </g>
+    <text class="heading" x="65" y="32" font-size="14">Caveman Compressed Mode</text>
+    <text class="subtitle" x="65" y="50" font-size="11">Aggressive instruction</text>
+    <text class="subtitle" x="65" y="64" font-size="11">compressor (~75% savings)</text>
+  </g>
+
+  <!-- 3. DOCLING SKILL -->
+  <g class="interactive-card" transform="translate(70, 520)" filter="url(#shadow)">
+    <rect class="card-bg" width="280" height="75" rx="10" fill="#0f172a" fill-opacity="0.85" stroke="#1e293b" stroke-width="1.5" />
+    <rect class="card-border-glow" width="280" height="75" rx="10" fill="none" stroke="url(#grad-opt)" stroke-width="1.5" opacity="0.3" />
+    <g transform="translate(15, 20)">
+      <rect width="36" height="36" rx="6" fill="#2dd4bf" fill-opacity="0.15" stroke="#2dd4bf" stroke-width="1.5" />
+      <!-- Doc icon -->
+      <path d="M 12,10 L 20,10 L 24,14 L 24,26 L 12,26 Z" stroke="#2dd4bf" stroke-width="1.5" fill="none" />
+      <path d="M 15,16 L 21,16 M 15,20 L 21,20" stroke="#2dd4bf" stroke-width="1.5" />
+    </g>
+    <text class="heading" x="65" y="32" font-size="14">Docling Skill Extension</text>
+    <text class="subtitle" x="65" y="50" font-size="11">Converts PDF, DOCX, &amp;</text>
+    <text class="subtitle" x="65" y="64" font-size="11">images into Markdown</text>
+  </g>
+
+
+  <!-- ==================== RIGHT WING: EXTENSION AND INTEGRATION ==================== -->
+  
+  <text class="title" x="850" y="315" font-size="14" fill="#fb7185" letter-spacing="1">INTEGRATION &amp; PLATFORMS</text>
+
+  <!-- 1. MCP SERVERS -->
+  <g class="interactive-card" transform="translate(850, 330)" filter="url(#shadow)">
+    <rect class="card-bg" width="280" height="75" rx="10" fill="#0f172a" fill-opacity="0.85" stroke="#1e293b" stroke-width="1.5" />
+    <rect class="card-border-glow" width="280" height="75" rx="10" fill="none" stroke="url(#grad-int)" stroke-width="1.5" opacity="0.3" />
+    <g transform="translate(15, 20)">
+      <rect width="36" height="36" rx="6" fill="#fb7185" fill-opacity="0.15" stroke="#fb7185" stroke-width="1.5" />
+      <!-- Connect plug icon -->
+      <path d="M 18,10 L 18,15 M 13,15 L 23,15 L 21,22 L 15,22 Z M 18,22 L 18,26" stroke="#fb7185" stroke-width="1.5" fill="none" />
+    </g>
+    <text class="heading" x="65" y="32" font-size="14">MCP Servers <tspan class="code-text" fill="#fb7185" font-size="10" dx="8" dy="-1">/hooks:mcp</tspan></text>
+    <text class="subtitle" x="65" y="50" font-size="11">AWS, Kubernetes, &amp; GitHub</text>
+    <text class="subtitle" x="65" y="64" font-size="11">native connectors</text>
+  </g>
+
+  <!-- 2. GLOBAL RULES -->
+  <g class="interactive-card" transform="translate(850, 425)" filter="url(#shadow)">
+    <rect class="card-bg" width="280" height="75" rx="10" fill="#0f172a" fill-opacity="0.85" stroke="#1e293b" stroke-width="1.5" />
+    <rect class="card-border-glow" width="280" height="75" rx="10" fill="none" stroke="url(#grad-int)" stroke-width="1.5" opacity="0.3" />
+    <g transform="translate(15, 20)">
+      <rect width="36" height="36" rx="6" fill="#fb7185" fill-opacity="0.15" stroke="#fb7185" stroke-width="1.5" />
+      <!-- Scales icon -->
+      <path d="M 18,10 L 18,26 M 10,14 L 26,14 M 13,14 L 13,22 M 23,14 L 23,22" stroke="#fb7185" stroke-width="1.5" fill="none" />
+    </g>
+    <text class="heading" x="65" y="32" font-size="14">Git workflow &amp; SRE Rules</text>
+    <text class="subtitle" x="65" y="50" font-size="11">Standardizes commits,</text>
+    <text class="subtitle" x="65" y="64" font-size="11">branching, and reviews</text>
+  </g>
+
+  <!-- 3. INSTALL AND UPDATE -->
+  <g class="interactive-card" transform="translate(850, 520)" filter="url(#shadow)">
+    <rect class="card-bg" width="280" height="75" rx="10" fill="#0f172a" fill-opacity="0.85" stroke="#1e293b" stroke-width="1.5" />
+    <rect class="card-border-glow" width="280" height="75" rx="10" fill="none" stroke="url(#grad-int)" stroke-width="1.5" opacity="0.3" />
+    <g transform="translate(15, 20)">
+      <rect width="36" height="36" rx="6" fill="#fb7185" fill-opacity="0.15" stroke="#fb7185" stroke-width="1.5" />
+      <!-- Download/install icon -->
+      <path d="M 18,10 L 18,22 M 13,17 L 18,22 L 23,17 M 10,26 L 26,26" stroke="#fb7185" stroke-width="1.5" stroke-linejoin="round" fill="none" />
+    </g>
+    <text class="heading" x="65" y="32" font-size="14">Setup &amp; Updates <tspan class="code-text" fill="#fb7185" font-size="10" dx="8" dy="-1">/install</tspan></text>
+    <text class="subtitle" x="65" y="50" font-size="11">Self-install/updates syncing</text>
+    <text class="subtitle" x="65" y="64" font-size="11">scripts to local path</text>
+  </g>
+
+  <!-- ==================== BOTTOM SECTION: LIFECYCLE HOOKS ==================== -->
+  
+  <text class="title" x="70" y="640" font-size="14" fill="#fb7185" letter-spacing="1">CLAUDE CODE CLI LIFECYCLE HOOKS</text>
+
+  <!-- Hook 1: PreToolUse (block-prod.sh) -->
+  <g class="interactive-card" transform="translate(70, 660)" filter="url(#shadow)">
+    <rect class="card-bg" width="240" height="130" rx="12" fill="#0f172a" fill-opacity="0.85" stroke="#1e293b" stroke-width="1.5" />
+    <rect class="card-border-glow" width="240" height="130" rx="12" fill="none" stroke="url(#grad-inc)" stroke-width="1.5" opacity="0.3" />
+    
+    <g transform="translate(15, 15)">
+      <rect width="32" height="32" rx="6" fill="#f43f5e" fill-opacity="0.15" stroke="#f43f5e" stroke-width="1.5" />
+      <!-- Lock icon -->
+      <rect x="11" y="15" width="10" height="8" rx="1" stroke="#f43f5e" stroke-width="1.5" fill="none" />
+      <path d="M 13,15 L 13,12 A 3,3 0 0,1 19,12 L 19,15" stroke="#f43f5e" stroke-width="1.5" fill="none" />
+    </g>
+    
+    <text class="heading" x="60" y="30" font-size="14">PreToolUse Hook</text>
+    <text class="code-text" x="60" y="46" font-size="11" fill="#f43f5e">block-prod.sh</text>
+    <line x1="15" y1="65" x2="225" y2="65" stroke="#1e293b" stroke-width="1.5" />
+    <text class="subtitle" x="15" y="85" font-size="12">Guardrails preventing Claude</text>
+    <text class="subtitle" x="15" y="102" font-size="12">from modifying production.</text>
+  </g>
+
+  <!-- Hook 2: Stop Hook (auto-lint.sh) -->
+  <g class="interactive-card" transform="translate(350, 660)" filter="url(#shadow)">
+    <rect class="card-bg" width="240" height="130" rx="12" fill="#0f172a" fill-opacity="0.85" stroke="#1e293b" stroke-width="1.5" />
+    <rect class="card-border-glow" width="240" height="130" rx="12" fill="none" stroke="url(#grad-tf)" stroke-width="1.5" opacity="0.3" />
+    
+    <g transform="translate(15, 15)">
+      <rect width="32" height="32" rx="6" fill="#c084fc" fill-opacity="0.15" stroke="#c084fc" stroke-width="1.5" />
+      <!-- Lint/Magic wand icon -->
+      <path d="M 12,20 L 20,12 M 18,10 L 22,14 M 22,10 L 22,10" stroke="#c084fc" stroke-width="1.5" stroke-linecap="round" fill="none" />
+      <circle cx="12" cy="12" r="1" fill="#c084fc" />
+      <circle cx="20" cy="20" r="1" fill="#c084fc" />
+    </g>
+    
+    <text class="heading" x="60" y="30" font-size="14">Stop Hook</text>
+    <text class="code-text" x="60" y="46" font-size="11" fill="#c084fc">auto-lint.sh</text>
+    <line x1="15" y1="65" x2="225" y2="65" stroke="#1e293b" stroke-width="1.5" />
+    <text class="subtitle" x="15" y="85" font-size="12">Runs formatter/linter on files</text>
+    <text class="subtitle" x="15" y="102" font-size="12">at the end of Claude Code turns.</text>
+  </g>
+
+  <!-- Hook 3: PostToolUse Hook (audit-bash.sh) -->
+  <g class="interactive-card" transform="translate(630, 660)" filter="url(#shadow)">
+    <rect class="card-bg" width="240" height="130" rx="12" fill="#0f172a" fill-opacity="0.85" stroke="#1e293b" stroke-width="1.5" />
+    <rect class="card-border-glow" width="240" height="130" rx="12" fill="none" stroke="url(#grad-k8s)" stroke-width="1.5" opacity="0.3" />
+    
+    <g transform="translate(15, 15)">
+      <rect width="32" height="32" rx="6" fill="#38bdf8" fill-opacity="0.15" stroke="#38bdf8" stroke-width="1.5" />
+      <!-- Checklist/History icon -->
+      <path d="M 11,12 L 21,12 M 11,16 L 21,16 M 11,20 L 17,20 M 21,20 L 21,20" stroke="#38bdf8" stroke-width="1.5" stroke-linecap="round" fill="none" />
+    </g>
+    
+    <text class="heading" x="60" y="30" font-size="14">PostToolUse Hook</text>
+    <text class="code-text" x="60" y="46" font-size="11" fill="#38bdf8">audit-bash.sh</text>
+    <line x1="15" y1="65" x2="225" y2="65" stroke="#1e293b" stroke-width="1.5" />
+    <text class="subtitle" x="15" y="85" font-size="12">Captures secure history audit logs</text>
+    <text class="subtitle" x="15" y="102" font-size="12">of all executed shell commands.</text>
+  </g>
+
+  <!-- Hook 4: Notification Hook (slack-notify.sh) -->
+  <g class="interactive-card" transform="translate(910, 660)" filter="url(#shadow)">
+    <rect class="card-bg" width="240" height="130" rx="12" fill="#0f172a" fill-opacity="0.85" stroke="#1e293b" stroke-width="1.5" />
+    <rect class="card-border-glow" width="240" height="130" rx="12" fill="none" stroke="url(#grad-obs)" stroke-width="1.5" opacity="0.3" />
+    
+    <g transform="translate(15, 15)">
+      <rect width="32" height="32" rx="6" fill="#fb923c" fill-opacity="0.15" stroke="#fb923c" stroke-width="1.5" />
+      <!-- Bell/Message icon -->
+      <path d="M 16,10 C 13,10 11,12 11,15 L 11,20 L 9,22 L 23,22 L 21,20 L 21,15 C 21,12 19,10 16,10 Z M 14,25 A 2,2 0 0,0 18,25" stroke="#fb923c" stroke-width="1.5" stroke-linecap="round" fill="none" />
+    </g>
+    
+    <text class="heading" x="60" y="30" font-size="14">Notification Hook</text>
+    <text class="code-text" x="60" y="46" font-size="11" fill="#fb923c">slack-notify.sh</text>
+    <line x1="15" y1="65" x2="225" y2="65" stroke="#1e293b" stroke-width="1.5" />
+    <text class="subtitle" x="15" y="85" font-size="12">Sends webhook integration alerts</text>
+    <text class="subtitle" x="15" y="102" font-size="12">on deployment &amp; incident events.</text>
+  </g>
+
+</svg>
