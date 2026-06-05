@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.14.1](https://github.com/ops4life/claude4ops/compare/v1.14.0...v1.14.1) (2026-06-05)
+
+
+### Bug Fixes
+
+* truncate long branch names to 30 chars in statusline ([75bbc1e](https://github.com/ops4life/claude4ops/commit/75bbc1e002b40ac0ee6b7238ce2ac58beecbeec7))
+
 # [1.14.0](https://github.com/ops4life/claude4ops/compare/v1.13.2...v1.14.0) (2026-06-05)
 
 

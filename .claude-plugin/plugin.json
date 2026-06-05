@@ -1,7 +1,7 @@
 {
   "name": "claude4ops",
   "description": "DevOps superpowers for Claude Code. Automate Kubernetes, Terraform, CI/CD pipelines, SLO alerting, incident postmortems, and multi-cloud cost optimization — with production-ready guided workflows for AWS, GCP, and Azure.",
-  "version": "1.14.0",
+  "version": "1.14.1",
   "author": {
     "name": "ops4life"
   },
