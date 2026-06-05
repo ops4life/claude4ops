@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.11.2](https://github.com/ops4life/claude4ops/compare/v1.11.1...v1.11.2) (2026-06-05)
+
+
+### Bug Fixes
+
+* sync statusline script in install.md with scripts/statusline-command.sh ([a9f5750](https://github.com/ops4life/claude4ops/commit/a9f5750e679a70172165ef6512a6f2ac51e26dfd))
+
 ## [1.11.1](https://github.com/ops4life/claude4ops/compare/v1.11.0...v1.11.1) (2026-06-05)
 
 
