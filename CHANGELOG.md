@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+# [1.15.0](https://github.com/ops4life/claude4ops/compare/v1.14.1...v1.15.0) (2026-06-05)
+
+
+### Features
+
+* add convert skill for migrating Claude Code workflows to other AI tools ([c98ec90](https://github.com/ops4life/claude4ops/commit/c98ec908f29bde6255a336b847e9462c63093bcf)), closes [#10](https://github.com/ops4life/claude4ops/issues/10)
+
 ## [1.14.1](https://github.com/ops4life/claude4ops/compare/v1.14.0...v1.14.1) (2026-06-05)
 
 
