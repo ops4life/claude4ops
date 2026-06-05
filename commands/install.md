@@ -95,10 +95,10 @@ Use two `AskUserQuestion` calls (max 4 options each).
 **First call** — header ≤12 chars:
 
 - header: `"Components"`
-- question: `"Which components do you want to install? (first batch)"`
+- question: `"Which components do you want to install?"`
 - multiSelect: `true`
 - options:
-  - label: `"All"`, description: `"Install all 7 components — skip second question"`
+  - label: `"All"`, description: `"Settings, Hooks, MCP, Skills, Rules, Optimization, Plugins — installs everything"`
   - label: `"Settings"`, description: `"settings.json merge + status line script"`
   - label: `"Hooks"`, description: `"lifecycle hooks (block-prod, auto-lint, audit, Slack)"`
   - label: `"MCP"`, description: `"AWS, Kubernetes, GitHub real API access"`
