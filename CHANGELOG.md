@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.15.1](https://github.com/ops4life/claude4ops/compare/v1.15.0...v1.15.1) (2026-06-05)
+
+
+### Bug Fixes
+
+* rename docling skill to claude4ops:docling and add skip-if-installed checks ([e0da058](https://github.com/ops4life/claude4ops/commit/e0da05844d9d7562031a9023ca13a4ff015f84c1))
+
 # [1.15.0](https://github.com/ops4life/claude4ops/compare/v1.14.1...v1.15.0) (2026-06-05)
 
 
