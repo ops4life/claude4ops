@@ -4,6 +4,7 @@ input=$(cat)
 model=$(echo "$input" | jq -r '.model.display_name')
 five=$(echo "$input" | jq -r '.rate_limits.five_hour.used_percentage // empty')
 week=$(echo "$input" | jq -r '.rate_limits.seven_day.used_percentage // empty')
+week_resets=$(echo "$input" | jq -r '.rate_limits.seven_day.resets_at // empty')
 
 # Build a 10-character color-coded progress bar from a percentage value
 make_bar() {
@@ -12,19 +13,19 @@ make_bar() {
   empty=$((10 - filled))
   pct_int=$(printf "%.0f" "$pct")
   if [ "$pct_int" -ge 80 ]; then
-    color="\033[31m"
+    color="\033[38;5;196m"
   elif [ "$pct_int" -ge 60 ]; then
-    color="\033[33m"
+    color="\033[38;5;214m"
   else
-    color="\033[32m"
+    color="\033[38;5;82m"
   fi
   filled_chars=""
   i=0
-  while [ "$i" -lt "$filled" ]; do filled_chars="${filled_chars}█"; i=$((i + 1)); done
+  while [ "$i" -lt "$filled" ]; do filled_chars="${filled_chars}▓"; i=$((i + 1)); done
   empty_chars=""
   i=0
-  while [ "$i" -lt "$empty" ]; do empty_chars="${empty_chars}-"; i=$((i + 1)); done
-  printf "[%b%s\033[0m%s]" "$color" "$filled_chars" "$empty_chars"
+  while [ "$i" -lt "$empty" ]; do empty_chars="${empty_chars}░"; i=$((i + 1)); done
+  printf "%b%s\033[0m%s" "$color" "$filled_chars" "$empty_chars"
 }
 
 # 5-hour session limit usage with reset time
@@ -44,7 +45,12 @@ fi
 # Weekly rate limit usage
 if [ -n "$week" ]; then
   week_pct=$(printf "%.0f" "$week")
-  week_display="7d:$(make_bar "$week") ${week_pct}%"
+  if [ -n "$week_resets" ]; then
+    reset_date=$(TZ=Asia/Bangkok date -d "@${week_resets}" +"%b %d %H:%M" 2>/dev/null || TZ=Asia/Bangkok date -r "$week_resets" +"%b %d %H:%M" 2>/dev/null)
+    week_display="7d:$(make_bar "$week") ${week_pct}% (resets ${reset_date})"
+  else
+    week_display="7d:$(make_bar "$week") ${week_pct}%"
+  fi
 else
   week_display=""
 fi

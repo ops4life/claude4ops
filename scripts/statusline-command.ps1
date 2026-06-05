@@ -7,8 +7,13 @@ $five  = $data.rate_limits.five_hour.used_percentage
 $week  = $data.rate_limits.seven_day.used_percentage
 
 function New-Bar($pct) {
+    $esc = [char]27
+    $pctInt = [Math]::Round([double]$pct)
     $filled = [Math]::Min([Math]::Round([double]$pct / 10), 10)
-    return ('▓' * $filled) + ('░' * (10 - $filled))
+    $color = if ($pctInt -ge 80) { "${esc}[38;5;196m" }
+             elseif ($pctInt -ge 60) { "${esc}[38;5;214m" }
+             else { "${esc}[38;5;82m" }
+    return "${color}$('▓' * $filled)${esc}[0m$('░' * (10 - $filled))"
 }
 
 $parts = $model
@@ -27,7 +32,13 @@ if ($five) {
 
 if ($week) {
     $weekPct = [Math]::Round([double]$week)
-    $parts += "  7d:$(New-Bar $week) ${weekPct}%"
+    $weekDisplay = "7d:$(New-Bar $week) ${weekPct}%"
+    $weekResets = $data.rate_limits.seven_day.resets_at
+    if ($weekResets) {
+        $resetDate = [DateTimeOffset]::FromUnixTimeSeconds([long]$weekResets).ToLocalTime().ToString("MMM dd HH:mm")
+        $weekDisplay += " (resets $resetDate)"
+    }
+    $parts += "  $weekDisplay"
 }
 
 Write-Host -NoNewline $parts
