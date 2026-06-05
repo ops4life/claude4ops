@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+# [1.12.0](https://github.com/ops4life/claude4ops/compare/v1.11.3...v1.12.0) (2026-06-05)
+
+
+### Features
+
+* modernize statusline bars with color, Windows PS1 support, weekly reset time ([a1c9064](https://github.com/ops4life/claude4ops/commit/a1c906489e9ab70078b72d4be42563412ed44344))
+
 ## [1.11.3](https://github.com/ops4life/claude4ops/compare/v1.11.2...v1.11.3) (2026-06-05)
 
 
