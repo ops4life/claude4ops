@@ -2,11 +2,11 @@
 
 ![claude4ops banner](./assets/banner.svg)
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](./LICENSE)
-[![Claude Code Plugin](https://img.shields.io/badge/Claude%20Code-Plugin-blue)](https://github.com/ops4life/claude4ops)
-[![Platform: Linux](https://img.shields.io/badge/platform-Linux-blue?logo=linux)](https://github.com/ops4life/claude4ops)
-[![Platform: macOS](https://img.shields.io/badge/platform-macOS-blue?logo=apple)](https://github.com/ops4life/claude4ops)
-[![Platform: Windows](https://img.shields.io/badge/platform-Windows-blue?logo=windows)](https://github.com/ops4life/claude4ops)
+[![License: MIT](https://img.shields.io/badge/License-MIT-d97757)](./LICENSE)
+[![Claude Code Plugin](https://img.shields.io/badge/Claude%20Code-Plugin-d97757?logo=claude)](https://github.com/ops4life/claude4ops)
+[![Platform: Linux](https://img.shields.io/badge/platform-Linux-d97757?logo=linux)](https://github.com/ops4life/claude4ops)
+[![Platform: macOS](https://img.shields.io/badge/platform-macOS-d97757?logo=apple)](https://github.com/ops4life/claude4ops)
+[![Platform: Windows](https://img.shields.io/badge/platform-Windows-d97757?logo=windows)](https://github.com/ops4life/claude4ops)
 
 Production-ready DevOps superpowers for everyone. Guided workflows for Kubernetes, Terraform, CI/CD, SLOs, and incident response — with token optimization built in. Runs on Linux, macOS, and Windows.
 
