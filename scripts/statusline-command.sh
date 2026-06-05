@@ -55,8 +55,14 @@ else
   week_display=""
 fi
 
+# Working directory (shorten $HOME to ~)
+cwd=$(pwd | sed "s|^$HOME|~|")
+branch=$(git rev-parse --abbrev-ref HEAD 2>/dev/null)
+
 # Combine parts
-parts="$model"
+context="$cwd"
+[ -n "$branch" ] && context="$context ($branch)"
+parts="$context | $model"
 [ -n "$five_display" ] && parts="$parts | $five_display"
 [ -n "$week_display" ] && parts="$parts  $week_display"
 

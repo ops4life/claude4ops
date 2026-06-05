@@ -16,7 +16,10 @@ function New-Bar($pct) {
     return "${color}$('▓' * $filled)${esc}[0m$('░' * (10 - $filled))"
 }
 
-$parts = $model
+$cwd = (Get-Location).Path -replace [regex]::Escape($HOME), '~'
+$branch = git rev-parse --abbrev-ref HEAD 2>$null
+$context = if ($branch) { "$cwd ($branch)" } else { $cwd }
+$parts = "$context | $model"
 
 if ($five) {
     $fivePct = [Math]::Round([double]$five)
