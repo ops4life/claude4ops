@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+# [1.11.0](https://github.com/ops4life/claude4ops/compare/v1.10.0...v1.11.0) (2026-06-05)
+
+
+### Features
+
+* enhance statusline bar with ANSI colors and Unicode block chars ([f4c8f86](https://github.com/ops4life/claude4ops/commit/f4c8f8631218cfb0d64d471aeed31293d96877e2))
+
 # [1.10.0](https://github.com/ops4life/claude4ops/compare/v1.9.0...v1.10.0) (2026-06-05)
 
 
