@@ -603,9 +603,37 @@ Enter numbers and/or 'a':
 
 #### RTK
 
-**Windows (PowerShell)**: RTK's install script requires a POSIX shell. Skip RTK on native Windows or use WSL2 to install it separately. Print:
-> `RTK requires bash — skipping on Windows. Install via WSL2 or manually: https://github.com/rtk-ai/rtk`
+**Windows (PowerShell)**: RTK's install script requires a POSIX shell, but the Windows binary works in CLAUDE.md injection mode — filters apply, auto-rewrite hook is unavailable. Install natively:
+
+```powershell
+# 1. Download Windows binary
+$rtk_url = "https://github.com/rtk-ai/rtk/releases/latest/download/rtk-x86_64-pc-windows-msvc.zip"
+$zip = "$env:TEMP\rtk.zip"
+Invoke-WebRequest -Uri $rtk_url -OutFile $zip
+
+# 2. Extract to PATH location
+$bin = "$env:USERPROFILE\.local\bin"
+New-Item -ItemType Directory -Force -Path $bin | Out-Null
+Expand-Archive -Path $zip -DestinationPath $bin -Force
+Remove-Item $zip
+
+# 3. Add to PATH if not already present
+$currentPath = [Environment]::GetEnvironmentVariable("PATH", "User")
+if ($currentPath -notlike "*$bin*") {
+    [Environment]::SetEnvironmentVariable("PATH", "$bin;$currentPath", "User")
+    $env:PATH = "$bin;$env:PATH"
+}
+
+# 4. Initialize (CLAUDE.md injection mode — no hook, but filters work)
+& "$bin\rtk.exe" init -g
+```
+
+If download or init fails, print:
+> `RTK install failed on Windows — skipping. For full hook support use WSL2, or install manually: https://github.com/rtk-ai/rtk#windows`
 Then continue to Caveman.
+
+On success, inform the user:
+> `RTK installed (Windows mode): filters active, auto-rewrite hook not available. Use rtk <cmd> explicitly, or switch to WSL2 for full support.`
 
 **Linux/macOS/WSL/Git Bash**:
 
