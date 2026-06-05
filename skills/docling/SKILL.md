@@ -1,5 +1,5 @@
 ---
-name: docling
+name: claude4ops:docling
 description: Convert reference files (PDF, DOCX, PPTX, XLSX, HTML, images) to Markdown before reading or acting on them. Use when user provides a non-Markdown file as context for an implementation task — "use this doc", "based on this file", "implement from this", or any path ending in .pdf/.docx/.pptx/.xlsx/.html/.htm/.png/.jpg/.jpeg/.gif/.webp/.tiff.
 ---
 

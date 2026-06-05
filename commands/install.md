@@ -500,26 +500,30 @@ Enter numbers and/or 'a':
 **Windows (PowerShell)**: RTK's install script requires a POSIX shell, but the Windows binary works in CLAUDE.md injection mode — filters apply, auto-rewrite hook is unavailable. Install natively:
 
 ```powershell
-# 1. Download Windows binary
-$rtk_url = "https://github.com/rtk-ai/rtk/releases/latest/download/rtk-x86_64-pc-windows-msvc.zip"
-$zip = "$env:TEMP\rtk.zip"
-Invoke-WebRequest -Uri $rtk_url -OutFile $zip
+if (Get-Command rtk -ErrorAction SilentlyContinue) {
+  Write-Host "RTK already installed — skipping"
+} else {
+  # 1. Download Windows binary
+  $rtk_url = "https://github.com/rtk-ai/rtk/releases/latest/download/rtk-x86_64-pc-windows-msvc.zip"
+  $zip = "$env:TEMP\rtk.zip"
+  Invoke-WebRequest -Uri $rtk_url -OutFile $zip
 
-# 2. Extract to PATH location
-$bin = "$env:USERPROFILE\.local\bin"
-New-Item -ItemType Directory -Force -Path $bin | Out-Null
-Expand-Archive -Path $zip -DestinationPath $bin -Force
-Remove-Item $zip
+  # 2. Extract to PATH location
+  $bin = "$env:USERPROFILE\.local\bin"
+  New-Item -ItemType Directory -Force -Path $bin | Out-Null
+  Expand-Archive -Path $zip -DestinationPath $bin -Force
+  Remove-Item $zip
 
-# 3. Add to PATH if not already present
-$currentPath = [Environment]::GetEnvironmentVariable("PATH", "User")
-if ($currentPath -notlike "*$bin*") {
-    [Environment]::SetEnvironmentVariable("PATH", "$bin;$currentPath", "User")
-    $env:PATH = "$bin;$env:PATH"
+  # 3. Add to PATH if not already present
+  $currentPath = [Environment]::GetEnvironmentVariable("PATH", "User")
+  if ($currentPath -notlike "*$bin*") {
+      [Environment]::SetEnvironmentVariable("PATH", "$bin;$currentPath", "User")
+      $env:PATH = "$bin;$env:PATH"
+  }
+
+  # 4. Initialize (CLAUDE.md injection mode — no hook, but filters work)
+  & "$bin\rtk.exe" init -g
 }
-
-# 4. Initialize (CLAUDE.md injection mode — no hook, but filters work)
-& "$bin\rtk.exe" init -g
 ```
 
 If download or init fails, print:
@@ -532,7 +536,11 @@ On success, inform the user:
 **Linux/macOS/WSL/Git Bash**:
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/rtk-ai/rtk/refs/heads/master/install.sh | sh
+if command -v rtk >/dev/null 2>&1; then
+  echo "RTK already installed ($(rtk --version 2>/dev/null || echo 'version unknown')) — skipping"
+else
+  curl -fsSL https://raw.githubusercontent.com/rtk-ai/rtk/refs/heads/master/install.sh | sh
+fi
 ```
 
 If curl or install script fails, print:
@@ -561,9 +569,15 @@ Then continue.
 
 #### Caveman
 
+Check if already installed first:
+
 ```bash
-claude plugin marketplace add JuliusBrussee/caveman
-claude plugin install caveman@caveman
+if claude plugin list 2>/dev/null | grep -q 'caveman'; then
+  echo "Caveman already installed — skipping"
+else
+  claude plugin marketplace add JuliusBrussee/caveman
+  claude plugin install caveman@caveman
+fi
 ```
 
 If either command fails, print:
@@ -598,13 +612,16 @@ First ensure the `claude-plugins-official` marketplace is registered (idempotent
 claude plugin marketplace add anthropics/claude-plugins-official 2>/dev/null || true
 ```
 
-Then install each selected plugin:
+Then install each selected plugin, skipping if already installed:
 
 ```bash
-claude plugin install context7@claude-plugins-official
-claude plugin install playwright@claude-plugins-official
-claude plugin install superpowers@claude-plugins-official
-claude plugin install frontend-design@claude-plugins-official
+for plugin in context7 playwright superpowers frontend-design; do
+  if claude plugin list 2>/dev/null | grep -q "^$plugin"; then
+    echo "$plugin already installed — skipping"
+  else
+    claude plugin install "$plugin@claude-plugins-official"
+  fi
+done
 ```
 
 On failure for any individual plugin, print warning and continue:
