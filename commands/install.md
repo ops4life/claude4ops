@@ -135,6 +135,8 @@ On **Windows (PowerShell)**, write `statusline-command.ps1` instead and set the 
 On **Linux/macOS/WSL/Git Bash**, write the sh version:
 
 ```bash
+cp "$(find "$HOME/.claude" -path "*/claude4ops*/scripts/statusline-command.sh" 2>/dev/null | head -1)" \
+   "$HOME/.claude/statusline-command.sh" 2>/dev/null || \
 cat > "$HOME/.claude/statusline-command.sh" << 'STATUSLINE'
 #!/bin/sh
 input=$(cat)
@@ -147,11 +149,21 @@ make_bar() {
   pct="$1"
   filled=$(awk "BEGIN { x = int($pct / 10 + 0.5); if (x > 10) x = 10; print x }")
   empty=$((10 - filled))
-  bar=""
+  pct_int=$(printf "%.0f" "$pct")
+  if [ "$pct_int" -ge 80 ]; then
+    color="\033[31m"
+  elif [ "$pct_int" -ge 60 ]; then
+    color="\033[33m"
+  else
+    color="\033[32m"
+  fi
+  filled_chars=""
   i=0
-  while [ "$i" -lt "$filled" ]; do bar="${bar}▓"; i=$((i + 1)); done
-  while [ "$i" -lt 10 ]; do bar="${bar}░"; i=$((i + 1)); done
-  printf "%s" "$bar"
+  while [ "$i" -lt "$filled" ]; do filled_chars="${filled_chars}█"; i=$((i + 1)); done
+  empty_chars=""
+  i=0
+  while [ "$i" -lt "$empty" ]; do empty_chars="${empty_chars}-"; i=$((i + 1)); done
+  printf "[%b%s\033[0m%s]" "$color" "$filled_chars" "$empty_chars"
 }
 
 five_resets=$(echo "$input" | jq -r '.rate_limits.five_hour.resets_at // empty')
