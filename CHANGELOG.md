@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file.
 
+# [1.10.0](https://github.com/ops4life/claude4ops/compare/v1.9.0...v1.10.0) (2026-06-05)
+
+
+### Features
+
+* add multi-platform support for Linux, macOS, and Windows ([42564db](https://github.com/ops4life/claude4ops/commit/42564db5431600c6b58b0d06824b911ae92dbef5))
+* add Plugins component to install command ([e2afb21](https://github.com/ops4life/claude4ops/commit/e2afb217eca4b8e65b146d6c2eebfedf54c1bf0d))
+
 # [1.9.0](https://github.com/ops4life/claude4ops/compare/v1.8.0...v1.9.0) (2026-05-20)
 
 
