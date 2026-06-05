@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.11.1](https://github.com/ops4life/claude4ops/compare/v1.11.0...v1.11.1) (2026-06-05)
+
+
+### Bug Fixes
+
+* clarify component selection question and All option description ([8ee2a4b](https://github.com/ops4life/claude4ops/commit/8ee2a4b87d2a78e9817dc84fd002fee126de2833))
+
 # [1.11.0](https://github.com/ops4life/claude4ops/compare/v1.10.0...v1.11.0) (2026-06-05)
 
 
