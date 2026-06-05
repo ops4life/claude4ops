@@ -21,11 +21,13 @@ If output is `MISSING_JQ`, stop and tell the user:
 
 ## Step 2 — Scope
 
-Ask the user:
+Use `AskUserQuestion` with **exactly** these parameters (header must be ≤12 chars):
 
-> **Where should claude4ops be installed?**
-> - `u` — **User** → `~/.claude/` (applies to all projects on this machine)
-> - `p` — **Project** → `.claude/` in the current directory (repo-local, committable to git)
+- header: `"Scope"`
+- question: `"Where should claude4ops be installed?"`
+- options:
+  - label: `"User"`, description: `"~/.claude/ — applies to all projects on this machine"`
+  - label: `"Project"`, description: `".claude/ in current directory — repo-local, committable to git"`
 
 Store the answer. All paths below use `$BASE`:
 - User → `BASE="$HOME/.claude"`
@@ -39,27 +41,33 @@ mkdir -p "$BASE"
 
 ## Step 3 — Component Selection
 
-Present the following checklist and ask the user to enter numbers and/or `a`:
+Use two `AskUserQuestion` calls (max 4 options each).
 
-```
-Which components do you want to install? (select all that apply)
+**First call** — header ≤12 chars:
 
-  1. Settings  — settings.json merge + status line script
-  2. Hooks     — lifecycle hooks (block-prod, auto-lint, audit, Slack)
-  3. MCP       — AWS, Kubernetes, GitHub real API access
-  4. Skills    — docling (PDF/DOCX/image → Markdown)
-  5. Rules        — git workflow rules
-  6. Optimization — RTK (token-efficient shell proxy) + Caveman mode plugin
-  a. All
+- header: `"Components"`
+- question: `"Which components do you want to install? (first batch)"`
+- multiSelect: `true`
+- options:
+  - label: `"All"`, description: `"Install all 7 components — skip second question"`
+  - label: `"Settings"`, description: `"settings.json merge + status line script"`
+  - label: `"Hooks"`, description: `"lifecycle hooks (block-prod, auto-lint, audit, Slack)"`
+  - label: `"MCP"`, description: `"AWS, Kubernetes, GitHub real API access"`
 
-Enter numbers and/or 'a', separated by spaces (e.g. 1 3 5 or a):
-```
+If user selected `"All"`, skip second call and mark all 7 selected.
 
-- Input includes `a` → select all 6 components; Optimization sub-selection still shown (only 2 tools, quick)
-- Input is numbers → select only those components
-- Invalid input → re-prompt
+**Second call** (only if `"All"` was NOT selected):
 
-Record selections, then install all at once in Step 4.
+- header: `"More"`
+- question: `"Which additional components do you want to install?"`
+- multiSelect: `true`
+- options:
+  - label: `"Skills"`, description: `"docling — PDF/DOCX/image → Markdown"`
+  - label: `"Rules"`, description: `"git workflow rules"`
+  - label: `"Optimization"`, description: `"RTK token proxy + Caveman mode plugin"`
+  - label: `"Plugins"`, description: `"context7, playwright, superpowers, frontend-design"`
+
+Merge both answers. Record final selections, then install all at once in Step 4.
 
 ---
 
@@ -519,6 +527,46 @@ Then continue.
 
 ---
 
+### Plugins
+
+This section runs only if the user selected "Plugins" in Step 3 (or selected "All").
+
+If "All" was selected in Step 3, install all 4 plugins with no sub-question.
+
+Otherwise present `AskUserQuestion`:
+
+- header: `"Plugins"`
+- question: `"Which plugins do you want to install?"`
+- multiSelect: `true`
+- options:
+  - label: `"All"`, description: `"Install all 4 plugins"`
+  - label: `"context7"`, description: `"Up-to-date library docs via Model Context Protocol"`
+  - label: `"playwright"`, description: `"Browser automation and testing"`
+  - label: `"superpowers"`, description: `"Agentic workflow skills (brainstorming, TDD, debugging)"`
+  - label: `"frontend-design"`, description: `"UI/UX design guidance and component patterns"`
+
+If "All" selected in sub-question: install all 4.
+
+First ensure the `claude-plugins-official` marketplace is registered (idempotent, non-fatal):
+
+```bash
+claude plugin marketplace add anthropics/claude-plugins-official 2>/dev/null || true
+```
+
+Then install each selected plugin:
+
+```bash
+claude plugin install context7@claude-plugins-official
+claude plugin install playwright@claude-plugins-official
+claude plugin install superpowers@claude-plugins-official
+claude plugin install frontend-design@claude-plugins-official
+```
+
+On failure for any individual plugin, print warning and continue:
+> `<name> install failed — skipping. Install manually: claude plugin install <name>@claude-plugins-official`
+
+---
+
 ## Step 5 — Summary
 
 After all components are installed, print a summary:
@@ -535,9 +583,10 @@ Installed:
   ✓ Skills    → docling  ($BASE/skills/docling/)
   ✓ Rules        → git.md   ($BASE/rules/)
   ✓ Optimization → RTK (~/.local/bin/rtk), Caveman plugin
+  ✓ Plugins      → context7, playwright, superpowers, frontend-design
 
 Restart Claude Code to apply changes.
 If RTK was installed, also reload your shell: source ~/.bashrc (or ~/.zshrc)
 ```
 
-Only list components that were actually installed. For Optimization, only list tools that succeeded.
+Only list components that were actually installed. For Optimization, only list tools that succeeded. For Plugins, only list plugins that succeeded; if partial, append `(<failed> failed — install manually: claude plugin install <name>@claude-plugins-official)`.
