@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+# [1.13.0](https://github.com/ops4life/claude4ops/compare/v1.12.0...v1.13.0) (2026-06-05)
+
+
+### Features
+
+* add cwd and git branch to statusline ([3558c8a](https://github.com/ops4life/claude4ops/commit/3558c8a6814baeabdb8111f57c8c2d1988673968))
+
 # [1.12.0](https://github.com/ops4life/claude4ops/compare/v1.11.3...v1.12.0) (2026-06-05)
 
 
