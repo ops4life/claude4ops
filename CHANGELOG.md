@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.13.1](https://github.com/ops4life/claude4ops/compare/v1.13.0...v1.13.1) (2026-06-05)
+
+
+### Bug Fixes
+
+* shorten cwd to last 2 path segments in statusline ([a2e911e](https://github.com/ops4life/claude4ops/commit/a2e911e13ec9cb66561e25664ec61d90d427c4ef))
+
 # [1.13.0](https://github.com/ops4life/claude4ops/compare/v1.12.0...v1.13.0) (2026-06-05)
 
 
