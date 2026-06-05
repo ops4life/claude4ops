@@ -22,6 +22,7 @@ $rawCwd = (Get-Location).Path -replace [regex]::Escape($HOME), '~'
 $segments = $rawCwd -split '[/\\]'
 $cwd = if ($segments.Count -le 2) { $rawCwd } else { $segments[-2..-1] -join '/' }
 $branch = git rev-parse --abbrev-ref HEAD 2>$null
+if ($branch -and $branch.Length -gt 30) { $branch = $branch.Substring(0, 29) + "…" }
 $context = if ($branch) { "$cwd ($branch)" } else { $cwd }
 
 Write-Host -NoNewline "$context | $model"
