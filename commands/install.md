@@ -130,6 +130,17 @@ mkdir -p "$BASE"
 
 **User scope only** — write the statusline script.
 
+The statusline displays:
+- Current working directory (last 2 path segments) + git branch
+- Model name
+- 5-hour rate limit: color-coded bar (green/amber/red), usage %, reset time
+- 7-day rate limit: color-coded bar, usage %, reset date+time
+
+Example output:
+```
+opt/claude4ops (main) | claude-sonnet-4-6 | 5h:▓▓▓▓░░░░░░ 42% (resets 15:53)  7d:▓▓░░░░░░░░ 15% (resets Jun 11 07:00)
+```
+
 On **Windows (PowerShell)**, write `statusline-command.ps1` instead and set the command to `pwsh -NoProfile -File "$HOME\.claude\statusline-command.ps1"`. Copy the script content from `scripts/statusline-command.ps1` in the plugin source. Then skip to the settings merge step below.
 
 On **Linux/macOS/WSL/Git Bash**, write the sh version:
@@ -144,6 +155,7 @@ input=$(cat)
 model=$(echo "$input" | jq -r '.model.display_name')
 five=$(echo "$input" | jq -r '.rate_limits.five_hour.used_percentage // empty')
 week=$(echo "$input" | jq -r '.rate_limits.seven_day.used_percentage // empty')
+week_resets=$(echo "$input" | jq -r '.rate_limits.seven_day.resets_at // empty')
 
 make_bar() {
   pct="$1"
@@ -151,19 +163,19 @@ make_bar() {
   empty=$((10 - filled))
   pct_int=$(printf "%.0f" "$pct")
   if [ "$pct_int" -ge 80 ]; then
-    color="\033[31m"
+    color="\033[38;5;196m"
   elif [ "$pct_int" -ge 60 ]; then
-    color="\033[33m"
+    color="\033[38;5;214m"
   else
-    color="\033[32m"
+    color="\033[38;5;82m"
   fi
   filled_chars=""
   i=0
-  while [ "$i" -lt "$filled" ]; do filled_chars="${filled_chars}█"; i=$((i + 1)); done
+  while [ "$i" -lt "$filled" ]; do filled_chars="${filled_chars}▓"; i=$((i + 1)); done
   empty_chars=""
   i=0
-  while [ "$i" -lt "$empty" ]; do empty_chars="${empty_chars}-"; i=$((i + 1)); done
-  printf "[%b%s\033[0m%s]" "$color" "$filled_chars" "$empty_chars"
+  while [ "$i" -lt "$empty" ]; do empty_chars="${empty_chars}░"; i=$((i + 1)); done
+  printf "%b%s\033[0m%s" "$color" "$filled_chars" "$empty_chars"
 }
 
 five_resets=$(echo "$input" | jq -r '.rate_limits.five_hour.resets_at // empty')
@@ -181,12 +193,21 @@ fi
 
 if [ -n "$week" ]; then
   week_pct=$(printf "%.0f" "$week")
-  week_display="7d:$(make_bar "$week") ${week_pct}%"
+  if [ -n "$week_resets" ]; then
+    reset_date=$(TZ=Asia/Bangkok date -d "@${week_resets}" +"%b %d %H:%M" 2>/dev/null || TZ=Asia/Bangkok date -r "$week_resets" +"%b %d %H:%M" 2>/dev/null)
+    week_display="7d:$(make_bar "$week") ${week_pct}% (resets ${reset_date})"
+  else
+    week_display="7d:$(make_bar "$week") ${week_pct}%"
+  fi
 else
   week_display=""
 fi
 
-parts="$model"
+cwd=$(pwd | sed "s|^$HOME|~|" | awk -F/ '{n=NF; if(n<=2) print $0; else print $(n-1)"/"$n}')
+branch=$(git rev-parse --abbrev-ref HEAD 2>/dev/null)
+context="$cwd"
+[ -n "$branch" ] && context="$context ($branch)"
+parts="$context | $model"
 [ -n "$five_display" ] && parts="$parts | $five_display"
 [ -n "$week_display" ] && parts="$parts  $week_display"
 
