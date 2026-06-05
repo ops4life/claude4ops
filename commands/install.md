@@ -141,78 +141,29 @@ Example output:
 opt/claude4ops (main) | claude-sonnet-4-6 | 5h:▓▓▓▓░░░░░░ 42% (resets 15:53)  7d:▓▓░░░░░░░░ 15% (resets Jun 11 07:00)
 ```
 
-On **Windows (PowerShell)**, write `statusline-command.ps1` instead and set the command to `pwsh -NoProfile -File "$HOME\.claude\statusline-command.ps1"`. Copy the script content from `scripts/statusline-command.ps1` in the plugin source. Then skip to the settings merge step below.
+On **Windows (PowerShell)**, write `statusline-command.ps1` instead and set the command to `pwsh -NoProfile -File "$HOME\.claude\statusline-command.ps1"`. Copy from plugin source — fail clearly if not found:
 
-On **Linux/macOS/WSL/Git Bash**, write the sh version:
+```powershell
+$pluginScript = Get-ChildItem -Path "$HOME\.claude" -Recurse -Filter "statusline-command.ps1" -ErrorAction SilentlyContinue |
+    Where-Object { $_.FullName -like "*claude4ops*" } | Select-Object -First 1 -ExpandProperty FullName
+if (-not $pluginScript) {
+    Write-Error "ERROR: claude4ops plugin source not found. Reinstall: claude plugin install claude4ops"
+    exit 1
+}
+Copy-Item $pluginScript "$HOME\.claude\statusline-command.ps1" -Force
+```
+
+Then skip to the settings merge step below.
+
+On **Linux/macOS/WSL/Git Bash**, copy from plugin source — fail clearly if not found:
 
 ```bash
-cp "$(find "$HOME/.claude" -path "*/claude4ops*/scripts/statusline-command.sh" 2>/dev/null | head -1)" \
-   "$HOME/.claude/statusline-command.sh" 2>/dev/null || \
-cat > "$HOME/.claude/statusline-command.sh" << 'STATUSLINE'
-#!/bin/sh
-input=$(cat)
-
-model=$(echo "$input" | jq -r '.model.display_name')
-five=$(echo "$input" | jq -r '.rate_limits.five_hour.used_percentage // empty')
-week=$(echo "$input" | jq -r '.rate_limits.seven_day.used_percentage // empty')
-week_resets=$(echo "$input" | jq -r '.rate_limits.seven_day.resets_at // empty')
-
-make_bar() {
-  pct="$1"
-  filled=$(awk "BEGIN { x = int($pct / 10 + 0.5); if (x > 10) x = 10; print x }")
-  empty=$((10 - filled))
-  pct_int=$(printf "%.0f" "$pct")
-  if [ "$pct_int" -ge 80 ]; then
-    color="\033[38;5;196m"
-  elif [ "$pct_int" -ge 60 ]; then
-    color="\033[38;5;214m"
-  else
-    color="\033[38;5;82m"
-  fi
-  filled_chars=""
-  i=0
-  while [ "$i" -lt "$filled" ]; do filled_chars="${filled_chars}▓"; i=$((i + 1)); done
-  empty_chars=""
-  i=0
-  while [ "$i" -lt "$empty" ]; do empty_chars="${empty_chars}░"; i=$((i + 1)); done
-  printf "%b%s\033[0m%s" "$color" "$filled_chars" "$empty_chars"
-}
-
-five_resets=$(echo "$input" | jq -r '.rate_limits.five_hour.resets_at // empty')
-if [ -n "$five" ]; then
-  five_pct=$(printf "%.0f" "$five")
-  if [ -n "$five_resets" ]; then
-    reset_time=$(TZ=Asia/Bangkok date -d "@${five_resets}" +%H:%M 2>/dev/null || TZ=Asia/Bangkok date -r "$five_resets" +%H:%M 2>/dev/null)
-    five_display="5h:$(make_bar "$five") ${five_pct}% (resets ${reset_time})"
-  else
-    five_display="5h:$(make_bar "$five") ${five_pct}%"
-  fi
-else
-  five_display=""
+PLUGIN_SH=$(find "$HOME/.claude" -path "*/claude4ops*/scripts/statusline-command.sh" 2>/dev/null | head -1)
+if [ -z "$PLUGIN_SH" ]; then
+  echo "ERROR: claude4ops plugin source not found. Reinstall: claude plugin install claude4ops"
+  exit 1
 fi
-
-if [ -n "$week" ]; then
-  week_pct=$(printf "%.0f" "$week")
-  if [ -n "$week_resets" ]; then
-    reset_date=$(TZ=Asia/Bangkok date -d "@${week_resets}" +"%b %d %H:%M" 2>/dev/null || TZ=Asia/Bangkok date -r "$week_resets" +"%b %d %H:%M" 2>/dev/null)
-    week_display="7d:$(make_bar "$week") ${week_pct}% (resets ${reset_date})"
-  else
-    week_display="7d:$(make_bar "$week") ${week_pct}%"
-  fi
-else
-  week_display=""
-fi
-
-cwd=$(pwd | sed "s|^$HOME|~|" | awk -F/ '{n=NF; if(n<=2) print $0; else print $(n-1)"/"$n}')
-branch=$(git rev-parse --abbrev-ref HEAD 2>/dev/null)
-context="$cwd"
-[ -n "$branch" ] && context="$context ($branch)"
-parts="$context | $model"
-[ -n "$five_display" ] && parts="$parts | $five_display"
-[ -n "$week_display" ] && parts="$parts  $week_display"
-
-printf "%s" "$parts"
-STATUSLINE
+cp "$PLUGIN_SH" "$HOME/.claude/statusline-command.sh"
 chmod +x "$HOME/.claude/statusline-command.sh"
 ```
 
@@ -303,33 +254,12 @@ For each selected hook, write the script and append to a hooks config.
 #### block-prod (PreToolUse — blocks prod-targeting commands)
 
 ```bash
-cat > "$BASE/hooks/block-prod.sh" << 'HOOK'
-#!/bin/sh
-INPUT=$(cat)
-CMD=$(echo "$INPUT" | jq -r '.tool_input.command // empty')
-[ -z "$CMD" ] && exit 0
-
-DANGER_PATTERNS="kubectl.*--context=prod
-kubectl.*-n production
-kubectl.*--namespace=production
-terraform.*-var-file=prod
-terraform.*workspace.*prod
-aws.*--profile=production
-aws.*--profile=prod
-helm.*prod
-gcloud.*--project=.*-prod"
-
-while IFS= read -r pattern; do
-  [ -z "$pattern" ] && continue
-  if echo "$CMD" | grep -qE "$pattern"; then
-    echo "BLOCKED: production target detected. Run this manually with explicit approval." >&2
-    exit 2
-  fi
-done <<PATTERNS
-$DANGER_PATTERNS
-PATTERNS
-exit 0
-HOOK
+PLUGIN_HOOK=$(find "$HOME/.claude" -path "*/claude4ops*/scripts/hooks/block-prod.sh" 2>/dev/null | head -1)
+if [ -z "$PLUGIN_HOOK" ]; then
+  echo "ERROR: claude4ops plugin source not found. Reinstall: claude plugin install claude4ops"
+  exit 1
+fi
+cp "$PLUGIN_HOOK" "$BASE/hooks/block-prod.sh"
 chmod +x "$BASE/hooks/block-prod.sh"
 ```
 
@@ -341,39 +271,12 @@ Settings entry for block-prod:
 #### auto-lint (Stop — formats files Claude touched after each turn)
 
 ```bash
-cat > "$BASE/hooks/auto-lint.sh" << 'HOOK'
-#!/bin/sh
-CHANGED=$(git diff --name-only HEAD 2>/dev/null)
-[ -z "$CHANGED" ] && exit 0
-
-FORMATTED=0
-for f in $CHANGED; do
-  [ -f "$f" ] || continue
-  case "$f" in
-    *.py)
-      command -v ruff >/dev/null && ruff check --fix "$f" 2>/dev/null
-      command -v black >/dev/null && black -q "$f" 2>/dev/null
-      FORMATTED=$((FORMATTED + 1)) ;;
-    *.tf)
-      command -v terraform >/dev/null && terraform fmt "$f" 2>/dev/null
-      FORMATTED=$((FORMATTED + 1)) ;;
-    *.go)
-      command -v gofmt >/dev/null && gofmt -w "$f" 2>/dev/null
-      FORMATTED=$((FORMATTED + 1)) ;;
-    *.ts|*.js|*.tsx|*.jsx)
-      command -v npx >/dev/null && npx --yes eslint --fix "$f" 2>/dev/null
-      FORMATTED=$((FORMATTED + 1)) ;;
-    *.yaml|*.yml)
-      command -v yamllint >/dev/null && yamllint -d relaxed "$f" 2>/dev/null || true ;;
-  esac
-done
-
-if ! git diff --quiet 2>/dev/null && [ "$FORMATTED" -gt 0 ]; then
-  COUNT=$(git diff --name-only | wc -l | tr -d ' ')
-  echo "auto-lint: formatted ${COUNT} file(s)"
+PLUGIN_HOOK=$(find "$HOME/.claude" -path "*/claude4ops*/scripts/hooks/auto-lint.sh" 2>/dev/null | head -1)
+if [ -z "$PLUGIN_HOOK" ]; then
+  echo "ERROR: claude4ops plugin source not found. Reinstall: claude plugin install claude4ops"
+  exit 1
 fi
-exit 0
-HOOK
+cp "$PLUGIN_HOOK" "$BASE/hooks/auto-lint.sh"
 chmod +x "$BASE/hooks/auto-lint.sh"
 ```
 
@@ -385,17 +288,12 @@ Settings entry for auto-lint:
 #### audit-bash (PostToolUse — logs all Bash commands)
 
 ```bash
-cat > "$BASE/hooks/audit-bash.sh" << 'HOOK'
-#!/bin/sh
-AUDIT_LOG="${CLAUDE_AUDIT_LOG:-${HOME}/.claude/audit.log}"
-INPUT=$(cat)
-CMD=$(echo "$INPUT" | jq -r '.tool_input.command // empty')
-[ -z "$CMD" ] && exit 0
-
-mkdir -p "$(dirname "$AUDIT_LOG")"
-printf '%s [bash] %s\n' "$(date -u +%Y-%m-%dT%H:%M:%SZ)" "$(echo "$CMD" | head -c 300)" >> "$AUDIT_LOG"
-exit 0
-HOOK
+PLUGIN_HOOK=$(find "$HOME/.claude" -path "*/claude4ops*/scripts/hooks/audit-bash.sh" 2>/dev/null | head -1)
+if [ -z "$PLUGIN_HOOK" ]; then
+  echo "ERROR: claude4ops plugin source not found. Reinstall: claude plugin install claude4ops"
+  exit 1
+fi
+cp "$PLUGIN_HOOK" "$BASE/hooks/audit-bash.sh"
 chmod +x "$BASE/hooks/audit-bash.sh"
 ```
 
@@ -409,19 +307,12 @@ Settings entry for audit-bash:
 Ask the user for their `SLACK_WEBHOOK` URL (or env var name). Warn if not set — this applies even when all components were selected via `a`.
 
 ```bash
-cat > "$BASE/hooks/slack-notify.sh" << 'HOOK'
-#!/bin/sh
-[ -z "${SLACK_WEBHOOK:-}" ] && exit 0
-
-INPUT=$(cat)
-MSG=$(echo "$INPUT" | jq -r '.message // "Claude Code needs attention"')
-
-curl -s -X POST "$SLACK_WEBHOOK" \
-  -H 'Content-type: application/json' \
-  -d "{\"text\": \":robot_face: *Claude Code*: ${MSG}\"}" \
-  > /dev/null
-exit 0
-HOOK
+PLUGIN_HOOK=$(find "$HOME/.claude" -path "*/claude4ops*/scripts/hooks/slack-notify.sh" 2>/dev/null | head -1)
+if [ -z "$PLUGIN_HOOK" ]; then
+  echo "ERROR: claude4ops plugin source not found. Reinstall: claude plugin install claude4ops"
+  exit 1
+fi
+cp "$PLUGIN_HOOK" "$BASE/hooks/slack-notify.sh"
 chmod +x "$BASE/hooks/slack-notify.sh"
 ```
 
@@ -541,16 +432,15 @@ Merge each selected MCP config into `$BASE/settings.json` using `jq -s '.[0] * .
 mkdir -p "$BASE/skills/docling"
 ```
 
-Write the docling skill. Read the content from the installed plugin's `skills/docling/SKILL.md` if accessible, otherwise write the standard content:
+Write the docling skill. Copy from plugin source — fail clearly if not found:
 
 ```bash
 PLUGIN_SKILL=$(find "$HOME/.claude" -path "*/claude4ops*/skills/docling/SKILL.md" 2>/dev/null | head -1)
-if [ -n "$PLUGIN_SKILL" ]; then
-  cp "$PLUGIN_SKILL" "$BASE/skills/docling/SKILL.md"
-else
-  # Fallback: write minimal skill stub — reinstall plugin first for full content
-  echo "Skill source not found. Ensure the claude4ops plugin is installed before running /claude4ops:install."
+if [ -z "$PLUGIN_SKILL" ]; then
+  echo "ERROR: claude4ops plugin source not found. Reinstall: claude plugin install claude4ops"
+  exit 1
 fi
+cp "$PLUGIN_SKILL" "$BASE/skills/docling/SKILL.md"
 ```
 
 ---
@@ -561,44 +451,15 @@ fi
 mkdir -p "$BASE/rules"
 ```
 
-Write `git.md`:
+Write `git.md`. Copy from plugin source — fail clearly if not found:
 
 ```bash
-cat > "$BASE/rules/git.md" << 'RULE'
-# Git
-
-## Pushing
-
-Always stage and commit first, then fetch+rebase, then push:
-
-```bash
-git add <files> && git commit -m "..." && git fetch origin && git rebase origin/main && git push
-```
-
-`git rebase` fails with unstaged changes. Never rebase before committing.
-
-If SSH push fails (for example `Permission denied (publickey)`), switch `origin`
-to HTTPS and retry:
-
-```bash
-git remote set-url origin https://github.com/<owner>/<repo>.git
-git fetch origin
-git rebase origin/main
-git push origin main
-```
-
-## After merging a PR
-
-Always return to main and pull latest:
-
-```bash
-git checkout main && git pull origin main
-```
-
-## Commit messages
-
-No `Co-Authored-By` or any AI attribution lines in commit messages.
-RULE
+PLUGIN_RULE=$(find "$HOME/.claude" -path "*/claude4ops*/rules/git.md" 2>/dev/null | head -1)
+if [ -z "$PLUGIN_RULE" ]; then
+  echo "ERROR: claude4ops plugin source not found. Reinstall: claude plugin install claude4ops"
+  exit 1
+fi
+cp "$PLUGIN_RULE" "$BASE/rules/git.md"
 ```
 
 ---
@@ -760,6 +621,8 @@ Installed:
 Restart Claude Code to apply changes.
 If RTK was installed, also reload your shell: source ~/.bashrc (or ~/.zshrc)
 On Windows: hooks use .ps1 scripts invoked via pwsh. Ensure PowerShell execution policy allows scripts: Set-ExecutionPolicy -Scope CurrentUser RemoteSigned
+
+To pick up future plugin updates without reinstalling: /claude4ops:update
 ```
 
 Only list components that were actually installed. For Optimization, only list tools that succeeded. For Plugins, only list plugins that succeeded; if partial, append `(<failed> failed — install manually: claude plugin install <name>@claude-plugins-official)`.

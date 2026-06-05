@@ -25,6 +25,8 @@ claude4ops/
 │       ├── development.md     # Dev workflow and design principles
 │       └── standards.md       # Technical standards and release process
 ├── commands/
+│   ├── install.md        # Install claude4ops hooks, skills, rules, and settings
+│   ├── update.md         # Resync scripts from plugin source after updates
 │   ├── k8s/              # Kubernetes operations (3 commands)
 │   │   ├── deploy.md              # Guided K8s deployment workflow
 │   │   ├── troubleshoot.md        # Systematic pod/service debugging
