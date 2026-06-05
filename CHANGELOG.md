@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.13.2](https://github.com/ops4life/claude4ops/compare/v1.13.1...v1.13.2) (2026-06-05)
+
+
+### Bug Fixes
+
+* replace ANSI escape codes with PS-native color in statusline PS1 ([eaedcda](https://github.com/ops4life/claude4ops/commit/eaedcda4e88f9e825ef2ab4c3752ae12127d62cf))
+
 ## [1.13.1](https://github.com/ops4life/claude4ops/compare/v1.13.0...v1.13.1) (2026-06-05)
 
 
