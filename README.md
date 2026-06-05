@@ -4,8 +4,11 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](./LICENSE)
 [![Claude Code Plugin](https://img.shields.io/badge/Claude%20Code-Plugin-blue)](https://github.com/ops4life/claude4ops)
+[![Platform: Linux](https://img.shields.io/badge/platform-Linux-blue?logo=linux)](https://github.com/ops4life/claude4ops)
+[![Platform: macOS](https://img.shields.io/badge/platform-macOS-blue?logo=apple)](https://github.com/ops4life/claude4ops)
+[![Platform: Windows](https://img.shields.io/badge/platform-Windows-blue?logo=windows)](https://github.com/ops4life/claude4ops)
 
-Production-ready DevOps superpowers for everyone. Guided workflows for Kubernetes, Terraform, CI/CD, SLOs, and incident response — with token optimization built in.
+Production-ready DevOps superpowers for everyone. Guided workflows for Kubernetes, Terraform, CI/CD, SLOs, and incident response — with token optimization built in. Runs on Linux, macOS, and Windows.
 
 ## Why claude4ops?
 
@@ -17,6 +20,7 @@ DevOps workflows are repetitive, error-prone, and hard to get right. claude4ops 
 - **Observability** — define SLOs with error budgets, create SLO-based alerts with burn-rate thresholds and runbook links
 - **Incident response** — run blameless postmortems with structured timelines, RCA, and action items
 - **Multi-cloud** — all commands cover AWS, GCP, and Azure with provider-specific examples
+- **Multi-platform** — native support for Linux, macOS, and Windows (PowerShell, WSL2, or Git Bash)
 
 ## Installation
 
@@ -49,11 +53,21 @@ After installing the plugin, run `/claude4ops:install` to configure Claude Code:
 - **Optimization**: token-efficient tools — RTK shell proxy (60-90% savings) + Caveman compressed mode (~75% savings)
 - **Plugins**: context7, playwright, superpowers, frontend-design
 
-**Platform support**: Linux, macOS, Windows (PowerShell/pwsh, WSL2, or Git Bash).
+### Platform Support
 
-**Prerequisites**: [`jq`](https://jqlang.org) — install with `apt-get install jq`, `brew install jq`, or `winget install stedolan.jq`. On Windows with PowerShell, jq is optional (install uses built-in JSON support as fallback).
+| Platform | Shell | Hook scripts |
+|----------|-------|--------------|
+| Linux | bash / sh | `.sh` |
+| macOS | bash / sh | `.sh` |
+| Windows | PowerShell (pwsh) | `.ps1` — invoked via `pwsh -NoProfile -File` |
+| Windows | WSL2 or Git Bash | `.sh` |
 
-**Windows note**: Hook scripts install as `.ps1` files invoked via `pwsh`. Ensure execution policy permits scripts: `Set-ExecutionPolicy -Scope CurrentUser RemoteSigned`.
+**Prerequisites**: [`jq`](https://jqlang.org) — `apt-get install jq` · `brew install jq` · `winget install stedolan.jq`. Optional on Windows PowerShell (falls back to built-in JSON).
+
+**Windows one-time setup**: allow script execution before running `/claude4ops:install`:
+```powershell
+Set-ExecutionPolicy -Scope CurrentUser RemoteSigned
+```
 
 ## Commands
 
