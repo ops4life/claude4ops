@@ -11,7 +11,7 @@ jobs:
     name: Shellcheck
     runs-on: ubuntu-24.04
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v7
       - name: Run shellcheck
         run: shellcheck scripts/hooks/*.sh scripts/test/validate-commands.sh
 
@@ -19,7 +19,7 @@ jobs:
     name: JS Tests
     runs-on: ubuntu-24.04
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v7
       - name: Run unit tests
         run: node scripts/test/test-update-plugin-version.js
 
@@ -27,7 +27,7 @@ jobs:
     name: Validate Commands
     runs-on: ubuntu-24.04
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v7
       - name: Validate command frontmatter
         run: bash scripts/test/validate-commands.sh
 
@@ -35,7 +35,7 @@ jobs:
     name: Pre-commit Hooks
     runs-on: ubuntu-24.04
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v7
         with:
           fetch-depth: 0
       - uses: actions/setup-python@v5
@@ -50,7 +50,7 @@ jobs:
     name: Release Dry Run
     runs-on: ubuntu-24.04
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v7
         with:
           fetch-depth: 0
       - name: Semantic Release dry run
