@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.15.2](https://github.com/ops4life/claude4ops/compare/v1.15.1...v1.15.2) (2026-10-26)
+
+
+### Bug Fixes
+
+* **ci:** bump semantic_version to 24 ([#20](https://github.com/ops4life/claude4ops/issues/20)) ([90e4bf4](https://github.com/ops4life/claude4ops/commit/90e4bf48df791dd6b18603291364116f61bd96bc))
+
 ## [1.15.1](https://github.com/ops4life/claude4ops/compare/v1.15.0...v1.15.1) (2026-06-05)
 
 
