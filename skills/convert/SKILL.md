@@ -211,6 +211,23 @@ console.log(response.choices[0].message.content);
 
 Always verify model availability against current docs fetched from context7.
 
+#### Step 4b: Gemini `.gemini/settings.json` (permissions and MCP servers)
+
+Gemini target only. Source is the committed `.claude/settings.json`; never read `.claude/settings.local.json` (personal). If the source is missing or has no `permissions` or `mcpServers`, skip this step and write nothing. Field names come from the Step 3 docs; re-check them there.
+
+**Never emit `tools.core`.** It is an allowlist for all built-in tools, so it would disable `read_file`, `grep_search` and the rest.
+
+1. `permissions.allow` → `tools.allowed` (tools that skip the confirmation prompt). `Bash(cmd *)` and `Bash(cmd:*)` become `run_shell_command(cmd)` (Gemini matches by prefix). An exact `Bash(cmd args)` becomes `run_shell_command(cmd args)`. Anything else (a wildcard in the middle, non-Bash tools) is unmapped.
+2. `permissions.deny` is unmapped (`tools.exclude` is deprecated in favour of the Policy Engine).
+3. `mcpServers` → `mcpServers`. Stdio keeps `command`, `args`, `env`, `cwd`. `type: http` becomes `httpUrl`, `type: sse` becomes `url`; keep `headers`. Never set `trust`.
+4. Secrets: a value already written as `$VAR` or `${VAR}` stays as is. `${VAR:-default}` becomes `$VAR` (report the dropped default). A literal `env` or `headers` value becomes `$<KEY>` (the key name, upper case); report it so the user sets that variable to the full original value (including any prefix such as `Bearer `).
+5. JSON has no comments: list every unmapped or rewritten entry, with the reason, in the Step 6 summary.
+
+**Never overwrite or modify an existing `.gemini/settings.json`:**
+
+- No `.gemini/settings.json` yet: write it.
+- It exists: leave it untouched. Write `.gemini/settings.generated.json` instead (replaced on each run), then print `diff -u .gemini/settings.json .gemini/settings.generated.json`, or "no differences". The user merges by hand; merging `tools.allowed` automatically could widen their confirmation bypass unreviewed.
+
 #### Hook Mappings
 
 | Claude Code hook | Gemini CLI | Copilot | Cursor | Codex |
@@ -232,10 +249,12 @@ For every Claude feature with no equivalent, include a warning block in the gene
 ⚠️  UNSUPPORTED: Tool-use permissions (allowedTools / blockedTools)
     Claude Code's fine-grained tool permission system has no direct equivalent.
     Workaround: Document rules in the target config file as natural-language instructions.
+    (Gemini CLI: allow rules are translated by Step 4b; only unmapped entries and deny rules remain unsupported.)
 
 ⚠️  UNSUPPORTED: MCP server configuration
     MCP is Claude Code-specific. Some tools support OpenAPI/function calling instead.
     Workaround: Expose your MCP server via OpenAPI spec and register as a tool/function.
+    (Gemini CLI: servers are translated by Step 4b.)
 
 ⚠️  UNSUPPORTED: claude4ops plugin skills and commands
     These are Claude Code-only. No equivalent exists in other tools.
@@ -257,6 +276,10 @@ Imports: [N] inlined (or [N] kept as native @./ imports for Gemini), [N] unresol
   ⚠️  unresolved: [@path ...]   (omit lines with none)
   ⚠️  skipped (outside repo): [@path ...]
 
+Settings (Gemini only): wrote .gemini/settings.json | existing file untouched, wrote .gemini/settings.generated.json
+  [diff -u output, or "no differences"]
+  ⚠️  unmapped or rewritten: [entry: reason ...]   (omit when none)
+
 Warnings ([N] features with no equivalent):
   ⚠️  hooks → no equivalent in [target tool]
   ⚠️  MCP servers → no equivalent (see workaround above)
@@ -270,6 +293,6 @@ Source files were not modified.
 
 - Never generate target configs without first fetching context7 docs — formats change
 - Resolve `@file` imports in CLAUDE.md (Step 4a: inline, except Gemini keeps native `@./` imports) before mapping content to target format; re-run `/convert` after any rule change to sync all targets
-- Source files (`CLAUDE.md`, SDK files) are read-only — generate new files alongside
+- Source files (`CLAUDE.md`, SDK files) are read-only — generate new files alongside. Never modify an existing `.gemini/settings.json`
 - For multi-target conversions, run Steps 3–6 once per target tool
 - If context7 cannot resolve a library, warn the user and halt rather than guessing
