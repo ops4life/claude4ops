@@ -80,7 +80,16 @@ Cite the resolved library ID and doc version in every generated file header.
 
 #### Step 4a: Resolve `@file` imports
 
-No target tool follows `@file` imports, so inline them before mapping. Re-running `/convert` is the sync mechanism: one command refreshes every target config.
+Inline `@file` imports for every target that lacks import support. Re-running `/convert` is the sync mechanism: one command refreshes every target config.
+
+**Gemini CLI follows `@file.md` imports itself** (documented as "memport", nested imports included; see the context7 `/google-gemini/gemini-cli` docs fetched in Step 3). For a Gemini target, do not inline:
+
+- Rewrite each in-repo `@path` in `CLAUDE.md` to `@./path`, relative to the generated `GEMINI.md`. Add no wrapper markers.
+- Still apply rule 3 (outside the repo root: skip with a marker) and rule 4 (missing file: `<!-- UNRESOLVED @path -->`, no dangling import).
+- Leave imported files unedited. If an imported file has its own imports not written with a `./` or `../` prefix, inline that file with the rules below, because Gemini's documented syntax is `@./path`.
+- Re-check the docs: if they no longer show `@` imports, inline as for other targets.
+
+Copilot, Cursor and Codex have no verified import support: inline for them.
 
 1. Find `@path` tokens in `CLAUDE.md`. Ignore any inside fenced code blocks or inline code.
 2. Resolve each path relative to the file that contains it (`~` expands to the home directory).
@@ -102,7 +111,7 @@ Collect every UNRESOLVED, SKIPPED and cycle marker for the Step 6 summary.
 
 #### CLAUDE.md → Target Config
 
-Write the resolved content from Step 4a (not the raw `@` lines):
+Write the resolved content from Step 4a (inlined, or rewritten `@./path` imports for Gemini; not the raw `@` lines):
 
 | Claude artifact | Gemini CLI | GitHub Copilot | Cursor | OpenAI Codex |
 |---|---|---|---|---|
@@ -244,7 +253,7 @@ Generated:
   ✓ [target config file]       ← from CLAUDE.md
   ✓ [sdk-migration.md]         ← Anthropic SDK migration notes
 
-Imports: [N] inlined, [N] unresolved, [N] skipped (outside repo), [N] cycles
+Imports: [N] inlined (or [N] kept as native @./ imports for Gemini), [N] unresolved, [N] skipped (outside repo), [N] cycles
   ⚠️  unresolved: [@path ...]   (omit lines with none)
   ⚠️  skipped (outside repo): [@path ...]
 
@@ -260,7 +269,7 @@ Source files were not modified.
 ## Notes
 
 - Never generate target configs without first fetching context7 docs — formats change
-- Expand `@file` imports in CLAUDE.md (Step 4a) before mapping content to target format; re-run `/convert` after any rule change to sync all targets
+- Resolve `@file` imports in CLAUDE.md (Step 4a: inline, except Gemini keeps native `@./` imports) before mapping content to target format; re-run `/convert` after any rule change to sync all targets
 - Source files (`CLAUDE.md`, SDK files) are read-only — generate new files alongside
 - For multi-target conversions, run Steps 3–6 once per target tool
 - If context7 cannot resolve a library, warn the user and halt rather than guessing
