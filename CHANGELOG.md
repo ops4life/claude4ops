@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+# [1.18.0](https://github.com/ops4life/claude4ops/compare/v1.17.0...v1.18.0) (2026-11-23)
+
+
+### Features
+
+* **convert:** generate .gemini/settings.json from permissions and MCP servers ([#26](https://github.com/ops4life/claude4ops/issues/26)) ([e44848a](https://github.com/ops4life/claude4ops/commit/e44848a29cdbc2070fe2eb4fd9e461c4aa16def7)), closes [#15](https://github.com/ops4life/claude4ops/issues/15) [#14](https://github.com/ops4life/claude4ops/issues/14)
+
 # [1.17.0](https://github.com/ops4life/claude4ops/compare/v1.16.0...v1.17.0) (2026-11-23)
 
 
