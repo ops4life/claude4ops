@@ -86,7 +86,7 @@ Inline `@file` imports for every target that lacks import support. Re-running `/
 
 - Rewrite each in-repo `@path` in `CLAUDE.md` to `@./path`, relative to the generated `GEMINI.md`. Add no wrapper markers.
 - Still apply rule 3 (outside the repo root: skip with a marker) and rule 4 (missing file: `<!-- UNRESOLVED @path -->`, no dangling import).
-- Leave imported files unedited. If an imported file has its own imports not written with a `./` or `../` prefix, inline that file with the rules below, because Gemini's documented syntax is `@./path`.
+- Leave imported files unedited, including their own nested imports. Gemini's import detection (`findImports` in `memoryImportProcessor.ts`) accepts an `@` followed by `.`, `/` or a letter, so bare `@path` imports work as well as `@./path`; do not inline them. It matches `@` after any whitespace, not only at the start of a line, so stray `@name` text in an imported file may be tried as an import; report nothing and edit nothing (Gemini's behaviour on an unresolvable match is not verified).
 - Re-check the docs: if they no longer show `@` imports, inline as for other targets.
 
 Copilot, Cursor and Codex have no verified import support: inline for them.
