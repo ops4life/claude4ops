@@ -78,9 +78,31 @@ Cite the resolved library ID and doc version in every generated file header.
 
 ### Step 4: Generate Target Configs
 
+#### Step 4a: Resolve `@file` imports
+
+No target tool follows `@file` imports, so inline them before mapping. Re-running `/convert` is the sync mechanism: one command refreshes every target config.
+
+1. Find `@path` tokens in `CLAUDE.md`. Ignore any inside fenced code blocks or inline code.
+2. Resolve each path relative to the file that contains it (`~` expands to the home directory).
+3. **Outside the repo root** (including `~` paths): do not inline. Warn and leave `<!-- SKIPPED (outside repo) @path -->`. Personal files must not leak into a committed config.
+4. **Missing or unreadable file**: warn and continue. Leave `<!-- UNRESOLVED @path -->`. Never halt the conversion for one bad import.
+5. Otherwise read the file and apply steps 1-4 to it (nested imports), up to 5 hops deep. Past 5, leave `<!-- UNRESOLVED @path (max depth) -->`.
+6. Keep the set of files already inlined on the current import chain. A file importing one of its ancestors is not re-inlined: leave `<!-- skipped: cycle @path -->`.
+7. Wrap each inlined file's content, with its nested imports already resolved:
+
+```
+<!-- inlined from .claude/rules/git.md -->
+...content...
+<!-- end .claude/rules/git.md -->
+```
+
+Use repo-relative paths in the markers. Put no timestamps inside inlined blocks, so a re-run diffs only when a rule changed.
+
+Collect every UNRESOLVED, SKIPPED and cycle marker for the Step 6 summary.
+
 #### CLAUDE.md → Target Config
 
-Read `CLAUDE.md` fully (expanding any `@file` imports). Then write:
+Write the resolved content from Step 4a (not the raw `@` lines):
 
 | Claude artifact | Gemini CLI | GitHub Copilot | Cursor | OpenAI Codex |
 |---|---|---|---|---|
@@ -222,6 +244,10 @@ Generated:
   ✓ [target config file]       ← from CLAUDE.md
   ✓ [sdk-migration.md]         ← Anthropic SDK migration notes
 
+Imports: [N] inlined, [N] unresolved, [N] skipped (outside repo), [N] cycles
+  ⚠️  unresolved: [@path ...]   (omit lines with none)
+  ⚠️  skipped (outside repo): [@path ...]
+
 Warnings ([N] features with no equivalent):
   ⚠️  hooks → no equivalent in [target tool]
   ⚠️  MCP servers → no equivalent (see workaround above)
@@ -234,7 +260,7 @@ Source files were not modified.
 ## Notes
 
 - Never generate target configs without first fetching context7 docs — formats change
-- Expand `@file` imports in CLAUDE.md before mapping content to target format
+- Expand `@file` imports in CLAUDE.md (Step 4a) before mapping content to target format; re-run `/convert` after any rule change to sync all targets
 - Source files (`CLAUDE.md`, SDK files) are read-only — generate new files alongside
 - For multi-target conversions, run Steps 3–6 once per target tool
 - If context7 cannot resolve a library, warn the user and halt rather than guessing
