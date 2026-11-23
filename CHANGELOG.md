@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+# [1.16.0](https://github.com/ops4life/claude4ops/compare/v1.15.2...v1.16.0) (2026-11-23)
+
+
+### Features
+
+* **convert:** inline [@file](https://github.com/file) imports ([#24](https://github.com/ops4life/claude4ops/issues/24)) ([66d2da3](https://github.com/ops4life/claude4ops/commit/66d2da39fb3831b1ddb570c76c85ff512d315cc9)), closes [#13](https://github.com/ops4life/claude4ops/issues/13)
+
 ## [1.15.2](https://github.com/ops4life/claude4ops/compare/v1.15.1...v1.15.2) (2026-10-26)
 
 
