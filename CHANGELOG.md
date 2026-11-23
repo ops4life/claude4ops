@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.19.1](https://github.com/ops4life/claude4ops/compare/v1.19.0...v1.19.1) (2026-11-23)
+
+
+### Bug Fixes
+
+* **convert:** accept bare [@path](https://github.com/path) imports for Gemini ([#28](https://github.com/ops4life/claude4ops/issues/28)) ([33aaa66](https://github.com/ops4life/claude4ops/commit/33aaa66528c7d1b46f64b0154b2d0b52e4286457))
+
 # [1.19.0](https://github.com/ops4life/claude4ops/compare/v1.18.0...v1.19.0) (2026-11-23)
 
 
