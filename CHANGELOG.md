@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+# [1.19.0](https://github.com/ops4life/claude4ops/compare/v1.18.0...v1.19.0) (2026-11-23)
+
+
+### Features
+
+* **convert:** generate PLAYBOOKS.md from Claude Code skills ([#27](https://github.com/ops4life/claude4ops/issues/27)) ([66ae966](https://github.com/ops4life/claude4ops/commit/66ae9669e0456480528e90c7c64ecee2b22e7961))
+
 # [1.18.0](https://github.com/ops4life/claude4ops/compare/v1.17.0...v1.18.0) (2026-11-23)
 
 
