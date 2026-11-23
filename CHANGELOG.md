@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+# [1.17.0](https://github.com/ops4life/claude4ops/compare/v1.16.0...v1.17.0) (2026-11-23)
+
+
+### Features
+
+* **convert:** keep native @ imports for Gemini CLI ([#25](https://github.com/ops4life/claude4ops/issues/25)) ([e7eb6f6](https://github.com/ops4life/claude4ops/commit/e7eb6f6f1a557ecda5720bbb208870ccf93f7482))
+
 # [1.16.0](https://github.com/ops4life/claude4ops/compare/v1.15.2...v1.16.0) (2026-11-23)
 
 
